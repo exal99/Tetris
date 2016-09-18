@@ -122,7 +122,13 @@ public class GameBoard {
 			} else {
 				System.out.println("hit the ground, start timer");
 				if (task == null) {
-					task = new PlaceTimerTask(() -> place());
+//					task = new PlaceTimerTask(() -> place());
+					task = new TimerTask() {
+						@Override
+						public void run() {
+							place();
+						}
+					};
 					timer.schedule(task, DELAY);
 				}
 			}
