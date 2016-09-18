@@ -1,6 +1,5 @@
 package gameBoard;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import tetrads.Alpha;
@@ -17,7 +16,6 @@ public class GameBoard {
 	private Tetrad hold;
 	private Tetrad controlling;
 	private Tetrad queue;
-	private ArrayList<Tetrad> board;
 	private final int MAX_Y = 22;
 	private final int MAX_X = 10;
 	private boolean canHold;
@@ -32,7 +30,6 @@ public class GameBoard {
 	
 	public GameBoard() {
 		hold = null;
-		board = new ArrayList<Tetrad>();
 		canHold = true;
 		controlling = null;
 		rand = new Random();
@@ -190,6 +187,18 @@ public class GameBoard {
 			}
 		}
 		
+	}
+	
+	public void moveLeft() {
+		if (checkValidState(-1, 0)) {
+			controlling.moveLeft();
+		}
+	}
+	
+	public void moveRight() {
+		if (checkValidState(1, 0)) {
+			controlling.moveRight();
+		}
 	}
 	
 	public String toString() {
