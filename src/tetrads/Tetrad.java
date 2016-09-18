@@ -125,13 +125,14 @@ public abstract class Tetrad {
 	}
 	
 	public boolean colide(int x, int y) {
-		return xPos <= x && x <= xPos + orientation[0].length &&
+		return y < orientation.length && x < orientation[0].length &&
+			   xPos <= x && x <= xPos + orientation[0].length &&
 			   yPos <= y && y <= yPos + orientation.length &&
 			   orientation[y - yPos][x - xPos];
 	}
 	
 	public void fall() {
-		yPos--;
+		yPos++;
 	}
 	
 	public void moveLeft() {
