@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<KeyBindings>
+	<Hold>Up</Hold>
+	<MoveLeft>Left</MoveLeft>
+	<MoveRight>Right</MoveRight>
+	<RotateLeft>z</RotateLeft>
+	<RoteteRight>x</RoteteRight>
+	<Place>Down</Place>
+</KeyBindings>
