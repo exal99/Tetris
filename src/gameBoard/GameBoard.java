@@ -1,6 +1,8 @@
 package gameBoard;
 
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import tetrads.Alpha;
 import tetrads.Gamma;
@@ -25,10 +27,13 @@ public class GameBoard {
 	private boolean running;
 	private int level;
 	private int linesCleard;
+	private Timer timer;
+	private TimerTask task;
 	
 	private Random rand;
+	private final long DELAY = 3000;
 	
-	public GameBoard() {
+	public GameBoard(Timer t) {
 		hold = null;
 		canHold = true;
 		controlling = null;
@@ -40,6 +45,8 @@ public class GameBoard {
 		running = true;
 		level = 0;
 		linesCleard = 0;
+		timer = t;
+		task = null;
 	}
 	
 	private Tetrad getRandomTetrad() {
@@ -114,6 +121,10 @@ public class GameBoard {
 				controlling.fall();
 			} else {
 				System.out.println("hit the ground, start timer");
+				if (task == null) {
+					task = new PlaceTimerTask(() -> place());
+					timer.schedule(task, DELAY);
+				}
 			}
 		}
 	}
@@ -131,6 +142,10 @@ public class GameBoard {
 		}
 		checkTetris();
 		spawnNew();
+		if (task != null) {
+			task.cancel();
+			task = null;
+		}
 	}
 
 	private void checkTetris() {
@@ -191,12 +206,20 @@ public class GameBoard {
 	
 	public void moveLeft() {
 		if (checkValidState(-1, 0)) {
+			if (task != null) {
+				task.cancel();
+				task = null;
+			}
 			controlling.moveLeft();
 		}
 	}
 	
 	public void moveRight() {
 		if (checkValidState(1, 0)) {
+			if (task != null) {
+				task.cancel();
+				task = null;
+			}
 			controlling.moveRight();
 		}
 	}
@@ -251,7 +274,7 @@ public class GameBoard {
 	}
 	
 	public static void main(String[] args) {
-		GameBoard g = new GameBoard();
+		GameBoard g = new GameBoard(new Timer());
 		//System.out.println(g);
 		g.spawnNew();
 		g.update();
