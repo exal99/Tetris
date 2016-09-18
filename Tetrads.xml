@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tetrads>
+	<Straight>
+		<a>2, 0</a>
+		<b>2, 1</b>
+		<c>2, 2</c>
+		<d>2, 3</d>
+	</Straight>
+	<Square>
+		<a>0, 1</a>
+		<b>1, 1</b>
+		<c>0, 2</c>
+		<d>1, 2</d>
+	</Square>
+	<T_turn>
+		<a>1, 0</a>
+		<b>0, 1</b>
+		<c>1, 1</c>
+		<d>1, 2</d>
+	</T_turn>
+	<Right_snake>
+		<a>1, 0</a>
+		<b>0, 1</b>
+		<c>1, 1</c>
+		<d>0, 2</d>
+	</Right_snake>
+	<Left_snake>
+		<a>0, 0</a>
+		<b>0, 1</b>
+		<c>1, 1</c>
+		<d>1, 2</d>
+	</Left_snake>
+	<Gamma>
+		<a>0, 0</a>
+		<b>1, 0</b>
+		<c>1, 1</c>
+		<d>1, 2</d>
+	</Gamma>
+	<Alpha>
+		<a>0, 2</a>
+		<b>1, 0</b>
+		<c>1, 1</c>
+		<d>1, 2</d>
+	</Alpha>
+</Tetrads>
