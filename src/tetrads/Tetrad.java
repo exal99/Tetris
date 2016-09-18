@@ -1,6 +1,5 @@
 package tetrads;
 
-import java.awt.Color;
 import java.io.File;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -147,6 +146,8 @@ public abstract class Tetrad {
 		return orientation;
 	}
 	
+	public abstract Tetrads getType();
+	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		for (int row = 0; row < orientation.length; row++) {
@@ -162,8 +163,6 @@ public abstract class Tetrad {
 		
 		return sb.toString();
 	}
-	
-	public abstract Color getColor();
 	
 	public static void main(String[] args) {
 		Tetrad t = new Square();

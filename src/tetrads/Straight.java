@@ -1,6 +1,5 @@
 package tetrads;
 
-import java.awt.Color;
 
 public class Straight extends Tetrad {
 
@@ -8,8 +7,9 @@ public class Straight extends Tetrad {
 		super(3, 0, createOrientation("STRAIGHT"));
 	}
 	
-	public Color getColor() {
-		return new Color(0,255,255);
+	@Override
+	public Tetrads getType() {
+		return Tetrads.STRAIGHT;
 	}
 
 }

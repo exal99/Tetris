@@ -1,6 +1,5 @@
 package tetrads;
 
-import java.awt.Color;
 
 public class Gamma extends Tetrad {
 	
@@ -9,9 +8,9 @@ public class Gamma extends Tetrad {
 	}
 
 	@Override
-	public Color getColor() {
+	public Tetrads getType() {
 		// TODO Auto-generated method stub
-		return new Color(0,0,255);
+		return Tetrads.GAMMA;
 	}
 
 }

@@ -1,6 +1,5 @@
 package tetrads;
 
-import java.awt.Color;
 
 public class Square extends Tetrad {
 
@@ -9,8 +8,8 @@ public class Square extends Tetrad {
 	}
 
 	@Override
-	public Color getColor() {
-		return new Color(255, 255, 0);
+	public Tetrads getType(){
+		return Tetrads.SQUARE;
 	}
 	
 	@Override
