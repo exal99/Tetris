@@ -112,16 +112,6 @@ public class GameBoard {
 	}
 	
 	public void update() {
-//		boolean moveDown = true;
-//		for (int row = 0; row < 4; row++) {
-//			for (int col = 0; col < 4; col++) {
-//				if (field[controlling.getYPos() + row + 1][controlling.getXPos() + col] &&
-//					controlling.colide(controlling.getXPos() + col, controlling.getYPos() + row + 1)) {
-//					moveDown = false;
-//					System.out.println("Start timer!");
-//				}
-//			}
-//		}
 		if (running) {
 			if (checkValidState(0, 1)) {
 				controlling.fall();
@@ -157,7 +147,6 @@ public class GameBoard {
 				}
 			}
 			if (tetrisOnRow) {
-//				removeRow(row);
 				moveDown(row);
 				rowsRemoved++;
 			}
@@ -265,11 +254,4 @@ public class GameBoard {
 			
 		}
 	}
-
-//	private void removeRow(int row) {
-//		for (int col = 0; col < MAX_X; col++) {
-//			field[row][col] = false;
-//			typeField[row][col] = null;
-//		}
-//	}
 }
