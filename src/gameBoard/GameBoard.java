@@ -80,12 +80,41 @@ public class GameBoard {
 		}
 	}
 	
+	private void spawnNew(Tetrads type) {
+		switch (type) {
+		case ALPHA:
+			controlling = new Alpha();
+			break;
+		case GAMMA:
+			controlling = new Gamma();
+			break;
+		case LEFT_SNAKE:
+			controlling = new LeftSnake();
+			break;
+		case RIGHT_SNAKE:
+			controlling = new RightSnake();
+			break;
+		case SQUARE:
+			controlling = new Square();
+			break;
+		case STRAIGHT:
+			controlling = new Straight();
+			break;
+		case T_TURN:
+			controlling = new TTurn();
+			break;
+		default:
+			throw new RuntimeException();
+		}
+	}
+	
 	public void hold() {
 		if (canHold) {
 			if (hold != null) {
 				Tetrad temp = hold;
 				hold = controlling;
-				controlling = temp;
+				//controlling = temp;
+				spawnNew(temp.getType());
 				
 			} else {
 				hold = controlling;
