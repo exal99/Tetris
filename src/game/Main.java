@@ -20,7 +20,7 @@ public class Main extends Thread {
 		long lastFrame = System.nanoTime();
 		long lastTick = System.nanoTime();
 		final long FPS = 60;
-		final long TICKS = 60;
+		final long TICKS = 240;
 		long moveSpeed = 100000000;
 		long timeToUpdate = moveSpeed;
 		while (isAlive() && !isInterrupted()) {

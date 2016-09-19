@@ -31,8 +31,7 @@ public class FieldGUI extends Component{
 	
 	@Override
 	public void paint(Graphics g) {
-		//System.out.println(getHeight());
-		//System.out.println(getWidth());
+		g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 		Tetrads[][] field = board.getField();
 		int squareSize = getSquareSize();
 		int xPadding = X_PADDING;
