@@ -262,6 +262,26 @@ public class GameBoard {
 		return sb.toString();
 	}
 	
+	public void turnLeft() {
+		controlling.rotateLeft();
+		if (!checkValidState(0, 0)) {
+			controlling.rotateRight();
+		}
+	}
+	
+	public void turnRight() {
+		controlling.rotateRight();
+		if (!checkValidState(0, 0)) {
+			controlling.rotateLeft();
+		}
+	}
+	
+	public void fastPlace() {
+		while (checkValidState(0,1)) {
+			controlling.fall();
+		}
+	}
+	
 	public int getScore() {
 		return score;
 	}
