@@ -306,6 +306,10 @@ public class GameBoard {
 		return running;
 	}
 	
+	public Tetrad getHolding() {
+		return hold;
+	}
+	
 //	public static void main(String[] args) {
 //		GameBoard g = new GameBoard(new Timer());
 //		//System.out.println(g);

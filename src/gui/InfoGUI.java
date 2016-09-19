@@ -12,7 +12,8 @@ import tetrads.Tetrad;
 public class InfoGUI extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private GameBoard board;
-	private QueueDisplayer queue;
+	private TetradDisplayer queue;
+	private TetradDisplayer hold;
 	private Label level;
 	private Label score;
 	
@@ -20,8 +21,10 @@ public class InfoGUI extends JPanel{
 		super();
 		board = b;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		queue = new QueueDisplayer(board.getQueue(), size, xPadding, yPadding);
+		queue = new TetradDisplayer(board.getQueue(), size, xPadding, yPadding);
 		add(queue);
+		hold = new TetradDisplayer(board.getHolding(), size, xPadding, yPadding);
+		add(hold);
 		level = new Label("Level: " + board.getLevel());
 		add(level);
 		score = new Label("Score: " + board.getScore());
@@ -37,7 +40,11 @@ public class InfoGUI extends JPanel{
 	}
 	
 	public void updateQueue() {
-		queue.changeQueue(board.getQueue());
+		queue.changeDisplayed(board.getQueue());
+	}
+	
+	public void updateHold() {
+		hold.changeDisplayed(board.getHolding());
 	}
 	
 	@Override
@@ -45,6 +52,7 @@ public class InfoGUI extends JPanel{
 		updateLevel();
 		updateScore();
 		updateQueue();
+		updateHold();
 		super.update(g);
 	}
 	
@@ -53,23 +61,25 @@ public class InfoGUI extends JPanel{
 		updateLevel();
 		updateScore();
 		updateQueue();
+		updateHold();
 		queue.paint(g);
 		level.paint(g);
 		score.paint(g);
+		hold.paint(g);
 	}
 	
-	private class QueueDisplayer extends JPanel {
+	private class TetradDisplayer extends JPanel {
 
 		private static final long serialVersionUID = 1L;
 		
-		private Tetrad queue;
+		private Tetrad toDisplay;
 		private FieldGUI size;
 		private int xPadding;
 		private int yPadding;
 		
-		public QueueDisplayer(Tetrad queued, FieldGUI size, int xPadding, int yPadding) {
+		public TetradDisplayer(Tetrad toDisplay, FieldGUI size, int xPadding, int yPadding) {
 			super();
-			queue = queued;
+			this.toDisplay = toDisplay;
 			this.size = size;
 			this.xPadding = xPadding;
 			this.yPadding = yPadding;
@@ -78,24 +88,25 @@ public class InfoGUI extends JPanel{
 		@Override
 		public void paint(Graphics g) {
 			super.paint(g);
-			int size = this.size.getSquareSize();
-			g.setColor(queue.getType().getColor());
-			boolean[][] orien = queue.getOrientation();
-			int startX =(int) (0.5 * (getWidth() - (orien[0].length * (size + xPadding))) / 2);
-			int startY = (getHeight() - (orien.length * (size + yPadding))) / 2;
-			for (int x = 0; x < orien[0].length; x++) {
-				for (int y = 0; y < orien.length; y++) {
-					if (orien[y][x]) {
-						g.fillRect(startX + (size + xPadding) * x,
-								   startY + (size + yPadding) * y, size, size);
+			if (toDisplay != null) {
+				int size = this.size.getSquareSize();
+				g.setColor(toDisplay.getType().getColor());
+				boolean[][] orien = toDisplay.getOrientation();
+				int startX =(int) (0.5 * (getWidth() - (orien[0].length * (size + xPadding))) / 2);
+				int startY = (getHeight() - (orien.length * (size + yPadding))) / 2;
+				for (int x = 0; x < orien[0].length; x++) {
+					for (int y = 0; y < orien.length; y++) {
+						if (orien[y][x]) {
+							g.fillRect(startX + (size + xPadding) * x,
+									   startY + (size + yPadding) * y, size, size);
+						}
 					}
 				}
 			}
-			
 		}
 		
-		public void changeQueue(Tetrad newQueue) {
-			queue = newQueue;
+		public void changeDisplayed(Tetrad newQueue) {
+			toDisplay = newQueue;
 			repaint();
 		}
 		
