@@ -31,11 +31,11 @@ public class FieldGUI extends Component{
 	
 	@Override
 	public void paint(Graphics g) {
-		g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 		Tetrads[][] field = board.getField();
 		int squareSize = getSquareSize();
 		int xPadding = X_PADDING;
 		int yPadding = Y_PADDING;
+		g.drawRect(0, 0, field[0].length * squareSize, getHeight());
 		for (int row = 2; row < field.length; row++) {
 			for (int col = 0; col < field[0].length; col++) {
 				if (field[row][col] != null) {
