@@ -83,7 +83,7 @@ public class UserInput implements KeyListener {
 			game.turnRight();
 			break;
 		case KeyEvent.VK_DOWN:
-			game.place();
+			game.fastPlace();
 			break;
 		default:
 			System.out.println("Unrecognized key: " + e.getKeyChar());
