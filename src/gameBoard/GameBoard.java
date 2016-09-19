@@ -113,7 +113,6 @@ public class GameBoard {
 			if (hold != null) {
 				Tetrad temp = hold;
 				hold = controlling;
-				//controlling = temp;
 				spawnNew(temp.getType());
 				
 			} else {
@@ -152,9 +151,7 @@ public class GameBoard {
 			if (checkValidState(0, 1)) {
 				controlling.fall();
 			} else {
-				//System.out.println("hit the ground, start timer");
 				if (task == null) {
-//					task = new PlaceTimerTask(() -> place());
 					task = new TimerTask() {
 						@Override
 						public void run() {
@@ -175,9 +172,9 @@ public class GameBoard {
 		for (int row = 0; row < orientation.length; row++) {
 			for (int col = 0; col < orientation[0].length; col++) {
 				if (y + row < MAX_Y && x + col < MAX_X && x+col >= 0) {
-					field[y + row][x + col] = orientation[row][col];
 					if (orientation[row][col]) {
 						typeField[y + row][x + col] = type;
+						field[y + row][x + col] = orientation[row][col];
 					}
 				}
 			}
@@ -338,18 +335,4 @@ public class GameBoard {
 	public Tetrad getHolding() {
 		return hold;
 	}
-	
-//	public static void main(String[] args) {
-//		GameBoard g = new GameBoard(new Timer());
-//		//System.out.println(g);
-//		g.spawnNew();
-//		g.update();
-//		g.update();
-//		g.update();
-//		g.place();
-//		System.out.println(g);
-//		for (int i = 0; i < 23; i++) {
-//			
-//		}
-//	}
 }
