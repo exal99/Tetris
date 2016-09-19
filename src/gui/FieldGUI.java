@@ -18,7 +18,7 @@ public class FieldGUI extends Component{
 	}
 	
 	public int getSquareSize() {
-		return getHeight() / board.getField().length;
+		return getHeight() / (board.getField().length - 2);
 	}
 	
 	public int getXPadding() {
@@ -31,6 +31,8 @@ public class FieldGUI extends Component{
 	
 	@Override
 	public void paint(Graphics g) {
+		//System.out.println(getHeight());
+		//System.out.println(getWidth());
 		Tetrads[][] field = board.getField();
 		int squareSize = getSquareSize();
 		int xPadding = X_PADDING;
@@ -39,9 +41,9 @@ public class FieldGUI extends Component{
 			for (int col = 0; col < field[0].length; col++) {
 				if (field[row][col] != null) {
 					g.setColor(field[row][col].getColor());
-					g.fillRect(col *(xPadding + squareSize),
-							  (row - 2) * (yPadding + squareSize),
-							  squareSize, squareSize);
+					g.fillRect(col * (squareSize),
+							  (row - 2) * (squareSize),
+							  squareSize - xPadding, squareSize - yPadding);
 				}
 			}
 		}
@@ -53,9 +55,9 @@ public class FieldGUI extends Component{
 		for (int x = xPos; x < xPos + orien[0].length; x++) {
 			for (int y = yPos; y < yPos + orien.length; y++) {
 				if (orien[y - yPos][x - xPos]) {
-					g.drawRect(x * (xPadding + squareSize),
-							   y * (yPadding + squareSize),
-							   squareSize, squareSize);
+					g.fillRect(x * (squareSize),
+							   (y - 2) * (squareSize),
+							   squareSize - xPadding, squareSize - yPadding);
 				}
 			}
 		}
