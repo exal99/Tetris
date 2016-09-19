@@ -6,11 +6,12 @@ import java.awt.Graphics;
 import java.awt.Label;
 
 import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 
 import gameBoard.GameBoard;
 import tetrads.Tetrad;
 
-public class InfoGUI extends Frame{
+public class InfoGUI extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private GameBoard board;
 	private QueueDisplayer queue;
