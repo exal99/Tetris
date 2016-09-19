@@ -12,13 +12,15 @@ public class GameGUI{
 	private JFrame root;
 	
 	public GameGUI(GameBoard g) {
-		super();
 		root = new JFrame("Tetris");
+		
 		field = new FieldGUI(g);
-		info = new InfoGUI(g, field.getSquareSize(), field.getXPadding(), field.getYPadding());
+		info = new InfoGUI(g, field, field.getXPadding(), field.getYPadding());
+		
 		root.setLayout(new BoxLayout(root.getContentPane(), BoxLayout.X_AXIS));;
 		root.add(info);
 		root.add(field);
+		
 		root.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
