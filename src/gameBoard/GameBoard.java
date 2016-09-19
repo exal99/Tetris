@@ -165,22 +165,24 @@ public class GameBoard {
 	}
 	
 	public void place() {
-		boolean[][] orientation = controlling.getOrientation();
-		int x = controlling.getXPos();
-		int y = controlling.getYPos();
-		Tetrads type = controlling.getType();
-		for (int row = 0; row < orientation.length; row++) {
-			for (int col = 0; col < orientation[0].length; col++) {
-				if (y + row < MAX_Y && x + col < MAX_X && x+col >= 0) {
-					if (orientation[row][col]) {
-						typeField[y + row][x + col] = type;
-						field[y + row][x + col] = orientation[row][col];
+		if (!checkValidState(0, 1)) {
+			boolean[][] orientation = controlling.getOrientation();
+			int x = controlling.getXPos();
+			int y = controlling.getYPos();
+			Tetrads type = controlling.getType();
+			for (int row = 0; row < orientation.length; row++) {
+				for (int col = 0; col < orientation[0].length; col++) {
+					if (y + row < MAX_Y && x + col < MAX_X && x+col >= 0) {
+						if (orientation[row][col]) {
+							typeField[y + row][x + col] = type;
+							field[y + row][x + col] = orientation[row][col];
+						}
 					}
 				}
 			}
+			checkTetris();
+			spawnNew();
 		}
-		checkTetris();
-		spawnNew();
 		if (task != null) {
 			task.cancel();
 			task = null;
