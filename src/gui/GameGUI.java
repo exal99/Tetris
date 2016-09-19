@@ -4,6 +4,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
 import gameBoard.GameBoard;
+import keyEvents.UserInput;
 
 public class GameGUI{
 	
@@ -22,6 +23,8 @@ public class GameGUI{
 		root.add(field);
 		
 		root.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		UserInput keyListener = new UserInput(g);
+		root.addKeyListener(keyListener);
 	}
 	
 	public void update() {
