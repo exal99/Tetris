@@ -31,13 +31,13 @@ public class GameBoard {
 	private TimerTask task;
 	
 	private Random rand;
-	private final long DELAY = 3000;
+	private final long DELAY = 1000;
 	
 	public GameBoard(Timer t) {
 		hold = null;
 		canHold = true;
-		controlling = null;
 		rand = new Random();
+		controlling = getRandomTetrad();
 		queue = getRandomTetrad();
 		field = new boolean[MAX_Y][MAX_X];
 		typeField = new Tetrads[MAX_Y][MAX_X];
@@ -99,14 +99,17 @@ public class GameBoard {
 	private boolean checkValidState(int deltaX, int deltaY) {
 		for (int row = 0; row < 4; row++) {
 			for (int col = 0; col < 4; col++) {
-				if ((controlling.getXPos() + col + deltaX > MAX_X ||
-					 controlling.getYPos() + row + deltaY > MAX_Y ||
+				if ((controlling.getXPos() + col + deltaX >= MAX_X ||
+					 controlling.getYPos() + row + deltaY >= MAX_Y ||
 					 controlling.getXPos() + col + deltaX < 0 ||
-					 controlling.getYPos() + row + deltaY < 0) &&
-					 controlling.colide(controlling.getXPos() + col, controlling.getYPos() + row)) {
-					return false;
+					 controlling.getYPos() + row + deltaY < 0)) {
+					if (controlling.colide(controlling.getXPos() + col, controlling.getYPos() + row)) {
+						return false;
+					} else {
+						continue;
+					}
 				} if (field[controlling.getYPos() + row + deltaY][controlling.getXPos() + col + deltaX] &&
-					  controlling.colide(controlling.getXPos() + col, controlling.getYPos() + row)) {
+					controlling.colide(controlling.getXPos() + col, controlling.getYPos() + row)) {
 					return false;
 				}
 			}
@@ -120,7 +123,7 @@ public class GameBoard {
 			if (checkValidState(0, 1)) {
 				controlling.fall();
 			} else {
-				System.out.println("hit the ground, start timer");
+				//System.out.println("hit the ground, start timer");
 				if (task == null) {
 //					task = new PlaceTimerTask(() -> place());
 					task = new TimerTask() {
@@ -142,8 +145,12 @@ public class GameBoard {
 		Tetrads type = controlling.getType();
 		for (int row = 0; row < orientation.length; row++) {
 			for (int col = 0; col < orientation[0].length; col++) {
-				field[y + row][x + col] = orientation[row][col];
-				typeField[y + row][x + col] = type;
+				if (y + row < MAX_Y && x + col < MAX_X && x+col >= 0) {
+					field[y + row][x + col] = orientation[row][col];
+					if (orientation[row][col]) {
+						typeField[y + row][x + col] = type;
+					}
+				}
 			}
 		}
 		checkTetris();
@@ -279,17 +286,17 @@ public class GameBoard {
 		return running;
 	}
 	
-	public static void main(String[] args) {
-		GameBoard g = new GameBoard(new Timer());
-		//System.out.println(g);
-		g.spawnNew();
-		g.update();
-		g.update();
-		g.update();
-		g.place();
-		System.out.println(g);
-		for (int i = 0; i < 23; i++) {
-			
-		}
-	}
+//	public static void main(String[] args) {
+//		GameBoard g = new GameBoard(new Timer());
+//		//System.out.println(g);
+//		g.spawnNew();
+//		g.update();
+//		g.update();
+//		g.update();
+//		g.place();
+//		System.out.println(g);
+//		for (int i = 0; i < 23; i++) {
+//			
+//		}
+//	}
 }
