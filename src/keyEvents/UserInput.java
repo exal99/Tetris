@@ -58,7 +58,7 @@ public class UserInput implements KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		System.out.println("Key typed");
+//		System.out.println("Key typed");
 
 	}
 
