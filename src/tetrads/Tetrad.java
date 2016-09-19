@@ -53,7 +53,7 @@ public abstract class Tetrad {
 			node = doc.getElementsByTagName("Straight").item(0);
 			break;
 		case "SQUARE":
-			orien = new boolean[3][4];
+			orien = new boolean[3][3];
 			node = doc.getElementsByTagName("Square").item(0);
 			break;
 		case "T_TURN":
@@ -125,9 +125,9 @@ public abstract class Tetrad {
 	}
 	
 	public boolean colide(int x, int y) {
-		return y < orientation.length && x < orientation[0].length &&
-			   xPos <= x && x <= xPos + orientation[0].length &&
-			   yPos <= y && y <= yPos + orientation.length &&
+		//return y < orientation.length + yPos && x < orientation[0].length + xPos &&
+		return xPos <= x && x < xPos + orientation[0].length &&
+			   yPos <= y && y < yPos + orientation.length &&
 			   orientation[y - yPos][x - xPos];
 	}
 	
