@@ -1,7 +1,5 @@
 package gui;
 
-import java.awt.Component;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Label;
 
@@ -18,7 +16,7 @@ public class InfoGUI extends JPanel{
 	private Label level;
 	private Label score;
 	
-	public InfoGUI(GameBoard b, int size, int xPadding, int yPadding) {
+	public InfoGUI(GameBoard b, FieldGUI size, int xPadding, int yPadding) {
 		super();
 		board = b;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -52,38 +50,48 @@ public class InfoGUI extends JPanel{
 	
 	@Override
 	public void paint(Graphics g) {
+		updateLevel();
+		updateScore();
+		updateQueue();
 		queue.paint(g);
 		level.paint(g);
 		score.paint(g);
 	}
 	
-	private class QueueDisplayer extends Component {
+	private class QueueDisplayer extends JPanel {
 
 		private static final long serialVersionUID = 1L;
 		
 		private Tetrad queue;
-		private int size;
+		private FieldGUI size;
 		private int xPadding;
 		private int yPadding;
 		
-		public QueueDisplayer(Tetrad queued, int size, int xPadding, int yPadding) {
+		public QueueDisplayer(Tetrad queued, FieldGUI size, int xPadding, int yPadding) {
 			super();
 			queue = queued;
 			this.size = size;
-			this.setSize((size + xPadding) * 4, (size + yPadding) * 4);
 			this.xPadding = xPadding;
 			this.yPadding = yPadding;
 		}
 		
 		@Override
 		public void paint(Graphics g) {
+			super.paint(g);
+			int size = this.size.getSquareSize();
 			g.setColor(queue.getType().getColor());
-			for (int x = 0; x < 4; x++) {
-				for (int y = 0; y < 4; y++) {
-					g.fillRect((size + xPadding) * x,
-							   (size + yPadding) * y, size, size);
+			boolean[][] orien = queue.getOrientation();
+			int startX =(int) (0.5 * (getWidth() - (orien[0].length * (size + xPadding))) / 2);
+			int startY = (getHeight() - (orien.length * (size + yPadding))) / 2;
+			for (int x = 0; x < orien[0].length; x++) {
+				for (int y = 0; y < orien.length; y++) {
+					if (orien[y][x]) {
+						g.fillRect(startX + (size + xPadding) * x,
+								   startY + (size + yPadding) * y, size, size);
+					}
 				}
 			}
+			
 		}
 		
 		public void changeQueue(Tetrad newQueue) {
