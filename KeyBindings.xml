@@ -4,6 +4,6 @@
 	<MoveLeft>Left</MoveLeft>
 	<MoveRight>Right</MoveRight>
 	<RotateLeft>z</RotateLeft>
-	<RoteteRight>x</RoteteRight>
+	<RotateRight>x</RotateRight>
 	<Place>Down</Place>
 </KeyBindings>
