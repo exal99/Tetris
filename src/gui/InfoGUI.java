@@ -47,14 +47,14 @@ public class InfoGUI extends JPanel{
 		hold.changeDisplayed(board.getHolding());
 	}
 	
-	@Override
-	public void update(Graphics g) {
-		updateLevel();
-		updateScore();
-		updateQueue();
-		updateHold();
-		super.update(g);
-	}
+//	@Override
+//	public void update(Graphics g) {
+//		updateLevel();
+//		updateScore();
+//		updateQueue();
+//		updateHold();
+//		super.update(g);
+//	}
 	
 	@Override
 	public void paint(Graphics g) {
