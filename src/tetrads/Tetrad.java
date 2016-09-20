@@ -143,6 +143,11 @@ public abstract class Tetrad {
 		xPos++;
 	}
 	
+	public void moveUp() {
+		yPos--;
+	}
+	
+	
 	public boolean[][] getOrientation() {
 		return orientation;
 	}

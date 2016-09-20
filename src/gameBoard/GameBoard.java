@@ -293,14 +293,32 @@ public class GameBoard {
 	public void turnLeft() {
 		controlling.rotateLeft();
 		if (!checkValidState(0, 0)) {
-			controlling.rotateRight();
+			if (!checkValidState(0,-1)) {
+				controlling.rotateRight();
+				return;
+			} else {
+				controlling.moveUp();
+			}
+		}
+		if (task != null) {
+			task.cancel();
+			task = null;
 		}
 	}
 	
 	public void turnRight() {
 		controlling.rotateRight();
 		if (!checkValidState(0, 0)) {
-			controlling.rotateLeft();
+			if (!checkValidState(0, -1)) {
+				controlling.rotateLeft();
+				return;
+			} else {
+				controlling.moveUp();
+			}
+		}
+		if (task != null) {
+			task.cancel();
+			task = null;
 		}
 	}
 	
