@@ -4,6 +4,7 @@ import java.util.Timer;
 
 import gameBoard.GameBoard;
 import gui.GameGUI;
+import soundPlayer.SoundPlayer;
 
 public class Main extends Thread {
 	
@@ -66,6 +67,8 @@ public class Main extends Thread {
 		graphics.getRoot().setSize(800, 600);
 		graphics.getRoot().setVisible(true);
 		Main mainThread = new Main(graphics, game, args);
+		SoundPlayer sound = new SoundPlayer("music.wav");
 		mainThread.start();
+		sound.playSound();
 	}
 }
