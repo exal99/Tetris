@@ -28,16 +28,11 @@ public abstract class Tetrad {
 	}
 	
 	protected static boolean[][]  createOrientation(String type, InputStream in) {
-//		File xmlTetrads = new File("Tetrads.xml");
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		Document doc = null;
-//		InputStream in = type.getClass().getResourceAsStream("Tetrads.xml");
 		try {
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			doc = dBuilder.parse(in);
-//		} catch (FileNotFoundException e) { 
-//			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-//			doc = dBuilder.parse(new File());
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);

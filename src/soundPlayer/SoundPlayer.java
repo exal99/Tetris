@@ -1,7 +1,6 @@
 package soundPlayer;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -31,9 +30,4 @@ public class SoundPlayer {
 			e.printStackTrace();
 		}
 	}
-	
-//	@Override
-//	public void run() {
-//		playSound();
-//	}
 }
