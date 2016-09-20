@@ -124,26 +124,30 @@ public class GameBoard {
 		}
 	}
 	
-	private boolean checkValidState(int deltaX, int deltaY) {
+	private boolean checkValidState(Tetrad t, int deltaX, int deltaY) {
 		for (int row = 0; row < 4; row++) {
 			for (int col = 0; col < 4; col++) {
-				if ((controlling.getXPos() + col + deltaX >= MAX_X ||
-					 controlling.getYPos() + row + deltaY >= MAX_Y ||
-					 controlling.getXPos() + col + deltaX < 0 ||
-					 controlling.getYPos() + row + deltaY < 0)) {
-					if (controlling.colide(controlling.getXPos() + col, controlling.getYPos() + row)) {
+				if ((t.getXPos() + col + deltaX >= MAX_X ||
+					 t.getYPos() + row + deltaY >= MAX_Y ||
+					 t.getXPos() + col + deltaX < 0 ||
+					 t.getYPos() + row + deltaY < 0)) {
+					if (t.colide(t.getXPos() + col, t.getYPos() + row)) {
 						return false;
 					} else {
 						continue;
 					}
-				} if (field[controlling.getYPos() + row + deltaY][controlling.getXPos() + col + deltaX] &&
-					controlling.colide(controlling.getXPos() + col, controlling.getYPos() + row)) {
+				} if (field[t.getYPos() + row + deltaY][t.getXPos() + col + deltaX] &&
+					t.colide(t.getXPos() + col, t.getYPos() + row)) {
 					return false;
 				}
 			}
 		}
 		
 		return true;
+	}
+	
+	private boolean checkValidState(int deltaX, int deltaY) {
+		return checkValidState(controlling, deltaX, deltaY);
 	}
 	
 	public void update() {
@@ -304,6 +308,21 @@ public class GameBoard {
 			task.cancel();
 			task = null;
 		}
+	}
+	
+	public Tetrad getPlacement() {
+		Tetrad ghost = null;
+		try {
+			ghost = controlling.getClass().newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ghost.copyAll(controlling);
+		while (checkValidState(ghost, 0, 1)) {
+			ghost.fall();
+		}
+		return ghost;
 	}
 	
 	public void turnRight() {

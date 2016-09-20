@@ -28,6 +28,12 @@ public abstract class Tetrad {
 		orientation = orien;
 	}
 	
+	public void copyAll(Tetrad t) {
+		xPos = t.xPos;
+		yPos = t.yPos;
+		orientation = t.orientation;
+	}
+	
 	protected static boolean[][]  createOrientation(String type) {
 		File xmlTetrads = new File("Tetrads.xml");
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();

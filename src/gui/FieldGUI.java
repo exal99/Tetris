@@ -47,16 +47,30 @@ public class FieldGUI extends Component{
 			}
 		}
 		Tetrad controlling = board.getControlling();
-		g.setColor(controlling.getType().getColor());
-		int xPos = controlling.getXPos();
-		int yPos = controlling.getYPos();
-		boolean[][] orien = controlling.getOrientation();
+		paintTetrad(g, controlling, true);
+		
+		Tetrad ghost = board.getPlacement();
+		paintTetrad(g, ghost, false);
+	}
+	
+	private void paintTetrad(Graphics g, Tetrad t, boolean fill) {
+		boolean[][] orien = t.getOrientation();
+		int xPos = t.getXPos();
+		int yPos = t.getYPos();
+		int squareSize = getSquareSize();
+		g.setColor(t.getType().getColor());
 		for (int x = xPos; x < xPos + orien[0].length; x++) {
 			for (int y = yPos; y < yPos + orien.length; y++) {
 				if (orien[y - yPos][x - xPos]) {
-					g.fillRect(x * (squareSize) + xPadding,
-							   (y - 2) * (squareSize),
-							   squareSize - xPadding, squareSize - yPadding);
+					if (fill) {
+						g.fillRect(x * (squareSize) + X_PADDING,
+								  (y - 2) * (squareSize),
+								  squareSize - X_PADDING, squareSize - Y_PADDING);
+					} else {
+						g.drawRect(x * (squareSize) + X_PADDING,
+								  (y - 2) * (squareSize),
+								  squareSize - X_PADDING, squareSize - Y_PADDING);
+					}
 				}
 			}
 		}
