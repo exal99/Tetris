@@ -15,8 +15,6 @@ public class UserInput implements KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-//		System.out.println("Key typed");
-
 	}
 
 	@Override
@@ -37,8 +35,11 @@ public class UserInput implements KeyListener {
 		case KeyEvent.VK_X:
 			game.turnRight();
 			break;
-		case KeyEvent.VK_DOWN:
+		case KeyEvent.VK_SPACE:
 			game.fastPlace();
+			break;
+		case KeyEvent.VK_DOWN:
+			game.setIncSpeed(true);
 			break;
 		default:
 			System.out.println("Unrecognized key: " + e.getKeyChar());
@@ -47,7 +48,11 @@ public class UserInput implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
+		switch(e.getKeyCode()) {
+		case KeyEvent.VK_DOWN:
+			game.setIncSpeed(false);
+			break;
+		}
 
 	}
 
