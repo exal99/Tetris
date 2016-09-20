@@ -18,20 +18,24 @@ public class GameBoard {
 	private Tetrad hold;
 	private Tetrad controlling;
 	private Tetrad queue;
-	private final int MAX_Y = 22;
-	private final int MAX_X = 10;
+	
 	private boolean canHold;
+	
 	private boolean[][] field;
 	private Tetrads[][] typeField;
-	private int score;
+	
 	private boolean running;
+	private int score;
 	private int level;
 	private int linesCleard;
+	
 	private Timer timer;
 	private TimerTask task;
 	
-	private Random rand;
+	private final Random rand;
 	private final long DELAY = 1000;
+	private final int MAX_Y = 22;
+	private final int MAX_X = 10;
 	
 	public GameBoard(Timer t) {
 		hold = null;
@@ -315,7 +319,6 @@ public class GameBoard {
 		try {
 			ghost = controlling.getClass().newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		ghost.copyAll(controlling);
