@@ -29,20 +29,19 @@ public class Main extends Thread {
 		long lastUpdate = System.nanoTime();
 		final long FPS = 60;
 		final long TICKS = 1200;
-		double gravity = 0.1;
 		int ticks = 0;
 		int frames = 0;
-//		boolean debug = false;
 		long lastMessur = System.nanoTime();
 		while (isAlive() && !isInterrupted()) {
 			if (System.nanoTime() - lastFrame >= 1000000000/FPS) {
 				graphics.update();
+				game.incNumFramesSpedUp();
 				lastFrame = System.nanoTime();
 				if (debug) {
 					frames++;
 				}
 			} if (System.nanoTime() - lastTick >= 1000000000/TICKS) {
-				if (System.nanoTime() - lastUpdate >= 60/(gravity*1200) * 1000000000) {
+				if (System.nanoTime() - lastUpdate >= 60/(game.getGravity()*1200) * 1000000000) {
 					game.update();
 					lastUpdate = System.nanoTime();
 				}
