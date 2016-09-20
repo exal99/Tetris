@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import constants.Constants;
 import tetrads.Alpha;
 import tetrads.Gamma;
 import tetrads.LeftSnake;
@@ -20,6 +21,8 @@ public class GameBoard {
 	private Tetrad queue;
 	
 	private boolean canHold;
+	private boolean incSpeed;
+	private int framesSpedUp;
 	
 	private boolean[][] field;
 	private Tetrads[][] typeField;
@@ -27,13 +30,14 @@ public class GameBoard {
 	private boolean running;
 	private int score;
 	private int level;
-	private int linesCleard;
+	private int combo;
+	private int gravity;
 	
 	private Timer timer;
 	private TimerTask task;
 	
 	private final Random rand;
-	private final long DELAY = 1000;
+	private final long DELAY = 500;
 	private final int MAX_Y = 22;
 	private final int MAX_X = 10;
 	
@@ -48,9 +52,24 @@ public class GameBoard {
 		score = 0;
 		running = true;
 		level = 0;
-		linesCleard = 0;
 		timer = t;
 		task = null;
+		incSpeed = false;
+		combo = 0;
+		gravity = Constants.GRAVITY.get(0);
+		framesSpedUp = 0;
+	}
+	
+	public void setIncSpeed(boolean newValue) {
+		incSpeed = newValue;
+	}
+	
+	public void incNumFramesSpedUp() {
+		framesSpedUp++;
+	}
+	
+	public double getGravity() {
+		return (incSpeed) ? 20 : gravity/256D;
 	}
 	
 	private Tetrad getRandomTetrad() {
@@ -82,9 +101,15 @@ public class GameBoard {
 			queue = getRandomTetrad();
 			canHold = true;
 		}
+		if (level + 1 % 100 != 0) {
+			level++;
+		}
 	}
 	
 	private void spawnNew(Tetrads type) {
+		/**
+		 * Used when changing holding
+		 */
 		switch (type) {
 		case ALPHA:
 			controlling = new Alpha();
@@ -196,6 +221,10 @@ public class GameBoard {
 			task = null;
 		}
 	}
+	
+	public boolean isSpedUp() {
+		return incSpeed;
+	}
 
 	private void checkTetris() {
 		int rowsRemoved = 0;
@@ -212,28 +241,16 @@ public class GameBoard {
 				rowsRemoved++;
 			}
 		}
-		linesCleard += rowsRemoved;
-		if (linesCleard >= 10) {
+		for (int i = 0; i < rowsRemoved; i++) {
 			level++;
-			linesCleard = linesCleard % 10;
 		}
-		switch (rowsRemoved) {
-		case 0:
-			return;
-		case 1:
-			score += 40 * (level + 1);
-			return;
-		case 2:
-			score += 100 * (level + 1);
-			return;
-		case 3:
-			score += 300 * (level + 1);
-			return;
-		case 4:
-			score += 1200 * (level + 1);
-			return;
-		default:
-			throw new RuntimeException("Algorithm maninfuntion. More than 4 lines cleard");
+		score += (Math.ceil((level + rowsRemoved)/4.0) + framesSpedUp) * rowsRemoved * combo;
+		framesSpedUp = 0;
+		if (rowsRemoved != 0) {
+			combo = combo + (2*rowsRemoved) - 2;
+			gravity = (Constants.GRAVITY.get(level) != null) ? Constants.GRAVITY.get(level) : gravity;
+		} else {
+			combo = 1;
 		}
 	}
 
