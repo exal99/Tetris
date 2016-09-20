@@ -41,7 +41,7 @@ public class FieldGUI extends Component{
 				if (field[row][col] != null) {
 					g.setColor(field[row][col].getColor());
 					g.fillRect(col * (squareSize) + xPadding,
-							  (row - 2) * (squareSize),
+							  (row - 2) * (squareSize) + yPadding,
 							  squareSize - xPadding, squareSize - yPadding);
 				}
 			}
@@ -64,11 +64,11 @@ public class FieldGUI extends Component{
 				if (orien[y - yPos][x - xPos]) {
 					if (fill) {
 						g.fillRect(x * (squareSize) + X_PADDING,
-								  (y - 2) * (squareSize),
+								  (y - 2) * (squareSize) + Y_PADDING,
 								  squareSize - X_PADDING, squareSize - Y_PADDING);
 					} else {
 						g.drawRect(x * (squareSize) + X_PADDING,
-								  (y - 2) * (squareSize),
+								  (y - 2) * (squareSize) + Y_PADDING,
 								  squareSize - X_PADDING, squareSize - Y_PADDING);
 					}
 				}
