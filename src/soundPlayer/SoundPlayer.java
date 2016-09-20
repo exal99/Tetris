@@ -1,7 +1,9 @@
 package soundPlayer;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -19,7 +21,9 @@ public class SoundPlayer {
 	
 	public void playSound() {
 		try {
-			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
+			InputStream audioIn = getClass().getResourceAsStream("/" + filePath);
+			InputStream buff = new BufferedInputStream(audioIn);
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(buff);
 			clip = AudioSystem.getClip();
 			clip.open(audioInputStream);
 			clip.loop(Clip.LOOP_CONTINUOUSLY);

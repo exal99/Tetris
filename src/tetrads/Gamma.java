@@ -4,7 +4,7 @@ package tetrads;
 public class Gamma extends Tetrad {
 	
 	public Gamma() {
-		super(3, 0, createOrientation("GAMMA"));
+		super(3, 0, "GAMMA");
 	}
 
 	@Override

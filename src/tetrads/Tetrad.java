@@ -1,6 +1,6 @@
 package tetrads;
 
-import java.io.File;
+import java.io.InputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -10,22 +10,15 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public abstract class Tetrad {
-//	STRAIGHT (3, 0, createOrientation("STRAIGHT")),
-//	SQUARE (3, 0, createOrientation("SQUARE")),
-//	T_TURN (3, 0, createOrientation("T_TURN")),
-//	RIGHT_SNAKE (3, 0, createOrientation("RIGHT_SNAKE")),
-//	LEFT_SNAKE (3, 0, createOrientation("LEFT_SNAKE")),
-//	GAMMA (3, 0, createOrientation("GAMMA")),
-//	ALPHA (3, 0, createOrientation("ALPHA"));
 	
 	private int xPos;
 	private int yPos;
-	private boolean[][] orientation;
+	protected boolean[][] orientation;
 	
-	protected Tetrad(int xPos, int yPos, boolean[][] orien) {
+	protected Tetrad(int xPos, int yPos, String type) {
 		this.xPos = xPos;
 		this.yPos = yPos;
-		orientation = orien;
+		orientation = createOrientation(type, getClass().getResourceAsStream("/Tetrads.xml"));
 	}
 	
 	public void copyAll(Tetrad t) {
@@ -34,13 +27,17 @@ public abstract class Tetrad {
 		orientation = t.orientation;
 	}
 	
-	protected static boolean[][]  createOrientation(String type) {
-		File xmlTetrads = new File("Tetrads.xml");
+	protected static boolean[][]  createOrientation(String type, InputStream in) {
+//		File xmlTetrads = new File("Tetrads.xml");
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		Document doc = null;
+//		InputStream in = type.getClass().getResourceAsStream("Tetrads.xml");
 		try {
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			doc = dBuilder.parse(xmlTetrads);
+			doc = dBuilder.parse(in);
+//		} catch (FileNotFoundException e) { 
+//			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+//			doc = dBuilder.parse(new File());
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);
@@ -131,7 +128,6 @@ public abstract class Tetrad {
 	}
 	
 	public boolean colide(int x, int y) {
-		//return y < orientation.length + yPos && x < orientation[0].length + xPos &&
 		return xPos <= x && x < xPos + orientation[0].length &&
 			   yPos <= y && y < yPos + orientation.length &&
 			   orientation[y - yPos][x - xPos];
@@ -174,25 +170,5 @@ public abstract class Tetrad {
 		}
 		
 		return sb.toString();
-	}
-	
-	public static void main(String[] args) {
-		Tetrad t = new Square();
-		Tetrad s = new Straight();
-		System.out.println(t);
-		System.out.println(s);
-		s.rotateLeft();
-		System.out.println(s);
-//		Tetrad t = Tetrad.SQUARE;
-//		Tetrad Straight = Tetrad.STRAIGHT;
-//		System.out.println(t);
-//		t.rotateLeft();
-//		System.out.println(t);
-//		System.out.println(Straight);
-//		Straight.rotateLeft();
-//		System.out.println(Straight);
-//		System.out.println(t.colide(3, 0));
-//		System.out.println(t.colide(4, 0));
-//		System.out.println(t.colide(1000, 1000));
 	}
 }

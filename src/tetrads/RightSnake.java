@@ -4,7 +4,7 @@ package tetrads;
 public class RightSnake extends Tetrad{
 	
 	public RightSnake() {
-		super(3, 0, createOrientation("RIGHT_SNAKE"));
+		super(3, 0, "RIGHT_SNAKE");
 	}
 
 	@Override

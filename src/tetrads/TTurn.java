@@ -4,7 +4,7 @@ package tetrads;
 public class TTurn extends Tetrad {
 	
 	public TTurn() {
-		super(3, 0, createOrientation("T_TURN"));
+		super(3, 0, "T_TURN");
 	}
 	
 	@Override
