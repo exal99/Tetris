@@ -35,12 +35,12 @@ public class FieldGUI extends Component{
 		int squareSize = getSquareSize();
 		int xPadding = X_PADDING;
 		int yPadding = Y_PADDING;
-		g.drawRect(0, 0, field[0].length * squareSize, getHeight());
+		g.drawRect(0, 0, field[0].length * squareSize + xPadding, getHeight());
 		for (int row = 2; row < field.length; row++) {
 			for (int col = 0; col < field[0].length; col++) {
 				if (field[row][col] != null) {
 					g.setColor(field[row][col].getColor());
-					g.fillRect(col * (squareSize),
+					g.fillRect(col * (squareSize) + xPadding,
 							  (row - 2) * (squareSize),
 							  squareSize - xPadding, squareSize - yPadding);
 				}
@@ -54,7 +54,7 @@ public class FieldGUI extends Component{
 		for (int x = xPos; x < xPos + orien[0].length; x++) {
 			for (int y = yPos; y < yPos + orien.length; y++) {
 				if (orien[y - yPos][x - xPos]) {
-					g.fillRect(x * (squareSize),
+					g.fillRect(x * (squareSize) + xPadding,
 							   (y - 2) * (squareSize),
 							   squareSize - xPadding, squareSize - yPadding);
 				}
