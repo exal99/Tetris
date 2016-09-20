@@ -1,5 +1,7 @@
 package gui;
 
+import java.util.Timer;
+
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
@@ -16,7 +18,7 @@ public class GameGUI{
 	private Tetrad lastHold;
 	private GameBoard game;
 	
-	public GameGUI(GameBoard g) {
+	public GameGUI(GameBoard g, Timer t) {
 		game = g;
 		root = new JFrame("Tetris");
 		
@@ -30,7 +32,7 @@ public class GameGUI{
 		lastHold = g.getHolding();
 		
 		root.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		UserInput keyListener = new UserInput(g);
+		UserInput keyListener = new UserInput(g, t);
 		root.addKeyListener(keyListener);
 	}
 	

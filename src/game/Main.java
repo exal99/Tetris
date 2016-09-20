@@ -62,7 +62,7 @@ public class Main extends Thread {
 	public static void main(String[] args) {
 		Timer t = new Timer();
 		GameBoard game = new GameBoard(t);
-		GameGUI graphics = new GameGUI(game);
+		GameGUI graphics = new GameGUI(game, t);
 		graphics.getRoot().setSize(800, 600);
 		graphics.getRoot().setVisible(true);
 		Main mainThread = new Main(graphics, game, args);
