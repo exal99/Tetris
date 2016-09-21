@@ -245,10 +245,10 @@ public class GameBoard {
 			level++;
 		}
 		score += (Math.ceil((level + rowsRemoved)/4.0) + framesSpedUp) * rowsRemoved * combo;
-		framesSpedUp = 0;
 		if (rowsRemoved != 0) {
 			combo = combo + (2*rowsRemoved) - 2;
 			gravity = (Constants.GRAVITY.get(level) != null) ? Constants.GRAVITY.get(level) : gravity;
+			framesSpedUp = 0;
 		} else {
 			combo = 1;
 		}
