@@ -1,7 +1,10 @@
 package gui;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.util.Timer;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 
@@ -25,7 +28,10 @@ public class GameGUI{
 		field = new FieldGUI(g);
 		info = new InfoGUI(g, field, field.getXPadding(), field.getYPadding());
 		
-		root.setLayout(new BoxLayout(root.getContentPane(), BoxLayout.X_AXIS));;
+		root.setLayout(new BoxLayout(root.getContentPane(), BoxLayout.X_AXIS));
+		info.setPreferredSize(new Dimension((int) Math.round(800 * 0.3), 600));
+		info.setBorder(BorderFactory.createLineBorder(Color.black));
+		info.setMaximumSize(info.getPreferredSize());
 		root.add(info);
 		root.add(field);
 		lastQueue = g.getQueue();

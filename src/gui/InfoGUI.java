@@ -1,9 +1,9 @@
 package gui;
 
 import java.awt.Graphics;
-import java.awt.Label;
 
 import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import gameBoard.GameBoard;
@@ -14,29 +14,27 @@ public class InfoGUI extends JPanel{
 	private GameBoard board;
 	private TetradDisplayer queue;
 	private TetradDisplayer hold;
-	private Label level;
-	private Label score;
+	private JLabel text;
 	
 	public InfoGUI(GameBoard b, FieldGUI size, int xPadding, int yPadding) {
 		super();
+		
 		board = b;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		add(new JLabel("Next:"));
 		queue = new TetradDisplayer(board.getQueue(), size, xPadding, yPadding);
 		add(queue);
+		text = new JLabel("<html>Level: " + board.getLevel() + "<br>Score: " + board.getScore() + "</html>");
+		add(text);
+		add(new JLabel ("<html><br>Hold:</html>"));
 		hold = new TetradDisplayer(board.getHolding(), size, xPadding, yPadding);
 		add(hold);
-		level = new Label("Level: " + board.getLevel());
-		add(level);
-		score = new Label("Score: " + board.getScore());
-		add(score);
+		
+		
 	}
 	
-	public void updateLevel() {
-		level.setText("Level: " + board.getLevel());
-	}
-	
-	public void updateScore() {
-		score.setText("Score: " + board.getScore());
+	public void updateText() {
+		text.setText("<html>Level: " + board.getLevel() + "<br>Score: " + board.getScore() + "</html>");
 	}
 	
 	public void updateQueue() {
@@ -47,25 +45,12 @@ public class InfoGUI extends JPanel{
 		hold.changeDisplayed(board.getHolding());
 	}
 	
-//	@Override
-//	public void update(Graphics g) {
-//		updateLevel();
-//		updateScore();
-//		updateQueue();
-//		updateHold();
-//		super.update(g);
-//	}
-	
 	@Override
 	public void paint(Graphics g) {
-		updateLevel();
-		updateScore();
+		updateText();
 		updateQueue();
 		updateHold();
-		queue.paint(g);
-		level.paint(g);
-		score.paint(g);
-		hold.paint(g);
+		super.paint(g);
 	}
 	
 	private class TetradDisplayer extends JPanel {
