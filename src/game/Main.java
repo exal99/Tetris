@@ -51,6 +51,9 @@ public class Main extends Thread {
 				}
 				lastTick = System.nanoTime();
 			} if (debug && System.nanoTime() - lastMessur >= 1000000000) {
+				graphics.setAppend("FPS: " + 1000000000*((double) frames)/(System.nanoTime() - lastMessur) +
+								   "<br>" + "TPS: " + 1000000000*((double) ticks)/(System.nanoTime() - lastMessur));
+				graphics.update();
 				System.out.println("FPS: " + 1000000000*((double) frames)/(System.nanoTime() - lastMessur));
 				System.out.println("TPS: " + 1000000000*((double) ticks)/(System.nanoTime() - lastMessur));
 				frames = 0;

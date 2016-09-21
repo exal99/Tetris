@@ -1,7 +1,9 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,6 +17,7 @@ public class InfoGUI extends JPanel{
 	private TetradDisplayer queue;
 	private TetradDisplayer hold;
 	private JLabel text;
+	private String append;
 	
 	public InfoGUI(GameBoard b, FieldGUI size, int xPadding, int yPadding) {
 		super();
@@ -23,18 +26,25 @@ public class InfoGUI extends JPanel{
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(new JLabel("Next:"));
 		queue = new TetradDisplayer(board.getQueue(), size, xPadding, yPadding);
+//		queue.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		add(queue);
 		text = new JLabel("<html>Level: " + board.getLevel() + "<br>Score: " + board.getScore() + "</html>");
 		add(text);
 		add(new JLabel ("<html><br>Hold:</html>"));
 		hold = new TetradDisplayer(board.getHolding(), size, xPadding, yPadding);
+//		hold.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		add(hold);
+		append = "";
 		
 		
 	}
 	
 	public void updateText() {
-		text.setText("<html>Level: " + board.getLevel() + "<br>Score: " + board.getScore() + "</html>");
+		text.setText("<html>Level: " + board.getLevel() + "<br>Score: " + board.getScore() + "<br>" + append + "</html>");
+	}
+	
+	public void setAppend(String newAppend) {
+		append = newAppend;
 	}
 	
 	public void updateQueue() {

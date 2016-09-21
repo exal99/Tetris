@@ -55,5 +55,9 @@ public class GameGUI{
 		return root;
 	}
 	
+	public void setAppend(String append) {
+		info.setAppend(append);
+	}
+	
 
 }
