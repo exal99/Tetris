@@ -28,7 +28,7 @@ public class GameBoard {
 	private Tetrads[][] typeField;
 	
 	private boolean running;
-	private int score;
+	private long score;
 	private int level;
 	private int combo;
 	private int gravity;
@@ -385,7 +385,7 @@ public class GameBoard {
 		}
 	}
 	
-	public int getScore() {
+	public long getScore() {
 		return score;
 	}
 	
