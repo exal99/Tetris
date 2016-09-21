@@ -60,6 +60,24 @@ public class GameBoard {
 		framesSpedUp = 0;
 	}
 	
+	public void reset(Timer t) {
+		hold = null;
+		canHold = true;
+		controlling = getRandomTetrad();
+		queue = getRandomTetrad();
+		field = new boolean[MAX_Y][MAX_X];
+		typeField = new Tetrads[MAX_Y][MAX_X];
+		score = 0;
+		running = true;
+		level = 0;
+		timer = t;
+		task = null;
+		incSpeed = false;
+		combo = 0;
+		gravity = Constants.GRAVITY.get(0);
+		framesSpedUp = 0;
+	}
+	
 	public void setIncSpeed(boolean newValue) {
 		incSpeed = newValue;
 	}
