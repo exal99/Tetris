@@ -1,6 +1,5 @@
 package game;
 
-import java.awt.event.WindowEvent;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
@@ -14,10 +13,12 @@ import java.io.OutputStream;
 import java.util.Map.Entry;
 import java.util.Timer;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import gameBoard.GameBoard;
 import gui.GameGUI;
+import gui.StartMenu;
 import highscore.HighScore;
 import soundPlayer.SoundPlayer;
 
@@ -25,19 +26,23 @@ public class Main extends Thread {
 	
 	private GameGUI graphics;
 	private GameBoard game;
+	private JFrame root;
 	private boolean debug;
-	private Timer timer;
+	private String[] args;
+	private HighScore score;
 	
-	public Main(GameGUI graphics, GameBoard game, Timer t, String[] args) {
+	public Main(GameGUI graphics, GameBoard game, Timer t, JFrame root, HighScore score, String[] args) {
 		this.graphics = graphics;
 		this.game = game;
+		this.root = root;
 		debug = false;
 		for (String s : args) {
 			if (s.toLowerCase().equals("debug")) {
 				debug = true;
 			}
 		}
-		timer = t;
+		this.args = args;
+		this.score = score;
 	}
 	
 	@Override
@@ -61,7 +66,7 @@ public class Main extends Thread {
 						frames++;
 					}
 				} if (System.nanoTime() - lastTick >= 1000000000/TICKS) {
-					if (System.nanoTime() - lastUpdate >= 60/(game.getGravity()*1200) * 1000000000 && !game.isPaused()) {
+					if (System.nanoTime() - lastUpdate >= 60/(game.getGravity()*1200) * 1000000000 && !game.isPaused() && game.isRuning()) {
 						game.update();
 						lastUpdate = System.nanoTime();
 					}
@@ -81,27 +86,56 @@ public class Main extends Thread {
 				}
 			} else {
 				saveHighScore();
-				switch(JOptionPane.showConfirmDialog(graphics.getRoot(), "You died a horrible death...\nPlay again?")) {
-				case JOptionPane.YES_OPTION:
-					game.reset(timer);
-					break;
-				default:
-					try {
-						running = false;
-						graphics.getRoot().dispatchEvent(new WindowEvent(graphics.getRoot(), WindowEvent.WINDOW_CLOSING));
-						join();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					break;
+//				switch(JOptionPane.showConfirmDialog(graphics.getRoot(), "You died a horrible death...\nPlay again?")) {
+//				case JOptionPane.YES_OPTION:
+//					game.reset();
+//					break;
+//				default:
+//					try {
+//						running = false;
+//						graphics.getRoot().dispatchEvent(new WindowEvent(graphics.getRoot(), WindowEvent.WINDOW_CLOSING));
+//						join();
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//					break;
+//				}
+				root.remove(graphics);
+				root.add(new StartMenu(game, root, score, args));
+				root.revalidate();
+				try {
+					join();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
 	}
 	
 	private void saveHighScore() {
-		InputStream in = getClass().getResourceAsStream("/high_score.score");
+//		HighScore score = getScore();
+		String name = JOptionPane.showInputDialog("Your name:");
+		if (name != null) {
+			score.addScore(name, game.getScore());
+			
+			try {
+				OutputStream out = new FileOutputStream("high_score.score");
+				OutputStream buf = new BufferedOutputStream(out);
+				ObjectOutput output = new ObjectOutputStream(buf);
+				output.writeObject(score);
+				output.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		displayScore(score);
+		
+	}
+	
+	private static HighScore getScore() {
+		InputStream in = (new Object()).getClass().getResourceAsStream("/high_score.score");
 		InputStream buffer = new BufferedInputStream(in);
 		HighScore score = null;
 		try {
@@ -113,33 +147,28 @@ public class Main extends Thread {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		String name = JOptionPane.showInputDialog("Your name:");
-		score.addScore(name, game.getScore());
-		try {
-			OutputStream out = new FileOutputStream("high_score.score");
-			OutputStream buf = new BufferedOutputStream(out);
-			ObjectOutput output = new ObjectOutputStream(buf);
-			output.writeObject(score);
-			output.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		return score;
+	}
+	
+	private void displayScore(HighScore score) {
 		StringBuilder sb = new StringBuilder("Scores:\n----\n");
 		for (Entry<String, Long> entry : score.getHighScorer()) {
 			sb.append(entry.getKey() + ": " + entry.getValue() + "\n");
 		}
-		JOptionPane.showMessageDialog(graphics.getRoot(), sb.toString());
+		JOptionPane.showMessageDialog(root, sb.toString());
 	}
 	
 	public static void main(String[] args) {
 		Timer t = new Timer();
 		GameBoard game = new GameBoard(t);
-		GameGUI graphics = new GameGUI(game, t);
-		graphics.getRoot().setSize(800, 600);
-		graphics.getRoot().setVisible(true);
-		Main mainThread = new Main(graphics, game, t, args);
+		JFrame root = new JFrame("Tetris");
+		root.setFocusable(true);
+		StartMenu menu = new StartMenu(game, root, getScore(), args);
+		root.add(menu);
+		root.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		root.setSize(800, 600);
+		root.setVisible(true);
 		SoundPlayer sound = new SoundPlayer("music.wav");
-		mainThread.start();
 		sound.playSound();
 		
 	}

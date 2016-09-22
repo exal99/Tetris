@@ -52,7 +52,7 @@ public class GameBoard {
 		field = new boolean[MAX_Y][MAX_X];
 		typeField = new Tetrads[MAX_Y][MAX_X];
 		score = 0;
-		running = true;
+		running = false;
 		level = 0;
 		timer = t;
 		task = null;
@@ -71,7 +71,7 @@ public class GameBoard {
 		paused = p;
 	}
 	
-	public void reset(Timer t) {
+	public void reset() {
 		hold = null;
 		canHold = true;
 		controlling = getRandomTetrad();
@@ -79,14 +79,17 @@ public class GameBoard {
 		field = new boolean[MAX_Y][MAX_X];
 		typeField = new Tetrads[MAX_Y][MAX_X];
 		score = 0;
-		running = true;
+		running = false;
 		level = 0;
-		timer = t;
 		task = null;
 		incSpeed = false;
 		combo = 0;
 		gravity = Constants.GRAVITY.get(0);
 		framesSpedUp = 0;
+	}
+	
+	public Timer getTimer() {
+		return timer;
 	}
 	
 	public void setIncSpeed(boolean newValue) {
@@ -133,6 +136,10 @@ public class GameBoard {
 		if (level + 1 % 100 != 0) {
 			level++;
 		}
+	}
+	
+	public void start() {
+		running = true;
 	}
 	
 	private void spawnNew(Tetrads type) {
