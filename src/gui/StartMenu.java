@@ -69,7 +69,6 @@ public class StartMenu extends JPanel {
 		this.root = root;
 		this.score = hscore;
 		
-//		root.add(this);
 		root.addKeyListener(new UserInput(game, game.getTimer()));
 	}
 	
@@ -103,20 +102,8 @@ public class StartMenu extends JPanel {
 				thread.join();
 			}
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		root.dispatchEvent(new WindowEvent(root, WindowEvent.WINDOW_CLOSING));
 	}
-	
-	
-	
-//	public static void main(String[] args) {
-//		StartMenu menu = new StartMenu();
-//		menu.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-//		JFrame frame = new JFrame();
-//		frame.add(menu);
-//		frame.setSize(800, 600);
-//		frame.setVisible(true);
-//	}
 }

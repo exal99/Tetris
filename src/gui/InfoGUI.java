@@ -28,17 +28,22 @@ public class InfoGUI extends JPanel{
 		JLabel next = new JLabel("Next:");
 		next.setFont(new Font(next.getFont().getName(), Font.PLAIN, 20));
 		add(next);
+		
 		queue = new TetradDisplayer(board.getQueue(), size, xPadding, yPadding);
 		queue.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		add(queue);
+		
 		text = new JLabel("<html>Level: " + board.getLevel() + "<br>Score: " + board.getScore() + "<br></html>");
 		add(text);
+		
 		JLabel holdLabel = new JLabel("<html>Hold:</html>");
 		holdLabel.setFont(new Font(holdLabel.getFont().getName(), Font.PLAIN, 20));
 		add(holdLabel);
+		
 		hold = new TetradDisplayer(board.getHolding(), size, xPadding, yPadding);
 		hold.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		add(hold);
+		
 		append = "";
 		
 		
