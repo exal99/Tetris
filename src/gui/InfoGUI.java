@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 import javax.swing.BorderFactory;
@@ -24,15 +25,19 @@ public class InfoGUI extends JPanel{
 		
 		board = b;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		add(new JLabel("Next:"));
+		JLabel next = new JLabel("Next:");
+		next.setFont(new Font(next.getFont().getName(), Font.PLAIN, 20));
+		add(next);
 		queue = new TetradDisplayer(board.getQueue(), size, xPadding, yPadding);
-//		queue.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		queue.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		add(queue);
-		text = new JLabel("<html>Level: " + board.getLevel() + "<br>Score: " + board.getScore() + "</html>");
+		text = new JLabel("<html>Level: " + board.getLevel() + "<br>Score: " + board.getScore() + "<br></html>");
 		add(text);
-		add(new JLabel ("<html><br>Hold:</html>"));
+		JLabel holdLabel = new JLabel("<html>Hold:</html>");
+		holdLabel.setFont(new Font(holdLabel.getFont().getName(), Font.PLAIN, 20));
+		add(holdLabel);
 		hold = new TetradDisplayer(board.getHolding(), size, xPadding, yPadding);
-//		hold.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		hold.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		add(hold);
 		append = "";
 		
@@ -85,10 +90,11 @@ public class InfoGUI extends JPanel{
 			super.paint(g);
 			if (toDisplay != null) {
 				int size = this.size.getSquareSize();
-				g.setColor(toDisplay.getType().getColor());
+				
 				boolean[][] orien = toDisplay.getOrientation();
 				int startX =(int) (0.5 * (getWidth() - (orien[0].length * (size + xPadding))) / 2);
 				int startY = (getHeight() - (orien.length * (size + yPadding))) / 2;
+				g.setColor(toDisplay.getType().getColor());
 				for (int x = 0; x < orien[0].length; x++) {
 					for (int y = 0; y < orien.length; y++) {
 						if (orien[y][x]) {

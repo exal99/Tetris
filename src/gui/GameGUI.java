@@ -30,7 +30,7 @@ public class GameGUI{
 		
 		root.setLayout(new BoxLayout(root.getContentPane(), BoxLayout.X_AXIS));
 		info.setPreferredSize(new Dimension((int) Math.round(800 * 0.3), 600));
-		info.setBorder(BorderFactory.createLineBorder(Color.black));
+//		info.setBorder(BorderFactory.createLineBorder(Color.black));
 		info.setMaximumSize(info.getPreferredSize());
 		root.add(info);
 		root.add(field);
