@@ -1,12 +1,23 @@
 package game;
 
 import java.awt.event.WindowEvent;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.Timer;
 
 import javax.swing.JOptionPane;
 
 import gameBoard.GameBoard;
 import gui.GameGUI;
+import highscore.HighScore;
 import soundPlayer.SoundPlayer;
 
 public class Main extends Thread {
@@ -68,6 +79,7 @@ public class Main extends Thread {
 					lastMessur = System.nanoTime();
 				}
 			} else {
+				saveHighScore();
 				switch(JOptionPane.showConfirmDialog(graphics.getRoot(), "You died a horrible death...\nPlay again?")) {
 				case JOptionPane.YES_OPTION:
 					game.reset(timer);
@@ -85,6 +97,34 @@ public class Main extends Thread {
 				}
 			}
 		}
+	}
+	
+	private void saveHighScore() {
+		InputStream in = getClass().getResourceAsStream("/high_score.score");
+		InputStream buffer = new BufferedInputStream(in);
+		HighScore score = null;
+		try {
+			ObjectInput object = new ObjectInputStream(buffer);
+			score = (HighScore) object.readObject();
+		} catch (IOException e) {
+			System.out.println("file_notFoud");
+			score = new HighScore();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		String name = JOptionPane.showInputDialog("Your name:");
+		score.addScore(name, game.getScore());
+		try {
+			OutputStream out = new FileOutputStream("high_score.score");
+			OutputStream buf = new BufferedOutputStream(out);
+			ObjectOutput output = new ObjectOutputStream(buf);
+			output.writeObject(score);
+			output.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JOptionPane.showMessageDialog(graphics.getRoot(), score.getHighScorer().toString());
 	}
 	
 	public static void main(String[] args) {
