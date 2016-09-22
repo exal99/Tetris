@@ -273,7 +273,14 @@ public class GameBoard {
 		for (int i = 0; i < rowsRemoved; i++) {
 			level++;
 		}
-		score += (Math.ceil((level + rowsRemoved)/4.0) + framesSpedUp) * rowsRemoved * combo;
+		int bravo = 4;
+		for (int col = 0; col < MAX_X; col++) {
+			if (field[MAX_Y - 1][col]) {
+				bravo = 1;
+				break;
+			}
+		}
+		score += (Math.ceil((level + rowsRemoved)/4.0) + framesSpedUp) * rowsRemoved * combo * bravo;
 		if (rowsRemoved != 0) {
 			combo = combo + (2*rowsRemoved) - 2;
 			gravity = (Constants.GRAVITY.get(level) != null) ? Constants.GRAVITY.get(level) : gravity;
