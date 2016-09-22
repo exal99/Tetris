@@ -61,7 +61,7 @@ public class Main extends Thread {
 						frames++;
 					}
 				} if (System.nanoTime() - lastTick >= 1000000000/TICKS) {
-					if (System.nanoTime() - lastUpdate >= 60/(game.getGravity()*1200) * 1000000000) {
+					if (System.nanoTime() - lastUpdate >= 60/(game.getGravity()*1200) * 1000000000 && !game.isPaused()) {
 						game.update();
 						lastUpdate = System.nanoTime();
 					}

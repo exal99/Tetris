@@ -28,6 +28,8 @@ public class GameBoard {
 	private Tetrads[][] typeField;
 	
 	private boolean running;
+	private boolean paused;
+	
 	private long score;
 	private int level;
 	private int combo;
@@ -58,6 +60,15 @@ public class GameBoard {
 		combo = 0;
 		gravity = Constants.GRAVITY.get(0);
 		framesSpedUp = 0;
+		paused = false;
+	}
+	
+	public boolean isPaused() {
+		return paused;
+	}
+	
+	public void setPause(boolean p) {
+		paused = p;
 	}
 	
 	public void reset(Timer t) {
