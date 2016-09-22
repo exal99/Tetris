@@ -11,6 +11,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.util.Map.Entry;
 import java.util.Timer;
 
 import javax.swing.JOptionPane;
@@ -121,10 +122,13 @@ public class Main extends Thread {
 			output.writeObject(score);
 			output.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		JOptionPane.showMessageDialog(graphics.getRoot(), score.getHighScorer().toString());
+		StringBuilder sb = new StringBuilder("Scores:\n----\n");
+		for (Entry<String, Long> entry : score.getHighScorer()) {
+			sb.append(entry.getKey() + ": " + entry.getValue() + "\n");
+		}
+		JOptionPane.showMessageDialog(graphics.getRoot(), sb.toString());
 	}
 	
 	public static void main(String[] args) {

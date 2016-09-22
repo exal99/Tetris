@@ -21,7 +21,7 @@ public class HighScore implements Serializable{
 	
 	public ArrayList<Entry<String, Long>> getHighScorer() {
 		ArrayList<Long> list = new ArrayList<Long>(highScore.keySet());
-		Collections.sort(list);
+		Collections.sort(list, Collections.reverseOrder());
 		ArrayList<Entry<String, Long>> scores = new ArrayList<Entry<String, Long>>();
 		for (Long score : list) {
 			scores.add(new ScoreMap(highScore.get(score), score));
