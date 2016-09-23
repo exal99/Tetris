@@ -135,6 +135,7 @@ public class GameBoard {
 		}
 		if (level + 1 % 100 != 0) {
 			level++;
+			gravity = (Constants.GRAVITY.get(level) != null) ? Constants.GRAVITY.get(level) : gravity;
 		}
 	}
 	
@@ -279,6 +280,7 @@ public class GameBoard {
 		}
 		for (int i = 0; i < rowsRemoved; i++) {
 			level++;
+			gravity = (Constants.GRAVITY.get(level) != null) ? Constants.GRAVITY.get(level) : gravity;
 		}
 		int bravo = 4;
 		for (int col = 0; col < MAX_X; col++) {
@@ -290,7 +292,6 @@ public class GameBoard {
 		score += (Math.ceil((level + rowsRemoved)/4.0) + framesSpedUp) * rowsRemoved * combo * bravo;
 		if (rowsRemoved != 0) {
 			combo = combo + (2*rowsRemoved) - 2;
-			gravity = (Constants.GRAVITY.get(level) != null) ? Constants.GRAVITY.get(level) : gravity;
 			framesSpedUp = 0;
 		} else {
 			combo = 1;
