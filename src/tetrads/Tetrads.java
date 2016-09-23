@@ -9,7 +9,8 @@ public enum Tetrads {
 	RIGHT_SNAKE (0, 255, 0),
 	SQUARE (255, 255, 0),
 	STRAIGHT (0, 255, 255),
-	T_TURN (255, 0, 255);
+	T_TURN (255, 0, 255),
+	TRASH (105, 105, 105);
 	
 	
 	private Color color;
