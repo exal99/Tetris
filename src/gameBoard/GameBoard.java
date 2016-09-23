@@ -34,6 +34,7 @@ public class GameBoard {
 	private int level;
 	private int combo;
 	private int gravity;
+	private int trashToAdd;
 	
 	private Timer timer;
 	private TimerTask task;
@@ -61,6 +62,7 @@ public class GameBoard {
 		gravity = Constants.GRAVITY.get(0);
 		framesSpedUp = 0;
 		paused = false;
+		trashToAdd = 0;
 	}
 	
 	public boolean isPaused() {
@@ -86,6 +88,7 @@ public class GameBoard {
 		combo = 0;
 		gravity = Constants.GRAVITY.get(0);
 		framesSpedUp = 0;
+		trashToAdd = 0;
 	}
 	
 	public Timer getTimer() {
@@ -136,6 +139,11 @@ public class GameBoard {
 		if (level + 1 % 100 != 0) {
 			level++;
 			gravity = (Constants.GRAVITY.get(level) != null) ? Constants.GRAVITY.get(level) : gravity;
+		}
+		if (this.trashToAdd > 0) {
+			for (; trashToAdd > 0; trashToAdd--) {
+				addTrashLine();
+			}
 		}
 	}
 	
@@ -273,7 +281,7 @@ public class GameBoard {
 					break;
 				}
 			}
-			if (tetrisOnRow) {
+			if (tetrisOnRow && typeField[row][0] != Tetrads.TRASH) {
 				moveDown(row);
 				rowsRemoved++;
 			}
@@ -295,6 +303,44 @@ public class GameBoard {
 			framesSpedUp = 0;
 		} else {
 			combo = 1;
+		}
+		if (rowsRemoved >= 2) {
+			if (rowsRemoved == 4) {
+				rowsRemoved++;
+			}
+			for (int i = 0; i < rowsRemoved - 1; i++) {
+				if (typeField[MAX_Y - 1][0] == Tetrads.TRASH) {
+					moveDown(MAX_Y - 1);
+				} else {
+					break;
+				}
+			}
+		}
+	}
+	
+	public void addTrashLine() {
+		moveUp(MAX_Y - 1);
+		for (int col = 0; col < MAX_X; col++) {
+			field[MAX_Y - 1][col] = true;
+			typeField[MAX_Y - 1][col] = Tetrads.TRASH;
+		}
+	}
+	
+	private void moveUp(int row) {
+		if (row == 0) {
+			for (int col = 0; col < MAX_X; col++) {
+				field[row][col] = field[row + 1][col];
+				typeField[row][col] = typeField[row + 1][col];
+			}
+			return;
+		}
+		moveUp(row - 1);
+		if (row < MAX_Y) {
+			for (int col = 0; col < MAX_X; col++) {
+				field[row][col] = field[row + 1][col];
+				typeField[row][col] = typeField[row][col];
+			}
+			return;
 		}
 	}
 
