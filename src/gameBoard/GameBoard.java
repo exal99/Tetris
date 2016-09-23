@@ -361,11 +361,15 @@ public class GameBoard {
 	public void turnLeft() {
 		controlling.rotateLeft();
 		if (!checkValidState(0, 0)) {
-			if (!checkValidState(0,-1)) {
+			if (checkValidState(0,-1)) {
+				controlling.moveUp();
+			} else if (checkValidState(-1, 0)) {
+				controlling.moveLeft();
+			} else if (checkValidState(1, 0)) {
+				controlling.moveRight();
+			} else {
 				controlling.rotateRight();
 				return;
-			} else {
-				controlling.moveUp();
 			}
 		}
 		if (task != null) {
@@ -391,11 +395,15 @@ public class GameBoard {
 	public void turnRight() {
 		controlling.rotateRight();
 		if (!checkValidState(0, 0)) {
-			if (!checkValidState(0, -1)) {
+			if (checkValidState(0, -1)) {
+				controlling.moveUp();
+			} else if (checkValidState(-1, 0)) {
+				controlling.moveLeft();
+			} else if (checkValidState(1, 0)) {
+				controlling.moveRight();
+			} else {
 				controlling.rotateLeft();
 				return;
-			} else {
-				controlling.moveUp();
 			}
 		}
 		if (task != null) {
