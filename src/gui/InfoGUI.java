@@ -3,6 +3,9 @@ package gui;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -33,7 +36,8 @@ public class InfoGUI extends JPanel{
 		queue.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		add(queue);
 		
-		text = new JLabel("<html>Level: " + board.getLevel() + "<br>Score: " + board.getScore() + "<br></html>");
+		String scoreText = new DecimalFormat("000 000 000 000").format(board.getScore());
+		text = new JLabel("<html>Level: " + board.getLevel() + "<br>Score: " + scoreText + "<br></html>");
 		add(text);
 		
 		JLabel holdLabel = new JLabel("<html>Hold:</html>");
@@ -50,7 +54,11 @@ public class InfoGUI extends JPanel{
 	}
 	
 	public void updateText() {
-		text.setText("<html>Level: " + board.getLevel() + "<br>Score: " + board.getScore() + "<br>" + append + "</html>");
+		NumberFormat nf = NumberFormat.getNumberInstance(Locale.FRANCE);
+		DecimalFormat df = (DecimalFormat)nf;
+		df.applyPattern("000,000,000,000,000");
+		String scoreText = df.format(board.getScore());
+		text.setText("<html>Level: " + board.getLevel() + "<br>Score:  " + scoreText + "<br>" + append + "</html>");
 	}
 	
 	public void setAppend(String newAppend) {
