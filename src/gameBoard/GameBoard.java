@@ -35,6 +35,7 @@ public class GameBoard {
 	private int combo;
 	private int gravity;
 	private int trashToAdd;
+	private int multiplayerCombo;
 	
 	private GameBoard otherPlayer;
 	
@@ -66,6 +67,7 @@ public class GameBoard {
 		paused = false;
 		trashToAdd = 0;
 		otherPlayer = null;
+		multiplayerCombo = 0;
 	}
 	
 	public boolean[][] getColition() {
@@ -105,6 +107,7 @@ public class GameBoard {
 		gravity = Constants.GRAVITY.get(0);
 		framesSpedUp = 0;
 		trashToAdd = 0;
+		multiplayerCombo = 0;
 	}
 	
 	public Timer getTimer() {
@@ -167,10 +170,8 @@ public class GameBoard {
 		if (this.trashToAdd > 0) {
 			for (; trashToAdd > 0; trashToAdd--) {
 				addTrashLine();
-				System.out.println(trashToAdd);
 			}
 		}
-		System.out.println(this);
 	}
 	
 	public void start() {
@@ -324,12 +325,7 @@ public class GameBoard {
 			}
 		}
 		score += (Math.ceil((level + rowsRemoved)/4.0) + framesSpedUp) * rowsRemoved * combo * bravo;
-		if (rowsRemoved != 0) {
-			combo = combo + (2*rowsRemoved) - 2;
-			framesSpedUp = 0;
-		} else {
-			combo = 1;
-		}
+		
 		if (rowsRemoved >= 2) {
 			if (rowsRemoved == 4) {
 				rowsRemoved++;
@@ -342,9 +338,24 @@ public class GameBoard {
 				}
 			}
 			if (otherPlayer != null) {
-				otherPlayer.incTrashLines(rowsRemoved);
-				System.out.println(rowsRemoved);
+				otherPlayer.incTrashLines((rowsRemoved == 5) ? 4 : rowsRemoved);
 			}
+		} else if (multiplayerCombo >= 1 && otherPlayer != null) {
+			otherPlayer.incTrashLines(rowsRemoved);
+		}
+		
+		if (rowsRemoved != 0) {
+			combo = combo + (2*rowsRemoved) - 2;
+			framesSpedUp = 0;
+			if (typeField[MAX_Y - 1][0] == Tetrads.TRASH) {
+				for (int i = rowsRemoved; i > 0; i--) {
+					moveDown(MAX_Y -1);
+				}
+			}
+			multiplayerCombo += rowsRemoved;
+		} else {
+			combo = 1;
+			multiplayerCombo = 0;
 		}
 	}
 	
