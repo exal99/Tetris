@@ -33,6 +33,11 @@ public class TwoPlayerGameGUI extends JPanel {
 		player2.setAppend(text);
 	}
 	
+	public void update() {
+		player1.update();
+		player2.update();
+	}
+	
 	
 	public static void main(String[] args) {
 		Timer t = new Timer();
