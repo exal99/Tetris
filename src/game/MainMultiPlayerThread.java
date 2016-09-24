@@ -3,6 +3,7 @@ package game;
 import java.util.Timer;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import gameBoard.GameBoard;
 import gui.StartMenu;
@@ -86,6 +87,7 @@ public class MainMultiPlayerThread extends Thread {
 				}
 			} else {
 //				saveHighScore();
+				displayDeathScreen();
 				root.remove(graphics);
 				root.add(new StartMenu(player1, player2, root, highScore, args));
 				root.revalidate();
@@ -96,5 +98,11 @@ public class MainMultiPlayerThread extends Thread {
 				}
 			}
 		}
+	}
+	
+	private void displayDeathScreen() {
+		int winner = (player1.isRuning()) ? 1 : 2;
+		String message = String.format("Player %d is has defeated Player %d", winner, (winner % 2) + 1);
+		JOptionPane.showMessageDialog(root, message);
 	}
 }
