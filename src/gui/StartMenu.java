@@ -17,8 +17,6 @@ import game.MainMultiPlayerThread;
 import game.MainSinglePlayerThread;
 import gameBoard.GameBoard;
 import highscore.HighScore;
-import keyEvents.PlayerOneKeyListener;
-import keyEvents.PlayerTwoKeyListener;
 
 public class StartMenu extends JPanel {
 
@@ -33,50 +31,9 @@ public class StartMenu extends JPanel {
 	private Thread thread;
 	private HighScore score;
 	
-//	public StartMenu(GameBoard game, JFrame root, HighScore hscore, String[] args) {
-//		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-//		
-//		JButton single = new JButton("Play Single Player");
-//		JButton multi = new JButton("Play Two Players");
-//		JButton score = new JButton("High Scores");
-//		JButton quit = new JButton("Quit");
-//		
-//		
-//		single.setAlignmentX(Component.CENTER_ALIGNMENT);
-//		multi.setAlignmentX(Component.CENTER_ALIGNMENT);
-//		score.setAlignmentX(Component.CENTER_ALIGNMENT);
-//		quit.setAlignmentX(Component.CENTER_ALIGNMENT);
-//		
-//		single.setFont(new Font(single.getFont().getName(), Font.PLAIN, FONT_SIZE));
-//		multi.setFont(new Font(multi.getFont().getName(), Font.PLAIN, FONT_SIZE));
-//		score.setFont(new Font(score.getFont().getName(), Font.PLAIN, FONT_SIZE));
-//		quit.setFont(new Font(quit.getFont().getName(), Font.PLAIN, FONT_SIZE));
-//		
-//		single.addActionListener(e -> singleButtonClick());
-//		multi.addActionListener(e -> multiButtonClick());
-//		score.addActionListener(e -> scoreButtonClick());
-//		quit.addActionListener(e -> quitButtonClick());
-//		
-//		add(Box.createVerticalGlue());
-//		add(single);
-//		add(Box.createRigidArea(new Dimension(0, PADDING)));
-//		add(multi);
-//		add(Box.createRigidArea(new Dimension(0, PADDING)));
-//		add(score);
-//		add(Box.createRigidArea(new Dimension(0, PADDING)));
-//		add(quit);
-//		add(Box.createVerticalGlue());
-//		
-//		this.player1 = game;
-//		this.args = args;
-//		this.root = root;
-//		this.score = hscore;
-//		
-//		root.addKeyListener(new PlayerOneKeyListener(player1, player1.getTimer()));
-//	}
 	
 	public StartMenu(GameBoard player1, GameBoard player2, JFrame root, HighScore hscore, String[] args) {
-setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		JButton single = new JButton("Play Single Player");
 		JButton multi = new JButton("Play Two Players");
