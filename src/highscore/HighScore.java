@@ -1,6 +1,8 @@
 package highscore;
 
 import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInput;
@@ -41,15 +43,18 @@ public class HighScore implements Serializable{
 	}
 	
 	public static HighScore getScore() {
-		InputStream in = (new Object()).getClass().getResourceAsStream("/high_score.score");
-		InputStream buffer = new BufferedInputStream(in);
 		HighScore score = null;
 		try {
+			InputStream in = new FileInputStream("high_score.score");
+			InputStream buffer = new BufferedInputStream(in);
 			ObjectInput object = new ObjectInputStream(buffer);
 			score = (HighScore) object.readObject();
-		} catch (IOException e) {
-			System.out.println("file_notFoud");
+			object.close();
+		} catch (FileNotFoundException e1) {
+			System.out.println("File not found");
 			score = new HighScore();
+		} catch (IOException e) {
+			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
