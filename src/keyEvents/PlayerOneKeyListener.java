@@ -66,8 +66,6 @@ public class PlayerOneKeyListener implements KeyListener {
 			case KeyEvent.VK_P:
 				game.setPause(true);
 				break;
-			default:
-				System.out.println("Unrecognized key: " + e.getKeyChar());
 			}
 		} else {
 			if (e.getKeyCode() == KeyEvent.VK_P) {
