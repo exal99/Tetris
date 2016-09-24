@@ -51,13 +51,13 @@ public class PlayerOneKeyListener implements KeyListener {
 					moveLeft = null;
 				}
 				break;
-			case KeyEvent.VK_Z:
+			case KeyEvent.VK_N:
 				game.turnLeft();
 				break;
-			case KeyEvent.VK_X:
+			case KeyEvent.VK_M:
 				game.turnRight();
 				break;
-			case KeyEvent.VK_SPACE:
+			case KeyEvent.VK_B:
 				game.fastPlace();
 				break;
 			case KeyEvent.VK_DOWN:
