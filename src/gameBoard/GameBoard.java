@@ -68,6 +68,10 @@ public class GameBoard {
 		otherPlayer = null;
 	}
 	
+	public boolean[][] getColition() {
+		return field;
+	}
+	
 	public GameBoard(Timer t, GameBoard g) {
 		this(t);
 		otherPlayer = g;
@@ -163,8 +167,10 @@ public class GameBoard {
 		if (this.trashToAdd > 0) {
 			for (; trashToAdd > 0; trashToAdd--) {
 				addTrashLine();
+				System.out.println(trashToAdd);
 			}
 		}
+		System.out.println(this);
 	}
 	
 	public void start() {
@@ -337,6 +343,7 @@ public class GameBoard {
 			}
 			if (otherPlayer != null) {
 				otherPlayer.incTrashLines(rowsRemoved);
+				System.out.println(rowsRemoved);
 			}
 		}
 	}
@@ -358,10 +365,10 @@ public class GameBoard {
 			return;
 		}
 		moveUp(row - 1);
-		if (row < MAX_Y) {
+		if (row < MAX_Y - 1) {
 			for (int col = 0; col < MAX_X; col++) {
 				field[row][col] = field[row + 1][col];
-				typeField[row][col] = typeField[row][col];
+				typeField[row][col] = typeField[row + 1][col];
 			}
 			return;
 		}
@@ -514,5 +521,15 @@ public class GameBoard {
 	
 	public Tetrad getHolding() {
 		return hold;
+	}
+	
+	public static void main(String[] args) {
+		GameBoard g = new GameBoard(new Timer());
+		g.fastPlace();
+		g.place();
+		for (int i = 0; i < 4; i++) {
+			g.addTrashLine();
+		}
+		System.out.println(g);
 	}
 }

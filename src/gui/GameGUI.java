@@ -8,6 +8,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import gameBoard.GameBoard;
+import keyEvents.PlayerOneKeyListener;
 import tetrads.Tetrad;
 
 public class GameGUI extends JPanel{

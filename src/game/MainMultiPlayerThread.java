@@ -29,6 +29,7 @@ public class MainMultiPlayerThread extends Thread {
 				debug = true;
 			}
 		}
+//		debug = true;
 		this.args = args;
 		this.highScore = hscore;
 	}
@@ -65,7 +66,7 @@ public class MainMultiPlayerThread extends Thread {
 					}
 					if (System.nanoTime() - lastPlayer2Update >= 60/(player2.getGravity()*1200) * 1000000000 && !player2.isPaused()) {
 						player2.update();
-						lastPlayer1Update = System.nanoTime();
+						lastPlayer2Update = System.nanoTime();
 					}
 					if (debug) {
 						ticks++;
@@ -73,10 +74,12 @@ public class MainMultiPlayerThread extends Thread {
 					lastTick = System.nanoTime();
 				} if (debug && System.nanoTime() - lastMessur >= 1000000000) {
 					graphics.setPlayer1Append("FPS: " + 1000000000*((double) frames)/(System.nanoTime() - lastMessur) +
-									   "<br>" + "TPS: " + 1000000000*((double) ticks)/(System.nanoTime() - lastMessur));
+									   "<br>" + "TPS: " + 1000000000*((double) ticks)/(System.nanoTime() - lastMessur) +
+									   "<br>" + player2.getGravity());
 					graphics.update();
 					System.out.println("FPS: " + 1000000000*((double) frames)/(System.nanoTime() - lastMessur));
 					System.out.println("TPS: " + 1000000000*((double) ticks)/(System.nanoTime() - lastMessur));
+					System.out.println(player2.getGravity());
 					frames = 0;
 					ticks = 0;
 					lastMessur = System.nanoTime();

@@ -9,6 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import gameBoard.GameBoard;
+import keyEvents.PlayerOneKeyListener;
+import keyEvents.PlayerTwoKeyListener;
 
 public class TwoPlayerGameGUI extends JPanel {
 
@@ -23,6 +25,10 @@ public class TwoPlayerGameGUI extends JPanel {
 		add(player1);
 		add(Box.createRigidArea(new Dimension(10, 0)));
 		add(player2);
+		
+//		player1.addKeyListener(new PlayerOneKeyListener(pl1, pl1.getTimer()));
+//		player2.addKeyListener(new PlayerTwoKeyListener(pl2, pl2.getTimer()));
+//		player1.setFo
 	}
 	
 	public void setPlayer1Append(String text) {

@@ -20,20 +20,24 @@ import gameBoard.GameBoard;
 import gui.GameGUI;
 import gui.StartMenu;
 import highscore.HighScore;
+import keyEvents.PlayerOneKeyListener;
+import keyEvents.PlayerTwoKeyListener;
 import soundPlayer.SoundPlayer;
 
 public class MainSinglePlayerThread extends Thread {
 	
 	private GameGUI graphics;
 	private GameBoard game;
+	private GameBoard second;
 	private JFrame root;
 	private boolean debug;
 	private String[] args;
 	private HighScore score;
 	
-	public MainSinglePlayerThread(GameGUI graphics, GameBoard game, Timer t, JFrame root, HighScore score, String[] args) {
+	public MainSinglePlayerThread(GameGUI graphics, GameBoard game, GameBoard second, Timer t, JFrame root, HighScore score, String[] args) {
 		this.graphics = graphics;
 		this.game = game;
+		this.second = second;
 		this.root = root;
 		debug = false;
 		for (String s : args) {
@@ -87,7 +91,7 @@ public class MainSinglePlayerThread extends Thread {
 			} else {
 				saveHighScore();
 				root.remove(graphics);
-				root.add(new StartMenu(game, root, score, args));
+				root.add(new StartMenu(game, second, root, score, args));
 				root.revalidate();
 				try {
 					join();
@@ -143,10 +147,13 @@ public class MainSinglePlayerThread extends Thread {
 	
 	public static void main(String[] args) {
 		Timer t = new Timer();
-		GameBoard game = new GameBoard(t);
+		GameBoard player1 = new GameBoard(t);
+		GameBoard player2 = new GameBoard(t);
 		JFrame root = new JFrame("Tetris");
 		root.setFocusable(true);
-		StartMenu menu = new StartMenu(game, root, getScore(), args);
+		root.addKeyListener(new PlayerOneKeyListener(player1, player1.getTimer()));
+		root.addKeyListener(new PlayerTwoKeyListener(player2, player2.getTimer()));
+		StartMenu menu = new StartMenu(player1, player2, root, getScore(), args);
 		root.add(menu);
 		root.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		root.setSize(800, 600);

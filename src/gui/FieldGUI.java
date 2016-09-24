@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import gameBoard.GameBoard;
@@ -32,6 +33,7 @@ public class FieldGUI extends Component{
 	@Override
 	public void paint(Graphics g) {
 		Tetrads[][] field = board.getField();
+//		boolean[][] field = board.getColition();
 		int squareSize = getSquareSize();
 		int xPadding = X_PADDING;
 		int yPadding = Y_PADDING;
@@ -39,7 +41,9 @@ public class FieldGUI extends Component{
 		for (int row = 2; row < field.length; row++) {
 			for (int col = 0; col < field[0].length; col++) {
 				if (field[row][col] != null) {
+//				if (field[row][col]) {
 					g.setColor(field[row][col].getColor());
+//					g.setColor(Color.BLACK);
 					g.fillRect(col * (squareSize) + xPadding,
 							  (row - 2) * (squareSize) + yPadding,
 							  squareSize - xPadding, squareSize - yPadding);
