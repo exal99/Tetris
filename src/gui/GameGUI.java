@@ -20,7 +20,7 @@ public class GameGUI extends JPanel{
 	private GameBoard game;
 	
 	public GameGUI(GameBoard g, Timer t, int width, int height, boolean inverted, boolean multiplayer) {
-		init(g, t, width, height);
+		init(g, t, (multiplayer) ? width : (int) Math.round(width * .75), height);
 		int sqareSize = height/(g.getField().length - 2);
 		int padding = (multiplayer) ? (int) (width - (sqareSize * 10) - info.getPreferredSize().getWidth()) : 10;
 		if (inverted) {
