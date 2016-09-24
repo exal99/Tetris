@@ -51,13 +51,13 @@ public class PlayerTwoKeyListener implements KeyListener {
 					moveLeft = null;
 				}
 				break;
-			case KeyEvent.VK_Z:
+			case KeyEvent.VK_T:
 				game.turnLeft();
 				break;
-			case KeyEvent.VK_X:
+			case KeyEvent.VK_Y:
 				game.turnRight();
 				break;
-			case KeyEvent.VK_C:
+			case KeyEvent.VK_U:
 				game.fastPlace();
 				break;
 			case KeyEvent.VK_S:
