@@ -18,16 +18,6 @@ public class GameGUI extends JPanel{
 	private Tetrad lastQueue;
 	private Tetrad lastHold;
 	private GameBoard game;
-//	private int width;
-//	private int height;
-	
-	public GameGUI(GameBoard g, Timer t, int width, int height) {
-		init(g, t, width, height);
-		add(info);
-		add(field);
-		
-
-	}
 	
 	public GameGUI(GameBoard g, Timer t, int width, int height, boolean inverted, boolean multiplayer) {
 		init(g, t, width, height);
@@ -56,8 +46,6 @@ public class GameGUI extends JPanel{
 		
 		lastQueue = g.getQueue();
 		lastHold = g.getHolding();
-//		this.width = width;
-//		this.height = height;
 	}
 	
 	public void update() {
@@ -68,10 +56,6 @@ public class GameGUI extends JPanel{
 		}
 		field.repaint();
 	}
-	
-//	public JFrame getRoot() {
-//		return root;
-//	}
 	
 	public void setAppend(String append) {
 		info.setAppend(append);

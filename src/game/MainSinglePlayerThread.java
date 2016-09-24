@@ -86,28 +86,12 @@ public class MainSinglePlayerThread extends Thread {
 				}
 			} else {
 				saveHighScore();
-//				switch(JOptionPane.showConfirmDialog(graphics.getRoot(), "You died a horrible death...\nPlay again?")) {
-//				case JOptionPane.YES_OPTION:
-//					game.reset();
-//					break;
-//				default:
-//					try {
-//						running = false;
-//						graphics.getRoot().dispatchEvent(new WindowEvent(graphics.getRoot(), WindowEvent.WINDOW_CLOSING));
-//						join();
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//					break;
-//				}
 				root.remove(graphics);
 				root.add(new StartMenu(game, root, score, args));
 				root.revalidate();
 				try {
 					join();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -115,7 +99,6 @@ public class MainSinglePlayerThread extends Thread {
 	}
 	
 	private void saveHighScore() {
-//		HighScore score = getScore();
 		String name = JOptionPane.showInputDialog("Your name:");
 		if (name != null) {
 			score.addScore(name, game.getScore());
