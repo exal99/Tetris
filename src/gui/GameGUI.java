@@ -19,22 +19,35 @@ public class GameGUI extends JPanel{
 	private GameBoard game;
 	
 	public GameGUI(GameBoard g, Timer t) {
+		init(g, t);
+		add(info);
+		add(field);
+
+	}
+	
+	public GameGUI(GameBoard g, Timer t, boolean inverted) {
+		init(g, t);
+		if (inverted) {
+			add(field);
+			add(info);
+		} else {
+			add(info);
+			add(field);
+		}
+	}
+	
+	private void init(GameBoard g, Timer t) {
 		game = g;
 		
 		field = new FieldGUI(g);
 		info = new InfoGUI(g, field, field.getXPadding(), field.getYPadding());
-		
 
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		info.setPreferredSize(new Dimension((int) Math.round(800 * 0.3), 600));
 		info.setMaximumSize(info.getPreferredSize());
 		
-		add(info);
-		add(field);
-		
 		lastQueue = g.getQueue();
 		lastHold = g.getHolding();
-
 	}
 	
 	public void update() {

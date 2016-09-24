@@ -36,6 +36,8 @@ public class GameBoard {
 	private int gravity;
 	private int trashToAdd;
 	
+	private GameBoard otherPlayer;
+	
 	private Timer timer;
 	private TimerTask task;
 	
@@ -63,6 +65,16 @@ public class GameBoard {
 		framesSpedUp = 0;
 		paused = false;
 		trashToAdd = 0;
+		otherPlayer = null;
+	}
+	
+	public GameBoard(Timer t, GameBoard g) {
+		this(t);
+		otherPlayer = g;
+	}
+	
+	public void setOtherPlayer(GameBoard g) {
+		otherPlayer = g;
 	}
 	
 	public boolean isPaused() {
@@ -104,7 +116,11 @@ public class GameBoard {
 	}
 	
 	public double getGravity() {
-		return (incSpeed) ? 20 : gravity/256D;
+		if (otherPlayer == null) {
+			return (incSpeed) ? 20 : gravity/256D;
+		} else {
+			return (incSpeed) ? 20 : 0.1;
+		}
 	}
 	
 	private Tetrad getRandomTetrad() {
@@ -126,6 +142,10 @@ public class GameBoard {
 		default:
 			throw new RuntimeException();
 		}
+	}
+	
+	public void incTrashLines(int toIncWith) {
+		trashToAdd += toIncWith;
 	}
 	
 	private void spawnNew() {
@@ -314,6 +334,9 @@ public class GameBoard {
 				} else {
 					break;
 				}
+			}
+			if (otherPlayer != null) {
+				otherPlayer.incTrashLines(rowsRemoved);
 			}
 		}
 	}
