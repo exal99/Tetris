@@ -12,7 +12,7 @@ import gameBoard.GameBoard;
 
 public class TwoPlayerGameGUI extends JPanel {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2169562354894689781L;
 	private GameGUI player1;
 	private GameGUI player2;
 	

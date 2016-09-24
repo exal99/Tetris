@@ -13,7 +13,7 @@ import java.util.Hashtable;
 import java.util.Map.Entry;
 
 public class HighScore implements Serializable{
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -7008171349896583459L;
 	private Hashtable<Long, String> highScore;
 	
 	public HighScore() {

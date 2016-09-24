@@ -7,7 +7,7 @@ import tetrads.Tetrad;
 import tetrads.Tetrads;
 
 public class FieldGUI extends Component{
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 6077438996961152317L;
 	private GameBoard board;
 	private static final int X_PADDING = 2;
 	private static final int Y_PADDING = 2;

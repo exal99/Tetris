@@ -20,7 +20,7 @@ import highscore.HighScore;
 
 public class StartMenu extends JPanel {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -8251278609097932005L;
 	private static final int FONT_SIZE = 30;
 	private static final int PADDING = 40;
 	

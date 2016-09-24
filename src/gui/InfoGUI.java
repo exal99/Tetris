@@ -16,7 +16,8 @@ import gameBoard.GameBoard;
 import tetrads.Tetrad;
 
 public class InfoGUI extends JPanel{
-	private static final long serialVersionUID = 1L;
+	
+	private static final long serialVersionUID = -717741957965845289L;
 	private GameBoard board;
 	private TetradDisplayer queue;
 	private TetradDisplayer hold;

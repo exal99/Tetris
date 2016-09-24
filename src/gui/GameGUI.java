@@ -12,7 +12,7 @@ import tetrads.Tetrad;
 
 public class GameGUI extends JPanel{
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 5223523654499038529L;
 	private FieldGUI field;
 	private InfoGUI info;
 	private Tetrad lastQueue;
