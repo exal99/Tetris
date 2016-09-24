@@ -1,12 +1,8 @@
 package game;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -20,9 +16,6 @@ import gameBoard.GameBoard;
 import gui.GameGUI;
 import gui.StartMenu;
 import highscore.HighScore;
-import keyEvents.PlayerOneKeyListener;
-import keyEvents.PlayerTwoKeyListener;
-import soundPlayer.SoundPlayer;
 
 public class MainSinglePlayerThread extends Thread {
 	
@@ -121,45 +114,11 @@ public class MainSinglePlayerThread extends Thread {
 		
 	}
 	
-	private static HighScore getScore() {
-		InputStream in = (new Object()).getClass().getResourceAsStream("/high_score.score");
-		InputStream buffer = new BufferedInputStream(in);
-		HighScore score = null;
-		try {
-			ObjectInput object = new ObjectInputStream(buffer);
-			score = (HighScore) object.readObject();
-		} catch (IOException e) {
-			System.out.println("file_notFoud");
-			score = new HighScore();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return score;
-	}
-	
 	private void displayScore(HighScore score) {
 		StringBuilder sb = new StringBuilder("Scores:\n----\n");
 		for (Entry<String, Long> entry : score.getHighScorer()) {
 			sb.append(entry.getKey() + ": " + entry.getValue() + "\n");
 		}
 		JOptionPane.showMessageDialog(root, sb.toString());
-	}
-	
-	public static void main(String[] args) {
-		Timer t = new Timer();
-		GameBoard player1 = new GameBoard(t);
-		GameBoard player2 = new GameBoard(t);
-		JFrame root = new JFrame("Tetris");
-		root.setFocusable(true);
-		root.addKeyListener(new PlayerOneKeyListener(player1, player1.getTimer()));
-		root.addKeyListener(new PlayerTwoKeyListener(player2, player2.getTimer()));
-		StartMenu menu = new StartMenu(player1, player2, root, getScore(), args);
-		root.add(menu);
-		root.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		root.setSize(800, 600);
-		root.setVisible(true);
-		SoundPlayer sound = new SoundPlayer("music.wav");
-		sound.playSound();
-		
 	}
 }

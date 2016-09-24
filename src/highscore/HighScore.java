@@ -1,5 +1,10 @@
 package highscore;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +38,22 @@ public class HighScore implements Serializable{
 	public ArrayList<Entry<String, Long>> getPartOfList(int numValues) {
 		Entry<String,Long>[] array = (Entry<String, Long>[]) Arrays.copyOfRange(getHighScorer().toArray(), 0, numValues);
 		return new ArrayList<Entry<String,Long>>(Arrays.asList(array));
+	}
+	
+	public static HighScore getScore() {
+		InputStream in = (new Object()).getClass().getResourceAsStream("/high_score.score");
+		InputStream buffer = new BufferedInputStream(in);
+		HighScore score = null;
+		try {
+			ObjectInput object = new ObjectInputStream(buffer);
+			score = (HighScore) object.readObject();
+		} catch (IOException e) {
+			System.out.println("file_notFoud");
+			score = new HighScore();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return score;
 	}
 	
 	private class ScoreMap implements Entry<String, Long> {
