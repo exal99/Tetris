@@ -76,7 +76,7 @@ public class StartMenu extends JPanel {
 		game.reset();
 		root.remove(this);
 		root.setSize(800, 600);
-		GameGUI gui = new GameGUI(game, game.getTimer(), 800, 600);
+		GameGUI gui = new GameGUI(game, game.getTimer(), 800, 600, false, false);
 		root.add(gui);
 		thread = new Main(gui, game, game.getTimer(), root, score, args);
 		thread.start();

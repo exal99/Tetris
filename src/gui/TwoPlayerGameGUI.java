@@ -17,8 +17,8 @@ public class TwoPlayerGameGUI extends JPanel {
 	private GameGUI player2;
 	
 	public TwoPlayerGameGUI(GameBoard pl1, GameBoard pl2, Timer t, int width, int height) {
-		player1 = new GameGUI(pl1, t, (int) Math.round(width/2D), height, false);
-		player2 = new GameGUI(pl2, t, (int) Math.round(width/2D), height, true);
+		player1 = new GameGUI(pl1, t, (int) Math.round(width/2D), height, false, true);
+		player2 = new GameGUI(pl2, t, (int) Math.round(width/2D), height, true, true);
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 //		add(Box.createHorizontalGlue());
 		add(player1);

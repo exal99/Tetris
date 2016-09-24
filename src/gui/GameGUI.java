@@ -29,10 +29,10 @@ public class GameGUI extends JPanel{
 
 	}
 	
-	public GameGUI(GameBoard g, Timer t, int width, int height, boolean inverted) {
+	public GameGUI(GameBoard g, Timer t, int width, int height, boolean inverted, boolean multiplayer) {
 		init(g, t, width, height);
 		int sqareSize = height/(g.getField().length - 2);
-		int padding = (int) (width - (sqareSize * 10) - info.getPreferredSize().getWidth());
+		int padding = (multiplayer) ? (int) (width - (sqareSize * 10) - info.getPreferredSize().getWidth()) : 10;
 		if (inverted) {
 			add(field);
 			add(Box.createRigidArea(new Dimension(padding, 0)));
