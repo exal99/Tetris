@@ -13,10 +13,10 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import game.Main;
+import game.MainSinglePlayerThread;
 import gameBoard.GameBoard;
 import highscore.HighScore;
-import keyEvents.UserInput;
+import keyEvents.PlayerOneKeyListener;
 
 public class StartMenu extends JPanel {
 
@@ -27,7 +27,7 @@ public class StartMenu extends JPanel {
 	private GameBoard game;
 	private JFrame root;
 	private String[] args;
-	private Main thread;
+	private MainSinglePlayerThread thread;
 	private HighScore score;
 	
 	public StartMenu(GameBoard game, JFrame root, HighScore hscore, String[] args) {
@@ -69,7 +69,7 @@ public class StartMenu extends JPanel {
 		this.root = root;
 		this.score = hscore;
 		
-		root.addKeyListener(new UserInput(game, game.getTimer()));
+		root.addKeyListener(new PlayerOneKeyListener(game, game.getTimer()));
 	}
 	
 	private void singleButtonClick() {
@@ -78,7 +78,7 @@ public class StartMenu extends JPanel {
 		root.setSize(800, 600);
 		GameGUI gui = new GameGUI(game, game.getTimer(), 800, 600, false, false);
 		root.add(gui);
-		thread = new Main(gui, game, game.getTimer(), root, score, args);
+		thread = new MainSinglePlayerThread(gui, game, game.getTimer(), root, score, args);
 		thread.start();
 		game.start();
 		root.revalidate();

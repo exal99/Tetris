@@ -7,7 +7,7 @@ import java.util.TimerTask;
 
 import gameBoard.GameBoard;
 
-public class UserInput implements KeyListener {
+public class PlayerOneKeyListener implements KeyListener {
 	
 	private GameBoard game;
 	private TimerTask moveRight;
@@ -15,7 +15,7 @@ public class UserInput implements KeyListener {
 	private Timer timer;
 	private final static long DELAY = 250;
 	
-	public UserInput(GameBoard game, Timer t) {
+	public PlayerOneKeyListener(GameBoard game, Timer t) {
 		this.game = game;
 		moveRight = null;
 		moveLeft = null;

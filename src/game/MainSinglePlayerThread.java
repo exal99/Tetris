@@ -22,7 +22,7 @@ import gui.StartMenu;
 import highscore.HighScore;
 import soundPlayer.SoundPlayer;
 
-public class Main extends Thread {
+public class MainSinglePlayerThread extends Thread {
 	
 	private GameGUI graphics;
 	private GameBoard game;
@@ -31,7 +31,7 @@ public class Main extends Thread {
 	private String[] args;
 	private HighScore score;
 	
-	public Main(GameGUI graphics, GameBoard game, Timer t, JFrame root, HighScore score, String[] args) {
+	public MainSinglePlayerThread(GameGUI graphics, GameBoard game, Timer t, JFrame root, HighScore score, String[] args) {
 		this.graphics = graphics;
 		this.game = game;
 		this.root = root;
