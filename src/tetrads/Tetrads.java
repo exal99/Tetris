@@ -20,7 +20,7 @@ public enum Tetrads {
 	private Color color;
 	Tetrads(int r, int g, int b, String name) {
 		try {
-			Wini config = new Wini(new File("config.ini"));
+			Wini config = new Wini(new File("/config.ini"));
 			String value = config.get("tetrominoes_color", name);
 			if (value != null) {
 				String[] values = value.split(", ");
