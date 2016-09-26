@@ -62,7 +62,7 @@ public class GameBoard {
 		task = null;
 		incSpeed = false;
 		combo = 0;
-		gravity = Constants.GRAVITY.get(0);
+		gravity = Constants.SINGLE_PLAYER_GRAVITY.get(0);
 		framesSpedUp = 0;
 		paused = false;
 		trashToAdd = 0;
@@ -77,10 +77,12 @@ public class GameBoard {
 	public GameBoard(Timer t, GameBoard g) {
 		this(t);
 		otherPlayer = g;
+		gravity = Constants.MULTIPLAYER_GRAVITY.get(0);
 	}
 	
 	public void setOtherPlayer(GameBoard g) {
 		otherPlayer = g;
+		gravity = Constants.MULTIPLAYER_GRAVITY.get(0);
 	}
 	
 	public boolean isPaused() {
@@ -104,7 +106,7 @@ public class GameBoard {
 		task = null;
 		incSpeed = false;
 		combo = 0;
-		gravity = Constants.GRAVITY.get(0);
+		gravity = Constants.SINGLE_PLAYER_GRAVITY.get(0);
 		framesSpedUp = 0;
 		trashToAdd = 0;
 		multiplayerCombo = 0;
@@ -126,7 +128,7 @@ public class GameBoard {
 		if (otherPlayer == null) {
 			return (incSpeed) ? 20 : gravity/256D;
 		} else {
-			return (incSpeed) ? 20 : 0.1;
+			return (incSpeed) ? 20 : 1D/gravity;
 		}
 	}
 	
@@ -165,7 +167,11 @@ public class GameBoard {
 		}
 		if (level + 1 % 100 != 0) {
 			level++;
-			gravity = (Constants.GRAVITY.get(level) != null) ? Constants.GRAVITY.get(level) : gravity;
+			if (otherPlayer == null) {
+				gravity = (Constants.SINGLE_PLAYER_GRAVITY.get(level) != null) ? Constants.SINGLE_PLAYER_GRAVITY.get(level) : gravity;
+			} else {
+				gravity = (Constants.MULTIPLAYER_GRAVITY.get(level) != null) ? Constants.MULTIPLAYER_GRAVITY.get(level) : gravity;
+			}
 		}
 		if (this.trashToAdd > 0) {
 			for (; trashToAdd > 0; trashToAdd--) {
@@ -315,7 +321,11 @@ public class GameBoard {
 		}
 		for (int i = 0; i < rowsRemoved; i++) {
 			level++;
-			gravity = (Constants.GRAVITY.get(level) != null) ? Constants.GRAVITY.get(level) : gravity;
+			if (otherPlayer == null) {
+				gravity = (Constants.SINGLE_PLAYER_GRAVITY.get(level) != null) ? Constants.SINGLE_PLAYER_GRAVITY.get(level) : gravity;
+			} else {
+				gravity = (Constants.MULTIPLAYER_GRAVITY.get(level) != null) ? Constants.MULTIPLAYER_GRAVITY.get(level) : gravity;
+			}
 		}
 		int bravo = 4;
 		for (int col = 0; col < MAX_X; col++) {
