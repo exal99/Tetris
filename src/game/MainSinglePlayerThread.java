@@ -57,7 +57,9 @@ public class MainSinglePlayerThread extends Thread {
 			if(game.isRuning()) {
 				if (System.nanoTime() - lastFrame >= 1000000000/FPS) {
 					graphics.update();
-					game.incNumFramesSpedUp();
+					if (game.isSpedUp()) {
+						game.incNumFramesSpedUp();
+					}
 					lastFrame = System.nanoTime();
 					if (debug) {
 						frames++;
