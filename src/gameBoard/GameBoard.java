@@ -128,7 +128,7 @@ public class GameBoard {
 		if (otherPlayer == null) {
 			return (incSpeed) ? 20 : gravity/256D;
 		} else {
-			return (incSpeed) ? 20 : 1D/gravity;
+			return (incSpeed) ? 1 : 1D/gravity;
 		}
 	}
 	
@@ -337,10 +337,8 @@ public class GameBoard {
 		score += (Math.ceil((level + rowsRemoved)/4.0) + framesSpedUp) * rowsRemoved * combo * bravo;
 		
 		if (rowsRemoved >= 2) {
-			if (rowsRemoved == 4) {
-				rowsRemoved++;
-			}
-			for (int i = 0; i < rowsRemoved - 1; i++) {
+			int diff = (rowsRemoved == 4) ? 0 : -1;
+			for (int i = 0; i < rowsRemoved + diff; i++) {
 				if (typeField[MAX_Y - 1][0] == Tetrads.TRASH) {
 					moveDown(MAX_Y - 1);
 				} else {
@@ -348,12 +346,11 @@ public class GameBoard {
 				}
 			}
 			if (otherPlayer != null) {
-				otherPlayer.incTrashLines((rowsRemoved == 5) ? 4 : rowsRemoved);
+				otherPlayer.incTrashLines(rowsRemoved);
 			}
 		} else if (multiplayerCombo >= 1 && otherPlayer != null) {
 			otherPlayer.incTrashLines(rowsRemoved);
 		}
-		
 		if (rowsRemoved != 0) {
 			combo = combo + (2*rowsRemoved) - 2;
 			framesSpedUp = 0;
@@ -513,6 +510,15 @@ public class GameBoard {
 	public void fastPlace() {
 		while (checkValidState(0,1)) {
 			controlling.fall();
+		}
+		if (task == null) {
+			task = new TimerTask() {
+				@Override
+				public void run() {
+					place();
+				}
+			};
+			timer.schedule(task, DELAY);
 		}
 	}
 	
