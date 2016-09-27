@@ -126,7 +126,7 @@ public class GameBoard {
 	
 	public double getGravity() {
 		if (otherPlayer == null) {
-			return (incSpeed) ? 20 : gravity/256D;
+			return (incSpeed) ? Math.max(1, gravity/256D) : gravity/256D;
 		} else {
 			return (incSpeed) ? 1 : 1D/gravity;
 		}
