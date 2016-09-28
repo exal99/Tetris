@@ -40,14 +40,18 @@ launch4j {
 
 task makeJarZip(type: Zip, dependsOn: "jar") {
 	from "build/libs"
-	from "build/resources"
+	from "music.waw"
+	from "config.ini"
+	from "Tetrads.xml"
 	into "tetris"
 	appendix = "jar"
 }
 
 task makeExeZip(type: Zip, dependsOn: "launch4j") {
 	from "build/launch4j/Tetris.exe"
-	from "build/resources"
+	from "music.waw"
+	from "config.ini"
+	from "Tetrads.xml"
 	into "tetris"
 	appendix = "exe"
 }
