@@ -35,7 +35,7 @@ jar {
 launch4j {
 	mainClassName = "game.Main"
 	outfile = "Tetris.exe"
-	icon = "icons/tetris.ico"
+	icon = project.rootDir.getPath() + "/resources/tetris.ico"
 }
 
 task makeJarZip(type: Zip, dependsOn: "jar") {
