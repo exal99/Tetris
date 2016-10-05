@@ -47,27 +47,37 @@ public class GameBoard {
 	private final int MAX_Y = 22;
 	private final int MAX_X = 10;
 	
+	private int[] lastFour;
+	private int oldest;
+	
 	public GameBoard(Timer t) {
-		hold = null;
-		canHold = true;
 		rand = new Random();
-		controlling = getRandomTetrad();
-		queue = getRandomTetrad();
-		field = new boolean[MAX_Y][MAX_X];
-		typeField = new Tetrads[MAX_Y][MAX_X];
-		score = 0;
-		running = false;
-		level = 0;
 		timer = t;
-		task = null;
-		incSpeed = false;
-		combo = 0;
-		gravity = Constants.SINGLE_PLAYER_GRAVITY.get(0);
-		framesSpedUp = 0;
-		paused = false;
-		trashToAdd = 0;
 		otherPlayer = null;
-		multiplayerCombo = 0;
+		paused = false;
+		reset();
+//		hold = null;
+//		canHold = true;
+//		rand = new Random();
+//		controlling = getRandomTetrad();
+//		queue = getRandomTetrad();
+//		field = new boolean[MAX_Y][MAX_X];
+//		typeField = new Tetrads[MAX_Y][MAX_X];
+//		score = 0;
+//		running = false;
+//		level = 0;
+//		timer = t;
+//		task = null;
+//		incSpeed = false;
+//		combo = 0;
+//		gravity = Constants.SINGLE_PLAYER_GRAVITY.get(0);
+//		framesSpedUp = 0;
+//		paused = false;
+//		trashToAdd = 0;
+//		otherPlayer = null;
+//		multiplayerCombo = 0;
+//		lastFour = new int[]{2,2,3,3}
+//		oldest = 0;
 	}
 	
 	public boolean[][] getColition() {
@@ -110,6 +120,8 @@ public class GameBoard {
 		framesSpedUp = 0;
 		trashToAdd = 0;
 		multiplayerCombo = 0;
+		lastFour = new int[]{2,2,3,3};
+		oldest = 0;
 	}
 	
 	public Timer getTimer() {
