@@ -1,19 +1,19 @@
-package gameBoard;
+package main.gameBoard;
 
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import constants.Constants;
-import tetrads.Alpha;
-import tetrads.Gamma;
-import tetrads.LeftSnake;
-import tetrads.RightSnake;
-import tetrads.Square;
-import tetrads.Straight;
-import tetrads.TTurn;
-import tetrads.Tetrad;
-import tetrads.Tetrads;
+import main.constants.Constants;
+import main.tetrads.Alpha;
+import main.tetrads.Gamma;
+import main.tetrads.LeftSnake;
+import main.tetrads.RightSnake;
+import main.tetrads.Square;
+import main.tetrads.Straight;
+import main.tetrads.TTurn;
+import main.tetrads.Tetrad;
+import main.tetrads.Tetrads;
 
 public class GameBoard {
 	private Tetrad hold;

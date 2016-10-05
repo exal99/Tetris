@@ -1,4 +1,4 @@
-package tetrads;
+package main.tetrads;
 
 import java.awt.Color;
 import java.io.File;

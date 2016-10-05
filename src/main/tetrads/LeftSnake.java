@@ -1,4 +1,4 @@
-package tetrads;
+package main.tetrads;
 
 
 public class LeftSnake extends Tetrad {

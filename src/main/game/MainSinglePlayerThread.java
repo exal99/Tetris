@@ -1,4 +1,4 @@
-package game;
+package main.game;
 
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
@@ -12,10 +12,10 @@ import java.util.Timer;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import gameBoard.GameBoard;
-import gui.GameGUI;
-import gui.StartMenu;
-import highscore.HighScore;
+import main.gameBoard.GameBoard;
+import main.gui.GameGUI;
+import main.gui.StartMenu;
+import main.highscore.HighScore;
 
 public class MainSinglePlayerThread extends Thread {
 	

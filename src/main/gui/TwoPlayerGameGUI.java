@@ -1,4 +1,4 @@
-package gui;
+package main.gui;
 
 import java.awt.Dimension;
 import java.util.Timer;
@@ -8,7 +8,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import gameBoard.GameBoard;
+import main.gameBoard.GameBoard;
 
 public class TwoPlayerGameGUI extends JPanel {
 

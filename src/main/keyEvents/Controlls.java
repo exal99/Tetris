@@ -1,4 +1,4 @@
-package keyEvents;
+package main.keyEvents;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -10,7 +10,7 @@ import javax.swing.KeyStroke;
 
 import org.ini4j.Ini;
 
-import gameBoard.GameBoard;
+import main.gameBoard.GameBoard;
 
 public class Controlls implements KeyListener {
 	

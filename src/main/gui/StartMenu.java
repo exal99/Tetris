@@ -1,4 +1,4 @@
-package gui;
+package main.gui;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -13,10 +13,10 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import game.MainMultiPlayerThread;
-import game.MainSinglePlayerThread;
-import gameBoard.GameBoard;
-import highscore.HighScore;
+import main.game.MainMultiPlayerThread;
+import main.game.MainSinglePlayerThread;
+import main.gameBoard.GameBoard;
+import main.highscore.HighScore;
 
 public class StartMenu extends JPanel {
 

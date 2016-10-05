@@ -1,4 +1,4 @@
-package highscore;
+package main.highscore;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;

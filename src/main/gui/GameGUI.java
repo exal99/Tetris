@@ -1,4 +1,4 @@
-package gui;
+package main.gui;
 
 import java.awt.Dimension;
 import java.util.Timer;
@@ -7,8 +7,8 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import gameBoard.GameBoard;
-import tetrads.Tetrad;
+import main.gameBoard.GameBoard;
+import main.tetrads.Tetrad;
 
 public class GameGUI extends JPanel{
 	

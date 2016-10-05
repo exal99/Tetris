@@ -1,10 +1,11 @@
-package gui;
+package main.gui;
 
 import java.awt.Component;
 import java.awt.Graphics;
-import gameBoard.GameBoard;
-import tetrads.Tetrad;
-import tetrads.Tetrads;
+
+import main.gameBoard.GameBoard;
+import main.tetrads.Tetrad;
+import main.tetrads.Tetrads;
 
 public class FieldGUI extends Component{
 	private static final long serialVersionUID = 6077438996961152317L;

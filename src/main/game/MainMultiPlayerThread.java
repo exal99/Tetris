@@ -1,14 +1,14 @@
-package game;
+package main.game;
 
 import java.util.Timer;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import gameBoard.GameBoard;
-import gui.StartMenu;
-import gui.TwoPlayerGameGUI;
-import highscore.HighScore;
+import main.gameBoard.GameBoard;
+import main.gui.StartMenu;
+import main.gui.TwoPlayerGameGUI;
+import main.highscore.HighScore;
 
 public class MainMultiPlayerThread extends Thread {
 	private TwoPlayerGameGUI graphics;

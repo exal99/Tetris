@@ -1,4 +1,4 @@
-package game;
+package main.game;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,11 +9,11 @@ import javax.swing.JFrame;
 import org.ini4j.InvalidFileFormatException;
 import org.ini4j.Wini;
 
-import gameBoard.GameBoard;
-import gui.StartMenu;
-import highscore.HighScore;
-import keyEvents.Controlls;
-import soundPlayer.SoundPlayer;
+import main.gameBoard.GameBoard;
+import main.gui.StartMenu;
+import main.highscore.HighScore;
+import main.keyEvents.Controlls;
+import main.soundPlayer.SoundPlayer;
 
 public class Main {
 	

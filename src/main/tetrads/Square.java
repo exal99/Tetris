@@ -1,4 +1,4 @@
-package tetrads;
+package main.tetrads;
 
 
 public class Square extends Tetrad {
