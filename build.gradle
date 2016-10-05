@@ -41,7 +41,7 @@ launch4j {
 task makeJarZip(type: Zip, dependsOn: "jar") {
 	description "Compiles a new jar file and zips it together with needed files"
 	from "build/libs"
-	from "music.waw"
+	from "music.wav"
 	from "config.ini"
 	from "Tetrads.xml"
 	into "tetris"
@@ -51,7 +51,7 @@ task makeJarZip(type: Zip, dependsOn: "jar") {
 task makeExeZip(type: Zip, dependsOn: "launch4j") {
 	description "Creates a new exe file and zips it together with needed files"
 	from "build/launch4j/Tetris.exe"
-	from "music.waw"
+	from "music.wav"
 	from "config.ini"
 	from "Tetrads.xml"
 	into "tetris"
