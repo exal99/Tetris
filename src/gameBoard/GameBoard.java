@@ -46,6 +46,7 @@ public class GameBoard {
 	private final long DELAY = 500;
 	private final int MAX_Y = 22;
 	private final int MAX_X = 10;
+	private final int NUM_TRYES = 4;
 	
 	private int[] lastFour;
 	private int oldest;
@@ -56,28 +57,6 @@ public class GameBoard {
 		otherPlayer = null;
 		paused = false;
 		reset();
-//		hold = null;
-//		canHold = true;
-//		rand = new Random();
-//		controlling = getRandomTetrad();
-//		queue = getRandomTetrad();
-//		field = new boolean[MAX_Y][MAX_X];
-//		typeField = new Tetrads[MAX_Y][MAX_X];
-//		score = 0;
-//		running = false;
-//		level = 0;
-//		timer = t;
-//		task = null;
-//		incSpeed = false;
-//		combo = 0;
-//		gravity = Constants.SINGLE_PLAYER_GRAVITY.get(0);
-//		framesSpedUp = 0;
-//		paused = false;
-//		trashToAdd = 0;
-//		otherPlayer = null;
-//		multiplayerCombo = 0;
-//		lastFour = new int[]{2,2,3,3}
-//		oldest = 0;
 	}
 	
 	public boolean[][] getColition() {
@@ -106,8 +85,10 @@ public class GameBoard {
 	public void reset() {
 		hold = null;
 		canHold = true;
-		controlling = getRandomTetrad();
-		queue = getRandomTetrad();
+		do{
+			controlling = getRandom(rand.nextInt(7));
+		} while (controlling.getType() == Tetrads.LEFT_SNAKE || controlling.getType() == Tetrads.RIGHT_SNAKE || controlling.getType() == Tetrads.SQUARE);
+		queue = getRandom(rand.nextInt(7));
 		field = new boolean[MAX_Y][MAX_X];
 		typeField = new Tetrads[MAX_Y][MAX_X];
 		score = 0;
@@ -144,9 +125,18 @@ public class GameBoard {
 		}
 	}
 	
-	private Tetrad getRandomTetrad() {
-		switch (rand.nextInt(7)) {
-		case 0: 
+	private boolean contains(int toTest) {
+		for (int i : lastFour) {
+			if (i == toTest) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private Tetrad getRandom(int tetNum) {
+		switch (tetNum) {
+		case 0:
 			return new Alpha();
 		case 1:
 			return new Gamma();
@@ -163,6 +153,26 @@ public class GameBoard {
 		default:
 			throw new RuntimeException();
 		}
+	}
+	
+	private Tetrad getRandomTetrad() {
+		int try_num = 0;
+		while (try_num < NUM_TRYES) {
+			int tetNum = rand.nextInt(7);
+			if (!contains(tetNum)) {
+				lastFour[oldest] = tetNum;
+				oldest++;
+				oldest %= lastFour.length;
+				return getRandom(tetNum);
+			} else {
+				try_num++;
+			}
+		}
+		int tetNum = rand.nextInt(7);
+		lastFour[oldest] = tetNum;
+		oldest++;
+		oldest %= lastFour.length;
+		return getRandom(tetNum);
 	}
 	
 	public void incTrashLines(int toIncWith) {
