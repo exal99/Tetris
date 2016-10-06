@@ -16,23 +16,23 @@ import main.tetrads.Tetrad;
 import main.tetrads.Tetrads;
 
 public class GameBoard {
-	private Tetrad hold;
-	private Tetrad controlling;
-	private Tetrad queue;
+	protected Tetrad hold;
+	protected Tetrad controlling;
+	protected Tetrad queue;
 	
 	private boolean canHold;
 	private boolean incSpeed;
 	private int framesSpedUp;
 	
-	private boolean[][] field;
-	private Tetrads[][] typeField;
+	protected boolean[][] field;
+	protected Tetrads[][] typeField;
 	
-	private boolean running;
-	private boolean paused;
+	protected boolean running;
+	protected boolean paused;
 	
-	private long score;
-	private int level;
-	private int combo;
+	protected long score;
+	protected int level;
+	protected int combo;
 	private int gravity;
 	private int trashToAdd;
 	private int multiplayerCombo;
@@ -44,11 +44,11 @@ public class GameBoard {
 	
 	private final Random rand;
 	private final long DELAY = 500;
-	private final int MAX_Y = 22;
-	private final int MAX_X = 10;
+	protected final int MAX_Y = 22;
+	protected final int MAX_X = 10;
 	private final int NUM_TRYES = 4;
 	
-	private int[] lastFour;
+	private int[] lastTetrads;
 	private int oldest;
 	
 	public GameBoard(Timer t) {
@@ -71,7 +71,9 @@ public class GameBoard {
 	
 	public void setOtherPlayer(GameBoard g) {
 		otherPlayer = g;
-		gravity = Constants.MULTIPLAYER_GRAVITY.get(0);
+		if (g != null) {
+			gravity = Constants.MULTIPLAYER_GRAVITY.get(0);
+		}
 	}
 	
 	public boolean isPaused() {
@@ -101,7 +103,7 @@ public class GameBoard {
 		framesSpedUp = 0;
 		trashToAdd = 0;
 		multiplayerCombo = 0;
-		lastFour = new int[]{2,2,3,3};
+		lastTetrads = new int[]{2,2,3,3};
 		oldest = 0;
 	}
 	
@@ -126,7 +128,7 @@ public class GameBoard {
 	}
 	
 	private boolean contains(int toTest) {
-		for (int i : lastFour) {
+		for (int i : lastTetrads) {
 			if (i == toTest) {
 				return true;
 			}
@@ -160,18 +162,18 @@ public class GameBoard {
 		while (try_num < NUM_TRYES) {
 			int tetNum = rand.nextInt(7);
 			if (!contains(tetNum)) {
-				lastFour[oldest] = tetNum;
+				lastTetrads[oldest] = tetNum;
 				oldest++;
-				oldest %= lastFour.length;
+				oldest %= lastTetrads.length;
 				return getRandom(tetNum);
 			} else {
 				try_num++;
 			}
 		}
 		int tetNum = rand.nextInt(7);
-		lastFour[oldest] = tetNum;
+		lastTetrads[oldest] = tetNum;
 		oldest++;
-		oldest %= lastFour.length;
+		oldest %= lastTetrads.length;
 		return getRandom(tetNum);
 	}
 	
