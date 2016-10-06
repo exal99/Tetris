@@ -1,10 +1,12 @@
 package ai.ai;
 
+import java.util.Collection;
+import java.util.List;
+
 import ai.aiGameBoard.AiGameBoard;
 
 public class Ai {
 	private AiGameBoard game;
-	private long score;
 	private final double HEIGHT_CONST;
 	private final double ROUFNESS_CONST;
 	private final double HOLES_CONST;
@@ -13,13 +15,22 @@ public class Ai {
 	
 	public Ai(AiGameBoard g, double height, double roufness, double holes, double blocking, double lines) {
 		game = g;
-		score = game.getScore();
 		
 		HEIGHT_CONST = height;
 		ROUFNESS_CONST = roufness;
 		HOLES_CONST = holes;
 		BLOCKING_CONST = blocking;
 		LINES_REMOVED_CONST = lines;
+	}
+	
+	public Ai(AiGameBoard g, List<Double> vals) {
+		game = g;
+		
+		HEIGHT_CONST = vals.get(0);
+		ROUFNESS_CONST = vals.get(1);
+		HOLES_CONST = vals.get(2);
+		BLOCKING_CONST = vals.get(3);
+		LINES_REMOVED_CONST = vals.get(4);
 	}
 	
 	public double getHEIGHT_CONST() {
@@ -41,9 +52,87 @@ public class Ai {
 	public double getLINES_REMOVED_CONST() {
 		return LINES_REMOVED_CONST;
 	}
+	
+	public double[] getConsts() {
+		return new double[]{HEIGHT_CONST, ROUFNESS_CONST, HOLES_CONST, BLOCKING_CONST, LINES_REMOVED_CONST};
+	}
 
-	private double evalBoard() {
-		return 0D;
+	private double evalBoard(AiGameBoard board) {
+		return getHeightVal(board) + getRoufnessVal(board) + getHolesVal(board) + getBlockingVal(board) + getLinesRemovedVal(board);
+	}
+	
+	private double getLinesRemovedVal(AiGameBoard board) {
+		return LINES_REMOVED_CONST * (board.getScore() - game.getScore());
+	}
+
+	private double getBlockingVal(AiGameBoard board) {
+		boolean[][] field = board.getColition();
+		int numBlocking = 0;
+		int maxRow = field.length;
+		for (int col = 0; col < field[0].length; col++) {
+			int blockingOnCol = 0;
+			boolean holeOnCol = false;
+			for (int row = maxRow - getHeight(field, col); row < maxRow; row++) {
+				if (field[row][col]) {
+					blockingOnCol++;
+				} else {
+					holeOnCol = true;
+				}
+				if (row == maxRow - 1 && !holeOnCol) { //last time if no holes on current coll
+					blockingOnCol = 0;
+				}
+			}
+			numBlocking += blockingOnCol;
+		}
+		return numBlocking * BLOCKING_CONST;
+	}
+
+	private double getHolesVal(AiGameBoard board) {
+		boolean[][] field = board.getColition();
+		int holes = 0;
+		int maxRow = field.length;
+		for (int col = 0; col < field[0].length; col++) {
+			for (int row = maxRow - getHeight(field, col); row < maxRow - 1; row++) {
+				if (field[row][col] && !field[row + 1][col]) {
+					holes++;
+				}
+			}
+		}
+		return holes * HOLES_CONST;
+	}
+
+	private double getHeightVal(AiGameBoard board) {
+		boolean[][] field = board.getColition();
+		double height = 0;
+		for (int col = 0; col < field[0].length; col++) {	
+			int colHeight = getHeight(field, col);
+			if (colHeight > height) {
+				height = colHeight;
+			}
+		}
+		return height * HEIGHT_CONST;
+	}
+	
+	private int getHeight(boolean[][] field, int col) {
+		int maxRow = field.length;
+		for (int row = 0; row < maxRow; row++) {
+			if (field[row][col]) {
+				return maxRow - row;
+			} 
+		}
+		return 0;
+	}
+	
+	private double getRoufnessVal(AiGameBoard board) {
+		boolean[][] field = board.getColition();
+		int prevHeight = getHeight(field, 0);
+		int roufness = 0;
+		for (int col = 1; col < field[0].length; col++) {
+			int height = getHeight(field, col); 
+			roufness += Math.abs(prevHeight - height);
+			prevHeight = height;
+		}
+		return roufness * ROUFNESS_CONST;
 	}
 	
 	public void makeMove() {
