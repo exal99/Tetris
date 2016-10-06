@@ -28,12 +28,12 @@ sourceSets {
 }
 
 jar {
-	manifest.attributes "Main-Class" : "game.Main", "Class-Path": "."
+	manifest.attributes "Main-Class" : "main.game.Main", "Class-Path": "."
 	from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
 }
 
 launch4j {
-	mainClassName = "game.Main"
+	mainClassName = "main.game.Main"
 	outfile = "Tetris.exe"
 	icon = project.rootDir.getPath() + "/resources/tetris.ico"
 }
