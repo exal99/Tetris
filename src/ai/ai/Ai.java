@@ -171,9 +171,12 @@ public class Ai {
 				}
 				currentOrien.add(g -> g.turnLeft());
 				subOneClone.turnLeft();
+				if (orien == 2 && col == field[0].length - 1) {
+					subOneClone.moveRight();
+				}
 			}
-			currentMovement.add(g -> g.moveLeft());
-			superClone.moveLeft();
+			currentMovement.add(g -> g.moveRight());
+			superClone.moveRight();
 		}
 		for (Action a : bestAction) {
 			a.run(game);
@@ -187,6 +190,7 @@ public class Ai {
 			game.moveLeft();
 		}
 		for (int col = 0; col < game.getColition()[0].length; col++) {
+			game.moveRight();
 			double colVal = bestMoveInCol(game, col);
 			bestMove = (colVal > bestMove) ? colVal : bestMove;
 		}
@@ -198,6 +202,9 @@ public class Ai {
 		for (int orientation = 0; orientation < 4; orientation++) {
 			AiGameBoard currentOrien = board.clone();
 			currentOrien.turnLeft();
+			if (orientation == 2 && col == board.getField()[0].length - 1) {
+				currentOrien.moveRight();
+			}
 			currentOrien.place();
 			
 			double orienVal = evalBoard(currentOrien);
