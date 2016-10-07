@@ -277,7 +277,7 @@ public class GameBoard {
 		return true;
 	}
 	
-	private boolean checkValidState(int deltaX, int deltaY) {
+	protected boolean checkValidState(int deltaX, int deltaY) {
 		return checkValidState(controlling, deltaX, deltaY);
 	}
 	
