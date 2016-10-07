@@ -3,6 +3,7 @@ package ai.ai;
 import java.util.ArrayList;
 
 import ai.aiGameBoard.AiGameBoard;
+import main.tetrads.Tetrads;
 
 public class Ai {
 	private AiGameBoard game;
@@ -159,7 +160,9 @@ public class Ai {
 		for (int col = 0; col < field[0].length; col++) {
 			ArrayList<Action> currentOrien = new ArrayList<Action>();
 			AiGameBoard subOneClone = superClone.clone();
-			for (int orien = 0; orien < 4; orien++) {
+			for (int orien = 0; orien < ((game.getControlling().getType() == Tetrads.SQUARE || 
+										  game.getControlling().getType() == Tetrads.STRAIGHT) ?  2 : 4);
+				orien++) {
 				AiGameBoard orienClone = subOneClone.clone();
 				orienClone.place();
 				double colVal = evalBestMove(orienClone);
@@ -199,7 +202,9 @@ public class Ai {
 	
 	private double bestMoveInCol(AiGameBoard board, int col) {
 		double bestOrientation = Double.NEGATIVE_INFINITY;
-		for (int orientation = 0; orientation < 4; orientation++) {
+		for (int orientation = 0; orientation < ((board.getControlling().getType() == Tetrads.SQUARE ||
+												  board.getControlling().getType() == Tetrads.STRAIGHT) ? 2 : 4);
+			orientation++) {
 			AiGameBoard currentOrien = board.clone();
 			currentOrien.turnLeft();
 			if (orientation == 2 && col == board.getField()[0].length - 1) {
