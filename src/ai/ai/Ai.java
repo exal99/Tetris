@@ -1,20 +1,21 @@
 package ai.ai;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import ai.aiGameBoard.AiGameBoard;
 
 public class Ai {
 	private AiGameBoard game;
-	private final double HEIGHT_CONST;
-	private final double ROUFNESS_CONST;
-	private final double HOLES_CONST;
-	private final double BLOCKING_CONST;
-	private final double LINES_REMOVED_CONST;
+	private double HEIGHT_CONST;
+	private double ROUFNESS_CONST;
+	private double HOLES_CONST;
+	private double BLOCKING_CONST;
+	private double LINES_REMOVED_CONST;
+	private int age;
 	
 	public Ai(AiGameBoard g, double height, double roufness, double holes, double blocking, double lines) {
 		game = g;
+		age = 0;
 		
 		HEIGHT_CONST = height;
 		ROUFNESS_CONST = roufness;
@@ -23,14 +24,23 @@ public class Ai {
 		LINES_REMOVED_CONST = lines;
 	}
 	
-	public Ai(AiGameBoard g, List<Double> vals) {
+	public Ai(AiGameBoard g, double... vals) {
 		game = g;
+		age = 0;
 		
-		HEIGHT_CONST = vals.get(0);
-		ROUFNESS_CONST = vals.get(1);
-		HOLES_CONST = vals.get(2);
-		BLOCKING_CONST = vals.get(3);
-		LINES_REMOVED_CONST = vals.get(4);
+		HEIGHT_CONST = vals[0];
+		ROUFNESS_CONST = vals[1];
+		HOLES_CONST = vals[2];
+		BLOCKING_CONST = vals[3];
+		LINES_REMOVED_CONST = vals[4];
+	}
+	
+	public int getAge() {
+		return age;
+	}
+	
+	public void incAge() {
+		age++;
 	}
 	
 	public double getHEIGHT_CONST() {
@@ -135,54 +145,66 @@ public class Ai {
 		return roufness * ROUFNESS_CONST;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void makeMove() {
-		ArrayList<Action> bestAction = null;
-		ArrayList<Action> currentAction = new ArrayList<Action>();
+		ArrayList<Action> bestAction = new ArrayList<Action>();
+		
 		double bestMove = Double.NEGATIVE_INFINITY;
 		boolean[][] field = game.getColition();
 		game.turnLeft();
 		while (game.checkValidState(-1, 0)) {
 			game.moveLeft();
 		}
+		AiGameBoard superClone = game.clone();
+		ArrayList<Action> currentMovement = new ArrayList<Action>();
 		for (int col = 0; col < field[0].length; col++) {
-			for (int i = 0; i < col; i++) {
-				currentAction.add(b -> b.moveRight());
+			ArrayList<Action> currentOrien = new ArrayList<Action>();
+			AiGameBoard subOneClone = superClone.clone();
+			for (int orien = 0; orien < 4; orien++) {
+				AiGameBoard orienClone = subOneClone.clone();
+				orienClone.place();
+				double colVal = evalBestMove(orienClone);
+				if (colVal > bestMove) {
+					bestMove = colVal;
+					bestAction.clear();
+					bestAction.addAll(currentOrien);
+					bestAction.addAll(currentMovement);
+				}
+				currentOrien.add(g -> g.turnLeft());
+				subOneClone.turnLeft();
 			}
-			Object[] res = bestMoveInCol(game.clone(), col);
-			double colVal = (double) res[0];
-			if (colVal > bestMove) {
-				bestMove = colVal;
-				bestAction = (ArrayList<Action>) res[1];
-				bestAction.addAll(currentAction);
-			}
-			currentAction.clear();
+			currentMovement.add(g -> g.moveLeft());
+			superClone.moveLeft();
 		}
 		for (Action a : bestAction) {
 			a.run(game);
 		}
+		game.fastPlace();
 	}
 	
-	private Object[] bestMoveInCol(AiGameBoard board, int col) {
+	private double evalBestMove(AiGameBoard game) {
+		double bestMove = Double.NEGATIVE_INFINITY;
+		while (game.checkValidState(-1, 0)) {
+			game.moveLeft();
+		}
+		for (int col = 0; col < game.getColition()[0].length; col++) {
+			double colVal = bestMoveInCol(game, col);
+			bestMove = (colVal > bestMove) ? colVal : bestMove;
+		}
+		return bestMove;
+	}
+	
+	private double bestMoveInCol(AiGameBoard board, int col) {
 		double bestOrientation = Double.NEGATIVE_INFINITY;
-		ArrayList<Action> bestAction = new ArrayList<Action>();
-		ArrayList<Action> actions = new ArrayList<Action>();
 		for (int orientation = 0; orientation < 4; orientation++) {
 			AiGameBoard currentOrien = board.clone();
-			for (int o = 0; o < orientation; o++) {
-				currentOrien.turnLeft();
-				actions.add(b -> b.turnLeft());
-			}
+			currentOrien.turnLeft();
 			currentOrien.place();
+			
 			double orienVal = evalBoard(currentOrien);
-			if (orienVal > bestOrientation) {
-				bestOrientation = orienVal;
-				bestAction.clear();
-				bestAction.addAll(actions);
-			}
+			bestOrientation = (orienVal > bestOrientation) ? orienVal : bestOrientation;
 			
 		}
-		return new Object[]{bestOrientation, bestAction};
+		return bestOrientation;
 	}
 	
 	private interface Action {
