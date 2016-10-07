@@ -1,6 +1,6 @@
 package ai.ai;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 import ai.aiGameBoard.AiGameBoard;
@@ -135,7 +135,57 @@ public class Ai {
 		return roufness * ROUFNESS_CONST;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void makeMove() {
-		
+		ArrayList<Action> bestAction = null;
+		ArrayList<Action> currentAction = new ArrayList<Action>();
+		double bestMove = Double.NEGATIVE_INFINITY;
+		boolean[][] field = game.getColition();
+		game.turnLeft();
+		while (game.checkValidState(-1, 0)) {
+			game.moveLeft();
+		}
+		for (int col = 0; col < field[0].length; col++) {
+			for (int i = 0; i < col; i++) {
+				currentAction.add(b -> b.moveRight());
+			}
+			Object[] res = bestMoveInCol(game.clone(), col);
+			double colVal = (double) res[0];
+			if (colVal > bestMove) {
+				bestMove = colVal;
+				bestAction = (ArrayList<Action>) res[1];
+				bestAction.addAll(currentAction);
+			}
+			currentAction.clear();
+		}
+		for (Action a : bestAction) {
+			a.run(game);
+		}
+	}
+	
+	private Object[] bestMoveInCol(AiGameBoard board, int col) {
+		double bestOrientation = Double.NEGATIVE_INFINITY;
+		ArrayList<Action> bestAction = new ArrayList<Action>();
+		ArrayList<Action> actions = new ArrayList<Action>();
+		for (int orientation = 0; orientation < 4; orientation++) {
+			AiGameBoard currentOrien = board.clone();
+			for (int o = 0; o < orientation; o++) {
+				currentOrien.turnLeft();
+				actions.add(b -> b.turnLeft());
+			}
+			currentOrien.place();
+			double orienVal = evalBoard(currentOrien);
+			if (orienVal > bestOrientation) {
+				bestOrientation = orienVal;
+				bestAction.clear();
+				bestAction.addAll(actions);
+			}
+			
+		}
+		return new Object[]{bestOrientation, bestAction};
+	}
+	
+	private interface Action {
+		public void run(AiGameBoard b);
 	}
 }

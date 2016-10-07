@@ -14,5 +14,13 @@ public class AiGameBoard extends GameBoard {
 	public AiGameBoard(Timer t, GameBoard g) {
 		super(t, g);
 	}
+	
+	public AiGameBoard clone() {
+		return null;
+	}
+	
+	public boolean checkValidState(int deltaX, int deltaY) {
+		return super.checkValidState(deltaX, deltaY);
+	}
 
 }
