@@ -15,6 +15,11 @@ public final class HelpTerminalCommand extends AbstractTerminalCommand {
 	public HelpTerminalCommand(Terminal t, HashMap<String, TerminalCommand> coms) {
 		super(t);
 		commands = coms;
+		shortDesc = "Provides a list of commands";
+		longDesc = "Provides help information for a given command or a list of all commands";
+		optionalArgs = new String[]{"command"};
+		argDescriptions = new String[]{"display help information on that command"};
+		requierdArgs = new String[0];
 	}
 	
 	@Override
@@ -56,21 +61,7 @@ public final class HelpTerminalCommand extends AbstractTerminalCommand {
 		rString.append("</table><br><br>");
 		return rString.toString();
 	}
-
-	@Override
-	public String getShortDescription() {
-		return "Provides a list of commands";
-	}
-
-	@Override
-	public String getLongDescription() {
-		String rString = "" 
-				+ "Provides help information for a given command or a list of all commands<br><br>"
-				+ "<h3>USAGE:</h3><br>"
-				+ "help [command]<br><br>"
-				+ Terminal.getTab() + "command - display help information on that command<br><br>";
-		return rString;
-	}
+	
 	
 	@Override
 	public String getName() {

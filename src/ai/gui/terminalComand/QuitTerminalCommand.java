@@ -4,9 +4,15 @@ import ai.gui.Terminal;
 import ai.gui.terminalComand.exceptions.TerminalException;
 
 public class QuitTerminalCommand extends AbstractTerminalCommand {
+	
 
 	public QuitTerminalCommand(Terminal term) {
 		super(term);
+		shortDesc = "Quits the Ai Terminal";
+		longDesc = shortDesc;
+		requierdArgs = new String[0];
+		optionalArgs = new String[0];
+		argDescriptions = new String[0];
 	}
 
 	@Override
@@ -17,18 +23,6 @@ public class QuitTerminalCommand extends AbstractTerminalCommand {
 	@Override
 	public String getRegex() {
 		return "quit";
-	}
-	
-	@Override
-	public String getShortDescription() {
-		return "Quits the Ai Terminal";
-	}
-	
-	@Override
-	public String getLongDescription() {
-		return getShortDescription() + "<br><br>"
-				+ "<h3>USAGE:</h3><br><br>"
-				+ "quit<br><br>";
 	}
 	
 	@Override

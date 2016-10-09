@@ -21,6 +21,11 @@ public class ClearTerminalCommand extends AbstractTerminalCommand {
 		}
 		assert res;
 		command = com;
+		shortDesc = "Clears the screen";
+		longDesc = shortDesc;
+		requierdArgs = new String[0];
+		optionalArgs = new String[0];
+		argDescriptions = new String[0];
 	}
 
 	@Override
@@ -37,18 +42,6 @@ public class ClearTerminalCommand extends AbstractTerminalCommand {
 	public void excecuteCommand(String args) throws TerminalException {
 		super.excecuteCommand(args);
 		term.clear();
-	}
-	
-	@Override
-	public String getShortDescription() {
-		return "Clears the screen";
-	}
-	
-	@Override
-	public String getLongDescription() {
-		return "Clears the screen<br><br>"
-				+ "<h3>USAGE:</h3><br>"
-				+ command + "<br><br>";
 	}
 
 }

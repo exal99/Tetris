@@ -25,7 +25,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 
-import ai.gui.terminalComand.AutoCompleat;
 import ai.gui.terminalComand.ClearTerminalCommand;
 import ai.gui.terminalComand.HelpTerminalCommand;
 import ai.gui.terminalComand.QuitTerminalCommand;

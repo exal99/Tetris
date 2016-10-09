@@ -1,4 +1,4 @@
-package ai.gui.terminalComand;
+package ai.gui;
 
 import java.util.Collections;
 import java.util.List;
@@ -9,9 +9,14 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 
-import ai.gui.Terminal;
 import ai.gui.Terminal.Mode;
-
+/**
+ * Based on the AreaTextDemo from oracle.
+ * Source: http://docs.oracle.com/javase/tutorial/uiswing/components/textarea.html
+ * 
+ * @author Oracle
+ *
+ */
 public class AutoCompleat implements DocumentListener {
 	
 	private JTextField input;
@@ -27,8 +32,6 @@ public class AutoCompleat implements DocumentListener {
 	@Override
 	public void insertUpdate(DocumentEvent ev) {
 		if (ev.getLength() != 1) {
-			
-//			term.setMode(Mode.TYPING);
             return;
         }
         
