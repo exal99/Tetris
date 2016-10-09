@@ -4,7 +4,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import javax.swing.JFrame;
-import javax.swing.JTextPane;
 
 import ai.gui.Terminal;
 
@@ -47,9 +46,6 @@ public class Main implements Thread.UncaughtExceptionHandler{
 		root.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		root.add(t);
 		root.setSize(Terminal.STANDARD_WINDOW_WIDTH, Terminal.STANDARD_WINDOW_HEIGHT);
-		root.setVisible(true);
-		
+		root.setVisible(true);	
 	}
-
-
 }
