@@ -27,15 +27,15 @@ public class AiGameBoard extends GameBoard {
 		 */
 		AiGameBoard clone = new AiGameBoard(null);
 		clone.combo = combo;
-		clone.controlling = controlling;
-		clone.field = field;
-		clone.hold = hold;
+		clone.controlling = controlling.clone();
+		clone.field = field.clone();
+		clone.hold = hold.clone();
 		clone.level = level;
 		clone.paused = paused;
-		clone.queue = queue;
+		clone.queue = queue.clone();
 		clone.running = running;
 		clone.score = score;
-		clone.typeField = typeField;
+		clone.typeField = typeField.clone();
 		return clone;
 	}
 	
@@ -50,6 +50,14 @@ public class AiGameBoard extends GameBoard {
 			controlling.fall();
 		}
 		place();
+	}
+	
+	@Override
+	public void update() {
+		super.update();
+		if (level >= 200) {
+			running = false;
+		}
 	}
 
 }

@@ -149,6 +149,22 @@ public abstract class Tetrad {
 		return orientation;
 	}
 	
+	@Override
+	public Tetrad clone() {
+		Tetrad newTetrad = null;
+		try {
+			newTetrad = getClass().newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		newTetrad.xPos = xPos;
+		newTetrad.yPos = yPos;
+		newTetrad.orientation = orientation.clone();
+		return newTetrad;
+	}
+	
 	public abstract Tetrads getType();
 	
 	public String toString() {
