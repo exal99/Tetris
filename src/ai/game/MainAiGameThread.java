@@ -31,7 +31,7 @@ public class MainAiGameThread extends Thread {
 		final long FPS = 60;
 		final long TICKS = 1200;
 		
-		while (isAlive() && !isInterrupted()) {
+		while (isAlive() && !isInterrupted() && game.isRuning()) {
 			if (updateGraphics && System.nanoTime() - lastFrame >= 1000000000/FPS) {
 				if (graphics != null) {
 					graphics.update();
@@ -45,6 +45,12 @@ public class MainAiGameThread extends Thread {
 				}
 				lastTick = System.nanoTime();
 			}
+		}
+		try {
+			join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
