@@ -226,7 +226,6 @@ public class Terminal extends JPanel {
 	public void quit() {
 		JFrame root = (JFrame) SwingUtilities.getWindowAncestor(this);
 		root.dispatchEvent(new WindowEvent(root, WindowEvent.WINDOW_CLOSING));
-		System.out.println("quit");
 	}
 	
 	public class CompleationTask implements Runnable {

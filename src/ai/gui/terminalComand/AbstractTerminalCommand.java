@@ -53,7 +53,6 @@ public abstract class AbstractTerminalCommand implements TerminalCommand {
 		for (int i = 0; i < optional.length; i++) {
 			sb.append(Terminal.getTab() + optional[i] + " - " + descriptions[i + requierd.length] + "<br><br>");
 		}
-		System.out.println(sb.toString());
 		return sb.toString();
 	}
 
