@@ -44,7 +44,7 @@ public class Generation implements Serializable{
 		long[] scores = new long[gen.length];
 		for (int i = 0; i < gen.length; i++) {
 			Ai ai = gen[i];
-			MainAiGameThread thread = new MainAiGameThread(timer, ai.getGame());
+			MainAiGameThread thread = new MainAiGameThread(ai.getGame());
 			thread.start();
 			ai.makeMove();
 			while (thread.isAlive() && !thread.isInterrupted()) {
@@ -63,6 +63,7 @@ public class Generation implements Serializable{
 	}
 
 	private void naturalSelection(long[] scores) {
+
 		long sum = 0;
 		for (long val : scores) {
 			sum += val;
@@ -99,7 +100,7 @@ public class Generation implements Serializable{
 		ArrayList<Ai> killed = new ArrayList<Ai>();
 		currIndex = 0;
 		for (int i = 0; i < scores.length; i++) {
-			int toAdd = (int) Math.round(1000 * (1 - (((double) scores[i])/sum)));
+			int toAdd = (int) Math.round(1000 * ((((double) -scores[i])/sum) + 1));
 			assert toAdd < 1000;
 			for (int a = 0; a < toAdd; a++) {
 				toPickFrom[currIndex] = gen[i];
