@@ -75,6 +75,10 @@ public class Ai {
 	public double[] getConsts() {
 		return new double[]{HEIGHT_CONST, ROUFNESS_CONST, HOLES_CONST, BLOCKING_CONST, LINES_REMOVED_CONST};
 	}
+	
+	public AiGameBoard getGame() {
+		return game;
+	}
 
 	private double evalBoard(AiGameBoard board) {
 		return getHeightVal(board) + getRoufnessVal(board) + getHolesVal(board) + getBlockingVal(board) + getLinesRemovedVal(board);
