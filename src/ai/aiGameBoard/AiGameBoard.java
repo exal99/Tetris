@@ -6,9 +6,10 @@ import main.gameBoard.GameBoard;
 
 public class AiGameBoard extends GameBoard {
 	
+	
 	public AiGameBoard(Timer t) {
 		super(t);
-		// TODO Auto-generated constructor stub
+		DELAY = 10;
 	}
 	
 	public AiGameBoard(Timer t, GameBoard g) {
@@ -38,8 +39,17 @@ public class AiGameBoard extends GameBoard {
 		return clone;
 	}
 	
+	@Override
 	public boolean checkValidState(int deltaX, int deltaY) {
 		return super.checkValidState(deltaX, deltaY);
+	}
+	
+	@Override
+	public void fastPlace() {
+		while (checkValidState(0,1)) {
+			controlling.fall();
+		}
+		place();
 	}
 
 }
