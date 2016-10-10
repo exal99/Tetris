@@ -1,6 +1,7 @@
 package ai.ai;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 import ai.aiGameBoard.AiGameBoard;
 import main.tetrads.Tetrads;
@@ -229,6 +230,41 @@ public class Ai {
 			
 		}
 		return bestOrientation;
+	}
+	
+	public Ai mate(Ai otherParrent, AiGameBoard newGame) {
+		double[] consts = new double[getConsts().length];
+		double[] selfConsts = getConsts();
+		double[] otherConsts = otherParrent.getConsts();
+		ThreadLocalRandom rand = ThreadLocalRandom.current();
+		for (int i = 0; i < selfConsts.length; i++) {
+			consts[i] = (rand.nextBoolean()) ? selfConsts[i] : otherConsts[i];
+		}
+		return new Ai(newGame, consts);
+	}
+	
+	public void mutate(double maxMutate) {
+		ThreadLocalRandom rand = ThreadLocalRandom.current();
+		switch (rand.nextInt(0, 5)) {
+		case 0:
+			HEIGHT_CONST += rand.nextDouble(-maxMutate, maxMutate);
+			break;
+		case 1:
+			ROUFNESS_CONST += rand.nextDouble(-maxMutate, maxMutate);
+			break;
+		case 2:
+			HOLES_CONST += rand.nextDouble(-maxMutate, maxMutate);
+			break;
+		case 3:
+			BLOCKING_CONST += rand.nextDouble(-maxMutate, maxMutate);
+			break;
+		case 4:
+			LINES_REMOVED_CONST += rand.nextDouble(-maxMutate, maxMutate);
+			break;
+		default:
+			assert false;
+			break;
+		}
 	}
 	
 	private interface Action {
