@@ -11,21 +11,27 @@ import ai.game.MainAiGameThread;
 public class Generation implements Serializable{
 
 	private static final long serialVersionUID = 3918496939878532598L;
-	private static final int DEFAULT_GEN_SIZE = 100;
-	private static final double MIN_VAL = -100D;
-	private static final double MAX_VAL = 100D;
+	
+	private static final String DEFAULT_GEN_SIZE = "1000";
+	private static final String MIN_VAL = "-100";
+	private static final String MAX_VAL = "100";
+	private static final String MUTATE_INTERVALL = Double.toString(0.1 * Double.parseDouble(MAX_VAL));
+	private static final String MUTATE_PROB = "0.1";
 	
 	private Ai[] gen;
 	private Timer timer;
 	
 	public Generation(Timer t) {
-		gen = new Ai[DEFAULT_GEN_SIZE];
+		int genSize = Integer.parseInt(System.getProperty("default_gen_size", DEFAULT_GEN_SIZE));
+		gen = new Ai[genSize];
 		timer = t;
-		for (int i = 0; i < DEFAULT_GEN_SIZE; i++) {
+		double minVal = Double.parseDouble(System.getProperty("miv_val", MIN_VAL));
+		double maxVal = Double.parseDouble(System.getProperty("max_val", MAX_VAL));
+		for (int i = 0; i < genSize; i++) {
 			ThreadLocalRandom rand = ThreadLocalRandom.current();
-			gen[i] = new Ai(new AiGameBoard(timer), rand.nextDouble(MIN_VAL, MAX_VAL), 
-					rand.nextDouble(MIN_VAL, MAX_VAL), rand.nextDouble(MIN_VAL, MAX_VAL),
-					rand.nextDouble(MIN_VAL, MAX_VAL), rand.nextDouble(MIN_VAL, MAX_VAL));
+			gen[i] = new Ai(new AiGameBoard(timer), rand.nextDouble(minVal, maxVal), 
+					rand.nextDouble(minVal, maxVal), rand.nextDouble(minVal, maxVal),
+					rand.nextDouble(minVal, maxVal), rand.nextDouble(minVal, maxVal));
 		}
 		
 	}
@@ -41,6 +47,7 @@ public class Generation implements Serializable{
 			while (thread.isAlive() && !thread.isInterrupted()) {
 				ai.makeMove();
 			}
+			ai.incAge();
 			scores[i] = ai.getGame().getScore();
 		}
 		naturalSelection(scores);
