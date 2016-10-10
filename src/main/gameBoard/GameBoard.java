@@ -43,7 +43,7 @@ public class GameBoard {
 	private TimerTask task;
 	
 	private final Random rand;
-	private final long DELAY = 500;
+	protected final long DELAY = 500;
 	protected final int MAX_Y = 22;
 	protected final int MAX_X = 10;
 	private final int NUM_TRYES = 4;
