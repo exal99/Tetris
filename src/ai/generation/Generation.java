@@ -109,6 +109,7 @@ public class Generation implements Serializable{
 		}
 		
 		for (int i = 0; i < newChildren.length; i++) {
+<<<<<<< HEAD
 			int indToKill = -1;
 			int pickFromInd = -1;
 			do {
@@ -117,6 +118,9 @@ public class Generation implements Serializable{
 			} while (!contains(killed, toPickFrom[pickFromInd]));
 			killed.add(toPickFrom[pickFromInd]);
 			gen[indToKill] = newChildren[i];
+=======
+			
+>>>>>>> f8ce31239e54fbfc313a19cb99c738e327522a91
 		}
 	}
 	
