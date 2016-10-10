@@ -6,6 +6,8 @@ import ai.aiGameBoard.AiGameBoard;
 import main.tetrads.Tetrads;
 
 public class Ai {
+	private static int ID = 0;
+	
 	private AiGameBoard game;
 	private double HEIGHT_CONST;
 	private double ROUFNESS_CONST;
@@ -13,10 +15,12 @@ public class Ai {
 	private double BLOCKING_CONST;
 	private double LINES_REMOVED_CONST;
 	private int age;
+	private int id;
 	
 	public Ai(AiGameBoard g, double height, double roufness, double holes, double blocking, double lines) {
 		game = g;
 		age = 0;
+		id = ID++;
 		
 		HEIGHT_CONST = height;
 		ROUFNESS_CONST = roufness;
@@ -42,6 +46,10 @@ public class Ai {
 	
 	public void incAge() {
 		age++;
+	}
+	
+	public int getId() {
+		return id;
 	}
 	
 	public double getHEIGHT_CONST() {
