@@ -177,7 +177,7 @@ public class Ai {
 										  game.getControlling().getType() == Tetrads.STRAIGHT) ?  2 : 4);
 				orien++) {
 				AiGameBoard orienClone = subOneClone.clone();
-				orienClone.place();
+				orienClone.fastPlace();
 				double colVal = evalBestMove(orienClone);
 				if (colVal > bestMove) {
 					bestMove = colVal;
@@ -223,7 +223,7 @@ public class Ai {
 			if (orientation == 2 && col == board.getField()[0].length - 1) {
 				currentOrien.moveRight();
 			}
-			currentOrien.place();
+			currentOrien.fastPlace();
 			
 			double orienVal = evalBoard(currentOrien);
 			bestOrientation = (orienVal > bestOrientation) ? orienVal : bestOrientation;
