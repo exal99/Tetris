@@ -10,21 +10,23 @@ public class AiGameBoard extends GameBoard {
 	public AiGameBoard(Timer t) {
 		super(t);
 		DELAY = 10;
+		score = 1;
 	}
 	
 	public AiGameBoard(Timer t, GameBoard g) {
 		super(t, g);
 	}
 	
+	/**
+	 * Returns a clone of the AiGameBoard. The clone cannot be used in place of the parent
+	 * since the clone isn't created as a perfect clone but rather as a clone used for simulating all
+	 * possibilities. It contains all the necessary information to determine the best possible move for 
+	 * the game board.
+	 * 
+	 * @return a clone of the AiGameBoard
+	 */
 	public AiGameBoard clone() {
-		/**
-		 * Returns a clone of the AiGameBoard. The clone cannot be used in place of the parent
-		 * since the clone isn't created as a perfect clone but rather as a clone used for simulating all
-		 * possibilities. It contains all the necessary information to determine the best possible move for 
-		 * the game board.
-		 * 
-		 * @return a clone of the AiGameBoard
-		 */
+		
 		AiGameBoard clone = new AiGameBoard(null);
 		clone.combo = combo;
 		clone.controlling = controlling.clone();
