@@ -28,7 +28,7 @@ public class Generation implements Serializable{
 		int genSize = Integer.parseInt(System.getProperty("default_gen_size", DEFAULT_GEN_SIZE));
 		gen = new Ai[genSize];
 		timer = t;
-		double minVal = Double.parseDouble(System.getProperty("miv_val", MIN_VAL));
+		double minVal = Double.parseDouble(System.getProperty("min_val", MIN_VAL));
 		double maxVal = Double.parseDouble(System.getProperty("max_val", MAX_VAL));
 		for (int i = 0; i < genSize; i++) {
 			ThreadLocalRandom rand = ThreadLocalRandom.current();
