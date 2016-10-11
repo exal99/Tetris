@@ -11,6 +11,7 @@ public class AiGameBoard extends GameBoard {
 		super(t);
 		DELAY = 10;
 		score = 1;
+		running = true;
 	}
 	
 	public AiGameBoard(Timer t, GameBoard g) {
@@ -26,19 +27,31 @@ public class AiGameBoard extends GameBoard {
 	 * @return a clone of the AiGameBoard
 	 */
 	public AiGameBoard clone() {
-		
-		AiGameBoard clone = new AiGameBoard(null);
-		clone.combo = combo;
-		clone.controlling = controlling.clone();
-		clone.field = field.clone();
-		clone.hold = hold.clone();
-		clone.level = level;
-		clone.paused = paused;
-		clone.queue = queue.clone();
-		clone.running = running;
-		clone.score = score;
-		clone.typeField = typeField.clone();
-		return clone;
+		try {
+			return (AiGameBoard) super.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.exit(-1);
+			return null;
+		}
+//		AiGameBoard clone = new AiGameBoard(null);
+//		clone.combo = combo;
+//		clone.controlling = controlling.clone();
+//		clone.field = field.clone();
+////		clone.hold = hold.clone();
+//		clone.level = level;
+//		clone.paused = paused;
+//		clone.queue = queue.clone();
+//		clone.running = running;
+//		clone.score = score;
+//		clone.typeField = typeField.clone();
+//		for (int row = 0; row < typeField.length; row++) {
+//			for (int col = 0; col < typeField[0].length; col++) {
+//				clone.typeField[row][col] = typeField[row][col];
+//			}
+//		}
+//		return clone;
 	}
 	
 	@Override
@@ -66,6 +79,7 @@ public class AiGameBoard extends GameBoard {
 	public void reset() {
 		super.reset();
 		score = 1;
+		running = true;
 	}
-
+	
 }

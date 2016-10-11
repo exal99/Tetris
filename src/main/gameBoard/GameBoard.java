@@ -15,7 +15,7 @@ import main.tetrads.TTurn;
 import main.tetrads.Tetrad;
 import main.tetrads.Tetrads;
 
-public class GameBoard {
+public class GameBoard implements Cloneable{
 	protected Tetrad hold;
 	protected Tetrad controlling;
 	protected Tetrad queue;
@@ -181,7 +181,7 @@ public class GameBoard {
 		trashToAdd += toIncWith;
 	}
 	
-	private void spawnNew() {
+	protected void spawnNew() {
 		controlling = queue;
 		if (!checkValidState(0, 0) && !checkValidState(0, 1)) {
 			running = false;
@@ -572,6 +572,26 @@ public class GameBoard {
 	
 	public Tetrad getHolding() {
 		return hold;
+	}
+	
+	public Object clone() throws CloneNotSupportedException {
+		GameBoard clone = (GameBoard) super.clone();
+		clone.field = new boolean[field.length][field[0].length];
+		clone.typeField = new Tetrads[field.length][field[0].length];
+		for (int i = 0; i < field.length; i++) {
+			for (int j = 0; j < field[0].length; j++) {
+				clone.field[i][j] = field[i][j];
+				clone.typeField[i][j] = typeField[i][j];
+			}
+		}
+		clone.lastTetrads = new int[lastTetrads.length];
+		for (int i = 0; i < lastTetrads.length; i++) {
+			clone.lastTetrads[i] = lastTetrads[i];
+		}
+		clone.controlling = controlling.clone();
+		clone.queue = queue.clone();
+		
+		return clone;
 	}
 	
 	public static void main(String[] args) {

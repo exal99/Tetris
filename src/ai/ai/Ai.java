@@ -3,6 +3,7 @@ package ai.ai;
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
+
 import ai.aiGameBoard.AiGameBoard;
 import main.tetrads.Tetrads;
 
@@ -173,10 +174,15 @@ public class Ai {
 		for (int col = 0; col < field[0].length; col++) {
 			ArrayList<Action> currentOrien = new ArrayList<Action>();
 			AiGameBoard subOneClone = superClone.clone();
+			assert subOneClone.getColition() != game.getColition();
 			for (int orien = 0; orien < ((game.getControlling().getType() == Tetrads.SQUARE || 
 										  game.getControlling().getType() == Tetrads.STRAIGHT) ?  2 : 4);
 				orien++) {
+//				System.out.println("thinking");
 				AiGameBoard orienClone = subOneClone.clone();
+				for (int i = 0; i < orien; i++) {
+					orienClone.turnLeft();
+				}
 				orienClone.fastPlace();
 				double colVal = evalBestMove(orienClone);
 				if (colVal > bestMove) {
@@ -198,16 +204,17 @@ public class Ai {
 			a.run(game);
 		}
 		game.fastPlace();
+		System.out.println("done");
 	}
 	
-	private double evalBestMove(AiGameBoard game) {
+	private double evalBestMove(AiGameBoard localGame) {
 		double bestMove = Double.NEGATIVE_INFINITY;
-		while (game.checkValidState(-1, 0)) {
-			game.moveLeft();
+		while (localGame.checkValidState(-1, 0)) {
+			localGame.moveLeft();
 		}
-		for (int col = 0; col < game.getColition()[0].length; col++) {
-			game.moveRight();
-			double colVal = bestMoveInCol(game, col);
+		for (int col = 0; col < localGame.getColition()[0].length; col++) {
+			localGame.moveRight();
+			double colVal = bestMoveInCol(localGame, col);
 			bestMove = (colVal > bestMove) ? colVal : bestMove;
 		}
 		return bestMove;

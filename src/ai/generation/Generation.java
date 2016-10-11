@@ -59,15 +59,27 @@ public class Generation implements Serializable{
 				MainAiGameThread.getGraphics().setAppend(ai.toString());
 			}
 			Tetrad controlling = ai.getGame().getControlling();
-			MainAiGameThread thread = new MainAiGameThread(ai.getGame());
+			MainAiGameThread thread = new MainAiGameThread(game);
 			thread.start();
 			ai.makeMove();
 			while (thread.isAlive() && !thread.isInterrupted()) {
-				if (controlling != ai.getGame().getControlling()) {
-					ai.makeMove();
-					controlling = ai.getGame().getControlling();
+				if (MainAiGameThread.getGraphics() != null) {
+					MainAiGameThread.getGraphics().setAppend(ai.toString());
 				}
+				ai.makeMove();
+//				if (controlling != ai.getGame().getControlling()) {
+//					ai.makeMove();
+//					if (controlling != ai.getGame().getControlling()) {
+//						controlling = ai.getGame().getControlling();
+//						System.out.println("update");
+//					} else {
+//						controlling = ai.getGame().getQueue();
+//						System.out.println("second update");
+//					}
+//					System.out.println("move made");
+//				}
 			}
+			System.out.println("done");
 			ai.incAge();
 			scores[i] = ai.getGame().getScore();
 			game.reset();

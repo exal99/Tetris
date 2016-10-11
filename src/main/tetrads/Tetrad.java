@@ -9,7 +9,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-public abstract class Tetrad {
+public abstract class Tetrad implements Cloneable{
 	
 	private int xPos;
 	private int yPos;
@@ -153,15 +153,13 @@ public abstract class Tetrad {
 	public Tetrad clone() {
 		Tetrad newTetrad = null;
 		try {
-			newTetrad = getClass().newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
+			newTetrad = (Tetrad) super.clone();
+			newTetrad.orientation = orientation.clone();
+		} catch (CloneNotSupportedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.exit(-1);
 		}
-		
-		newTetrad.xPos = xPos;
-		newTetrad.yPos = yPos;
-		newTetrad.orientation = orientation.clone();
 		return newTetrad;
 	}
 	
