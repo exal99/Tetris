@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 
+import ai.generation.Generation;
 import ai.gui.terminalComand.ClearTerminalCommand;
 import ai.gui.terminalComand.GetTerminalCommand;
 import ai.gui.terminalComand.HelpTerminalCommand;
@@ -69,6 +70,7 @@ public class Terminal extends JPanel {
 		
 		ArrayList<String> words = new ArrayList<String>();
 		words.addAll(actions.keySet());
+		words.addAll(Generation.VALUE_LABELS.values());
 		Collections.sort(words);
 		input.getDocument().addDocumentListener(new AutoCompleat(input, this, words));
 		

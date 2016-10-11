@@ -24,12 +24,22 @@ public class Generation implements Serializable{
 	private Ai[] gen;
 	private Timer timer;
 	
+	public static final HashMap<String, String> VALUE_LABELS = new HashMap<String, String>();
+	static {
+		VALUE_LABELS.put("min_val", "min");
+		VALUE_LABELS.put("max_val", "max");
+		VALUE_LABELS.put("default_gen_size", "default_generation_size");
+		VALUE_LABELS.put("percent_new", "percent_new");
+		VALUE_LABELS.put("mutate_prob", "mutate_probability");
+		VALUE_LABELS.put("max_mutate", "max_mutate_interval");
+	}
+	
 	public Generation(Timer t) {
-		int genSize = Integer.parseInt(System.getProperty("default_gen_size", DEFAULT_GEN_SIZE));
+		int genSize = Integer.parseInt(System.getProperty(VALUE_LABELS.get("default_gen_size"), DEFAULT_GEN_SIZE));
 		gen = new Ai[genSize];
 		timer = t;
-		double minVal = Double.parseDouble(System.getProperty("min_val", MIN_VAL));
-		double maxVal = Double.parseDouble(System.getProperty("max_val", MAX_VAL));
+		double minVal = Double.parseDouble(System.getProperty(VALUE_LABELS.get("min_val"), MIN_VAL));
+		double maxVal = Double.parseDouble(System.getProperty(VALUE_LABELS.get("max_val"), MAX_VAL));
 		for (int i = 0; i < genSize; i++) {
 			ThreadLocalRandom rand = ThreadLocalRandom.current();
 			gen[i] = new Ai(new AiGameBoard(timer), rand.nextDouble(minVal, maxVal), 
@@ -80,7 +90,7 @@ public class Generation implements Serializable{
 			}
 		}
 		ThreadLocalRandom rand = ThreadLocalRandom.current();
-		int numNew = (int) Math.round(gen.length * Double.parseDouble(System.getProperty("percent_new", PER_CENT_TO_BREETH)));
+		int numNew = (int) Math.round(gen.length * Double.parseDouble(System.getProperty(VALUE_LABELS.get("percent_new"), PER_CENT_TO_BREETH)));
 		Ai[] newChildren = new Ai[numNew];
 		for (int i = 0; i < numNew; i++) {
 			Ai parrentOne = toPickFrom[rand.nextInt(toPickFrom.length)];
@@ -90,8 +100,8 @@ public class Generation implements Serializable{
 			} while (parrentTwo == parrentOne);
 			
 			newChildren[i] = parrentOne.mate(parrentTwo, new AiGameBoard(timer));
-			if (rand.nextDouble() <= Double.parseDouble(System.getProperty("mutate_prob", MUTATE_PROB))) {
-				newChildren[i].mutate(Double.parseDouble(System.getProperty("max_mutate", MUTATE_INTERVALL)));
+			if (rand.nextDouble() <= Double.parseDouble(System.getProperty(VALUE_LABELS.get("mutate_prob"), MUTATE_PROB))) {
+				newChildren[i].mutate(Double.parseDouble(System.getProperty(VALUE_LABELS.get("max_mutate"), MUTATE_INTERVALL)));
 			}
 		}
 		
