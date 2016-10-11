@@ -267,6 +267,11 @@ public class Ai {
 		}
 	}
 	
+	@Override
+	public String toString() {
+		return id + ": [" + HEIGHT_CONST + ", " + ROUFNESS_CONST + ", " + HOLES_CONST + ", " + BLOCKING_CONST + ", " + LINES_REMOVED_CONST + "]"; 
+	}
+	
 	private interface Action {
 		public void run(AiGameBoard b);
 	}
