@@ -55,6 +55,9 @@ public class Generation implements Serializable{
 		long[] scores = new long[gen.length];
 		for (int i = 0; i < gen.length; i++) {
 			Ai ai = gen[i];
+			if (MainAiGameThread.getGraphics() != null) {
+				MainAiGameThread.getGraphics().setAppend(ai.toString());
+			}
 			Tetrad controlling = ai.getGame().getControlling();
 			MainAiGameThread thread = new MainAiGameThread(ai.getGame());
 			thread.start();

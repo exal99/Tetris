@@ -23,6 +23,10 @@ public class MainAiGameThread extends Thread {
 		graphics = newGraphics;
 	}
 	
+	public static GameGUI getGraphics() {
+		return graphics;
+	}
+	
 	@Override
 	public void run() {
 		long lastFrame = System.nanoTime();
