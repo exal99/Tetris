@@ -19,7 +19,6 @@ public class MainAiGameThread extends Thread {
 	}
 	
 	public static void setGraphics(GameGUI newGraphics) {
-		setGraphicsUpdate(true);
 		graphics = newGraphics;
 	}
 	
