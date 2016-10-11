@@ -65,6 +65,8 @@ public class Terminal extends JPanel {
 		lastInput = new ArrayList<String>();
 		actions = new HashMap<String, TerminalCommand>();
 		specialActions = new HashMap<String, TerminalCommand>();
+		prevInput = 0;
+		
 		createActionMap();
 		createSpecialMap();
 		
@@ -73,8 +75,6 @@ public class Terminal extends JPanel {
 		words.addAll(Generation.VALUE_LABELS.values());
 		Collections.sort(words);
 		input.getDocument().addDocumentListener(new AutoCompleat(input, this, words));
-		
-
 		
 		setPreferredSize(new Dimension(STANDARD_WINDOW_WIDTH, STANDARD_WINDOW_HEIGHT));
 		text.setPreferredSize(STANDARD_TEXT_PANE_DIM);
@@ -86,6 +86,40 @@ public class Terminal extends JPanel {
 		text.setEditable(false);
 		text.setContentType("text/html");
 		
+		makeKeyBindings();
+		
+		try {
+			InputStream in = Terminal.class.getResourceAsStream("/fonts/terminal.ttf");
+			font = Font.createFont(Font.TRUETYPE_FONT, in);
+			font = font.deriveFont(10f);
+		} catch (FontFormatException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+		}
+		
+		
+		if (font != null) {
+			text.setFont(font);
+			input.setFont(font);
+		}
+		JScrollPane scrollPane = new JScrollPane(text);
+		scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
+		input.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		
+		add(scrollPane);
+		add(input);
+		
+		String fontFamily = font.getFamily();
+		
+		text.setText(String.format("<html><style>"+
+		"body {font-family: \"%s\"; font-size: \"%2$d\"}" +
+		 "</style></html>", fontFamily, font.getSize()));
+		
+	}
+	
+	private void makeKeyBindings() {
 		input.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -137,35 +171,6 @@ public class Terminal extends JPanel {
 				}
 			}
 		});
-		
-		try {
-			InputStream in = Terminal.class.getResourceAsStream("/fonts/terminal.ttf");
-			font = Font.createFont(Font.TRUETYPE_FONT, in);
-			font = font.deriveFont(10f);
-		} catch (FontFormatException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-		}
-		prevInput = 0;
-		
-		if (font != null) {
-			text.setFont(font);
-			input.setFont(font);
-		}
-		JScrollPane scrollPane = new JScrollPane(text);
-		scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
-		input.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		
-		add(scrollPane);
-		add(input);
-		
-		String fontFamily = font.getFamily();
-		text.setText(String.format("<html><style>"+
-		"body {font-family: \"%s\"; font-size: \"%2$d\"}" +
-		 "</style></html>", fontFamily, font.getSize()));
-		
 	}
 	
 	private void createSpecialMap() {
