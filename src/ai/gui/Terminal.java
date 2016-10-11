@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Timer;
 import java.util.regex.Pattern;
 
 import javax.swing.AbstractAction;
@@ -29,6 +30,7 @@ import javax.swing.text.html.HTMLDocument;
 
 import ai.generation.Generation;
 import ai.gui.terminalComand.ClearTerminalCommand;
+import ai.gui.terminalComand.CreateNewGenerationTerminalCommand;
 import ai.gui.terminalComand.GetTerminalCommand;
 import ai.gui.terminalComand.HelpTerminalCommand;
 import ai.gui.terminalComand.QuitTerminalCommand;
@@ -54,9 +56,11 @@ public class Terminal extends JPanel {
 	private int prevInput;
 	private Mode mode = Mode.TYPING;
 	private Font font;
+	private Timer timer;
 	
 	private HashMap<String, TerminalCommand> actions;
 	private HashMap<String, TerminalCommand> specialActions;
+	private Generation generation;
 	
 	public Terminal() {
 		font = null;
@@ -66,6 +70,8 @@ public class Terminal extends JPanel {
 		actions = new HashMap<String, TerminalCommand>();
 		specialActions = new HashMap<String, TerminalCommand>();
 		prevInput = 0;
+		generation = null;
+		timer = new Timer();
 		
 		createActionMap();
 		createSpecialMap();
@@ -173,6 +179,18 @@ public class Terminal extends JPanel {
 		});
 	}
 	
+	public void setGeneration(Generation newGen) {
+		generation = newGen;
+	}
+	
+	public Generation getGeneration() {
+		return generation;
+	}
+	
+	public Timer getTimer() {
+		return timer;
+	}
+	
 	private void createSpecialMap() {
 		specialActions.put("(%(\\w)+%(\\s)*=(\\s)*(\\w|-)+)", new SetTerminalCommand(this));
 		specialActions.put("(%(\\w)+%)", new GetTerminalCommand(this));
@@ -185,6 +203,7 @@ public class Terminal extends JPanel {
 		actions.put("quit", new QuitTerminalCommand(this));
 		actions.put("get", new GetTerminalCommand(this));
 		actions.put("set", new SetTerminalCommand(this));
+		actions.put("new", new CreateNewGenerationTerminalCommand(this));
 	}
 	
 	public Dimension getTextDim() {
