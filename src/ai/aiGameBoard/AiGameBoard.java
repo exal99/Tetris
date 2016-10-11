@@ -61,5 +61,11 @@ public class AiGameBoard extends GameBoard {
 			running = false;
 		}
 	}
+	
+	@Override
+	public void reset() {
+		super.reset();
+		score = 1;
+	}
 
 }
