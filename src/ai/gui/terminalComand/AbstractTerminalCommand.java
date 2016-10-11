@@ -45,8 +45,11 @@ public abstract class AbstractTerminalCommand implements TerminalCommand {
 		assert (requierd.length + optional.length == descriptions.length);
 		StringBuilder sb = new StringBuilder("<h3>USAGE:</h3><br>" + getName() + " ");
 		sb.append(String.join(" ", requierd));
+		if (requierd.length > 0 && optional.length == 0) {
+			sb.append("<br><br>");
+		}
 		if (optional.length != 0)
-			sb.append((requierd.length > 0) ? "[ " : "[" + String.join(", ", optional) + "]<br><br>");
+			sb.append(((requierd.length > 0) ? "[ " : "[") + String.join(", ", optional) + "]<br><br>");
 		for (int i = 0; i < requierd.length; i++) {
 			sb.append(Terminal.getTab() + requierd[i] + " - " + descriptions[i] + "<br><br>");
 		}
