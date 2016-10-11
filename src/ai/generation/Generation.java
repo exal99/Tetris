@@ -9,6 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import ai.ai.Ai;
 import ai.aiGameBoard.AiGameBoard;
 import ai.game.MainAiGameThread;
+import main.tetrads.Tetrad;
 
 public class Generation implements Serializable{
 
@@ -22,7 +23,7 @@ public class Generation implements Serializable{
 	private static final String PER_CENT_TO_BREETH = "0.5";
 	
 	private Ai[] gen;
-	private Timer timer;
+	private AiGameBoard game;
 	
 	public static final HashMap<String, String> VALUE_LABELS = new HashMap<String, String>();
 	static {
@@ -37,42 +38,48 @@ public class Generation implements Serializable{
 	public Generation(Timer t) {
 		int genSize = Integer.parseInt(System.getProperty(VALUE_LABELS.get("default_gen_size"), DEFAULT_GEN_SIZE));
 		gen = new Ai[genSize];
-		timer = t;
+		Timer timer = t;
 		double minVal = Double.parseDouble(System.getProperty(VALUE_LABELS.get("min_val"), MIN_VAL));
 		double maxVal = Double.parseDouble(System.getProperty(VALUE_LABELS.get("max_val"), MAX_VAL));
+		game = new AiGameBoard(timer);
 		for (int i = 0; i < genSize; i++) {
 			ThreadLocalRandom rand = ThreadLocalRandom.current();
-			gen[i] = new Ai(new AiGameBoard(timer), rand.nextDouble(minVal, maxVal), 
+			gen[i] = new Ai(game, rand.nextDouble(minVal, maxVal), 
 					rand.nextDouble(minVal, maxVal), rand.nextDouble(minVal, maxVal),
 					rand.nextDouble(minVal, maxVal), rand.nextDouble(minVal, maxVal));
 		}
 		
 	}
 	
-	
 	public void runSimulation() {
 		long[] scores = new long[gen.length];
 		for (int i = 0; i < gen.length; i++) {
 			Ai ai = gen[i];
+			Tetrad controlling = ai.getGame().getControlling();
 			MainAiGameThread thread = new MainAiGameThread(ai.getGame());
 			thread.start();
 			ai.makeMove();
 			while (thread.isAlive() && !thread.isInterrupted()) {
-				ai.makeMove();
+				if (controlling != ai.getGame().getControlling()) {
+					ai.makeMove();
+					controlling = ai.getGame().getControlling();
+				}
 			}
 			ai.incAge();
 			scores[i] = ai.getGame().getScore();
+			game.reset();
 		}
 		naturalSelection(scores);
-		for (Ai ai : gen) {
-			ai.getGame().reset();
-		}
 	}
 	
 	public void runSimulation(int numTimes) {
 		for (;numTimes > 0; numTimes--) {
 			runSimulation();
 		}
+	}
+	
+	public AiGameBoard getGame() {
+		return game;
 	}
 
 	private void naturalSelection(long[] scores) {
@@ -102,7 +109,7 @@ public class Generation implements Serializable{
 				parrentTwo = toPickFrom[rand.nextInt(toPickFrom.length)];
 			} while (parrentTwo == parrentOne);
 			
-			newChildren[i] = parrentOne.mate(parrentTwo, new AiGameBoard(timer));
+			newChildren[i] = parrentOne.mate(parrentTwo, game);
 			if (rand.nextDouble() <= Double.parseDouble(System.getProperty(VALUE_LABELS.get("mutate_prob"), MUTATE_PROB))) {
 				newChildren[i].mutate(Double.parseDouble(System.getProperty(VALUE_LABELS.get("max_mutate"), MUTATE_INTERVALL)));
 			}
