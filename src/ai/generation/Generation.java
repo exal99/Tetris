@@ -100,7 +100,8 @@ public class Generation implements Serializable{
 		ArrayList<Ai> killed = new ArrayList<Ai>();
 		currIndex = 0;
 		for (int i = 0; i < scores.length; i++) {
-			int toAdd = (int) Math.round(1000 * ((((double) -scores[i])/sum) + 1));
+			int size = gen.length;
+			int toAdd = (int) Math.round(size * (((((double) scores[i])/sum) - 1)/(1.0-size)));
 			assert toAdd < 1000;
 			for (int a = 0; a < toAdd; a++) {
 				toPickFrom[currIndex] = gen[i];
