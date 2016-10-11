@@ -26,8 +26,10 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 
 import ai.gui.terminalComand.ClearTerminalCommand;
+import ai.gui.terminalComand.GetTerminalCommand;
 import ai.gui.terminalComand.HelpTerminalCommand;
 import ai.gui.terminalComand.QuitTerminalCommand;
+import ai.gui.terminalComand.SetTerminalCommand;
 import ai.gui.terminalComand.TerminalCommand;
 import ai.gui.terminalComand.exceptions.TerminalCommandNotFoundException;
 import ai.gui.terminalComand.exceptions.TerminalException;
@@ -164,6 +166,8 @@ public class Terminal extends JPanel {
 		actions.put("cls", new ClearTerminalCommand(this, "cls"));
 		actions.put("clear", new ClearTerminalCommand(this, "clear"));
 		actions.put("quit", new QuitTerminalCommand(this));
+		actions.put("get", new GetTerminalCommand(this));
+		actions.put("set", new SetTerminalCommand(this));
 	}
 	
 	public Dimension getTextDim() {
