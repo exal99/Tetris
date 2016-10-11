@@ -12,6 +12,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
@@ -53,6 +55,7 @@ public class Terminal extends JPanel {
 	private Font font;
 	
 	private HashMap<String, TerminalCommand> actions;
+	private HashMap<String, TerminalCommand> specialActions;
 	
 	public Terminal() {
 		font = null;
@@ -60,7 +63,9 @@ public class Terminal extends JPanel {
 		input = new JTextField();
 		lastInput = new ArrayList<String>();
 		actions = new HashMap<String, TerminalCommand>();
+		specialActions = new HashMap<String, TerminalCommand>();
 		createActionMap();
+		createSpecialMap();
 		
 		ArrayList<String> words = new ArrayList<String>();
 		words.addAll(actions.keySet());
@@ -161,6 +166,11 @@ public class Terminal extends JPanel {
 		
 	}
 	
+	private void createSpecialMap() {
+		specialActions.put("(%(\\w)+%(\\s)*=(\\s)*(\\w|-)+)", new SetTerminalCommand(this));
+		specialActions.put("(%(\\w)+%)", new GetTerminalCommand(this));
+	}
+
 	private void createActionMap() {
 		actions.put("help", new HelpTerminalCommand(this, actions));
 		actions.put("cls", new ClearTerminalCommand(this, "cls"));
@@ -205,6 +215,13 @@ public class Terminal extends JPanel {
 			if (t != null) {
 				t.excecuteCommand(input);
 			} else {
+				Set<String> regexes = specialActions.keySet();
+				for (String s : regexes) {
+					if (Pattern.matches(s, input)) {
+						specialActions.get(s).excecuteCommand(input);
+						return;
+					}
+				}
 				throw new TerminalCommandNotFoundException("No Command Named: " + input.split(" ")[0], input);
 			}
 		} catch (TerminalException e) {

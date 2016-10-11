@@ -25,17 +25,22 @@ public class SetTerminalCommand extends AbstractTerminalCommand {
 		String key = "";
 		String value = "";
 		if (m.matches()) {
+			System.out.println("matches	");
 			String[] splitString = args.split("=");
 			String before = splitString[0];
 			String after = splitString[1];
-			key = before.substring(4, before.lastIndexOf('%'));
+			System.out.println(before);
+			System.out.println(after);
+			key = before.substring(1, before.lastIndexOf('%'));
 			value = after;
+			System.out.println(key + "|");
+			System.out.println(value.replaceAll("\\s", ""));
 		} else {
 			String[] splitString = args.split(" ");
 			key = splitString[1];
 			value = splitString[2];
 		}
-		System.setProperty(key, value);
+		System.setProperty(key.replaceAll("\\s", ""), value.replaceAll("\\s", ""));
 	}
 	
 
