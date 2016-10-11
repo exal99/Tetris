@@ -64,6 +64,9 @@ public class Generation implements Serializable{
 			scores[i] = ai.getGame().getScore();
 		}
 		naturalSelection(scores);
+		for (Ai ai : gen) {
+			ai.getGame().reset();
+		}
 	}
 	
 	public void runSimulation(int numTimes) {
