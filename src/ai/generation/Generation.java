@@ -58,31 +58,23 @@ public class Generation implements Serializable{
 			if (MainAiGameThread.getGraphics() != null) {
 				MainAiGameThread.getGraphics().setAppend(ai.toString());
 			}
-			Tetrad controlling = ai.getGame().getControlling();
+			Tetrad previous = ai.getGame().getControlling();
 			MainAiGameThread thread = new MainAiGameThread(game);
 			thread.start();
+			game.start();
 			ai.makeMove();
-			while (thread.isAlive() && !thread.isInterrupted()) {
+			while (game.isRuning()) {
 				if (MainAiGameThread.getGraphics() != null) {
 					MainAiGameThread.getGraphics().setAppend(ai.toString());
 				}
-				ai.makeMove();
-//				if (controlling != ai.getGame().getControlling()) {
-//					ai.makeMove();
-//					if (controlling != ai.getGame().getControlling()) {
-//						controlling = ai.getGame().getControlling();
-//						System.out.println("update");
-//					} else {
-//						controlling = ai.getGame().getQueue();
-//						System.out.println("second update");
-//					}
-//					System.out.println("move made");
-//				}
-			}
-			System.out.println("done");
+				if (previous != game.getControlling()) {
+					previous = game.getControlling();
+					ai.makeMove();
+				}
 			ai.incAge();
 			scores[i] = ai.getGame().getScore();
 			game.reset();
+			}
 		}
 		naturalSelection(scores);
 	}
@@ -98,65 +90,135 @@ public class Generation implements Serializable{
 	}
 
 	private void naturalSelection(long[] scores) {
-
 		long sum = 0;
 		for (long val : scores) {
 			sum += val;
 		}
-		
-		Ai[] toPickFrom = new Ai[1000];
-		int currIndex = 0;
-		for (int i = 0; i<scores.length; i++) {
-			int toAdd = (int) Math.round(1000 * ((double) scores[i])/sum);
-			assert toAdd < 1000;
-			for (int a = 0; a < toAdd; a++) {
-				toPickFrom[currIndex] = gen[i];
-				currIndex++;
-			}
+		double[] probs = new double[gen.length];
+		HashMap<Integer, Ai> indexMap = new HashMap<Integer, Ai>();
+		for (int i = 0; i < gen.length; i++) {
+			probs[i] = ((double)scores[i])/sum;
+			indexMap.put(i, gen[i]);
 		}
+		sort(probs, indexMap);
+		double[] probIntervall = getProbIntervalls(probs);
 		ThreadLocalRandom rand = ThreadLocalRandom.current();
 		int numNew = (int) Math.round(gen.length * Double.parseDouble(System.getProperty(VALUE_LABELS.get("percent_new"), PER_CENT_TO_BREETH)));
 		Ai[] newChildren = new Ai[numNew];
 		for (int i = 0; i < numNew; i++) {
-			Ai parrentOne = toPickFrom[rand.nextInt(toPickFrom.length)];
+			int ind = index(probIntervall, rand.nextDouble());
+			Ai parrentOne = indexMap.get(ind);
 			Ai parrentTwo = null;
 			do {
-				parrentTwo = toPickFrom[rand.nextInt(toPickFrom.length)];
+				parrentTwo = indexMap.get(index(probIntervall, rand.nextDouble()));
 			} while (parrentTwo == parrentOne);
-			
 			newChildren[i] = parrentOne.mate(parrentTwo, game);
 			if (rand.nextDouble() <= Double.parseDouble(System.getProperty(VALUE_LABELS.get("mutate_prob"), MUTATE_PROB))) {
 				newChildren[i].mutate(Double.parseDouble(System.getProperty(VALUE_LABELS.get("max_mutate"), MUTATE_INTERVALL)));
 			}
 		}
-		
-		HashMap<Ai, Integer> aiIndex = new HashMap<Ai, Integer>();
-		toPickFrom = new Ai[1000];
 		ArrayList<Ai> killed = new ArrayList<Ai>();
-		currIndex = 0;
-		for (int i = 0; i < scores.length; i++) {
-			int size = gen.length;
-			int toAdd = (int) Math.round(size * (((((double) scores[i])/sum) - 1)/(1.0-size)));
-			assert toAdd < 1000;
-			for (int a = 0; a < toAdd; a++) {
-				toPickFrom[currIndex] = gen[i];
-				currIndex++;
-			}
-			aiIndex.put(gen[i], i);
+		double[] killProbs = new double[probs.length];
+		for (int i = 0; i < probs.length; i++) {
+			killProbs[i] = (1 - probs[i])/(scores.length - 1.0);
 		}
-		
+		sort(killProbs, indexMap);
+		probIntervall = getProbIntervalls(killProbs);
 		for (int i = 0; i < newChildren.length; i++) {
-			int indToKill = -1;
-			int pickFromInd = -1;
+			Ai toKill = null;
+			int index = -1;
 			do {
-				pickFromInd = rand.nextInt(toPickFrom.length);
-				indToKill = aiIndex.get(toPickFrom[pickFromInd]);
-			} while (!contains(killed, toPickFrom[pickFromInd]));
-			killed.add(toPickFrom[pickFromInd]);
-			gen[indToKill] = newChildren[i];
+				index = index(probIntervall, rand.nextDouble());
+				toKill = indexMap.get(index);
+			} while (contains(killed, toKill));
+			killed.add(toKill);
+			gen[index] = newChildren[i];
 		}
 	}
 	
+	private void sort(double[] probs, HashMap<Integer, Ai> indexMap) {
+		quickSort(probs, indexMap, 0, probs.length - 1);
+	}
+	
+	private void quickSort(double[] list, HashMap<Integer, Ai> indexMap, int first, int last) {
+		if (first < last) {
+			int pivIndex = getPivot(list, indexMap, first, last);
+			quickSort(list, indexMap, first, pivIndex - 1);
+			quickSort(list, indexMap, pivIndex + 1, last);
+		}
+	}
+	
+	private double[] getProbIntervalls(double[] probs) {
+		double[] probIntervall = new double[probs.length];
+		for (int i = 0; i < probs.length; i++) {
+			double prevSum = probs[i];
+			for (int a = 0; a < i; a++) {
+				prevSum += probs[a];
+			}
+			probIntervall[i] = prevSum;
+		}
+		return probIntervall;
+	}
+	
+	private int getPivot(double[] list, HashMap<Integer, Ai> indexMap, int first, int last) {
+		chooseMiddle(list, indexMap, first, last);
+		swap(list, indexMap, first, (first + last) / 2);
+		int up = first;
+		int down = last;
+		int pivot = first;
+		do {
+			while (up < last && list[pivot] >= list[up]) {
+				up++;
+			}
+			while (list[pivot] < list[down]) {
+				down--;
+			}
+			if (up < down) {
+				swap(list, indexMap, up, down);
+			}
+		} while (up < down);
+		swap(list, indexMap, down, first);
+		return down;
+	}
+	
+	private void chooseMiddle(double[] list, HashMap<Integer, Ai> indexMap, int first, int last) {
+		int middle = (first + last) / 2;
+		if (list[middle] < list[first]) {
+			swap(list, indexMap, first, middle);
+		} if (list[last] < list[middle]) {
+			swap(list, indexMap, middle, last);
+		} if (list[middle] < list[first]) {
+			swap(list, indexMap, first, middle);
+		}
+	}
+	
+	private void swap(double[] list, HashMap<Integer, Ai> indexMap, int a, int b) {
+		double temp = list[a];
+		Ai tempAi = indexMap.get(a);
+		list[a] = list[b];
+		list[b] = temp;
+		indexMap.put(a, indexMap.get(b));
+		indexMap.put(b, tempAi);
+	}
+	
+	private int index(double[] list, double val) {
+		int low = -1; 
+		int high = list.length;
+		while (low + 1 < high) {
+			int mid = (high + low) / 2;
+			if (list[mid] > val) {
+				high = mid;
+			} else if (list[mid] < val) {
+				low = mid;
+			} else {
+				return mid;
+			}
+		}
+		assert (low == -1 ) || list[low - 1] < val;
+		assert (high > list.length) || (list[high] > val);
+		return low + 1;
+	}
+
 	private boolean contains(ArrayList<Ai> toCheck, Ai toLookFor) {
 		for (Ai ai : toCheck) {
 			if (ai == toLookFor) {
@@ -165,5 +227,4 @@ public class Generation implements Serializable{
 		}
 		return false;
 	}
-
 }

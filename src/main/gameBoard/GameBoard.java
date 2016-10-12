@@ -181,7 +181,7 @@ public class GameBoard implements Cloneable{
 		trashToAdd += toIncWith;
 	}
 	
-	protected void spawnNew() {
+	private void spawnNew() {
 		controlling = queue;
 		if (!checkValidState(0, 0) && !checkValidState(0, 1)) {
 			running = false;

@@ -34,6 +34,7 @@ public class Ai {
 	public Ai(AiGameBoard g, double... vals) {
 		game = g;
 		age = 0;
+		id = ID++;
 		
 		HEIGHT_CONST = vals[0];
 		ROUFNESS_CONST = vals[1];
@@ -178,7 +179,6 @@ public class Ai {
 			for (int orien = 0; orien < ((game.getControlling().getType() == Tetrads.SQUARE || 
 										  game.getControlling().getType() == Tetrads.STRAIGHT) ?  2 : 4);
 				orien++) {
-//				System.out.println("thinking");
 				AiGameBoard orienClone = subOneClone.clone();
 				for (int i = 0; i < orien; i++) {
 					orienClone.turnLeft();
@@ -204,7 +204,6 @@ public class Ai {
 			a.run(game);
 		}
 		game.fastPlace();
-		System.out.println("done");
 	}
 	
 	private double evalBestMove(AiGameBoard localGame) {

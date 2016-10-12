@@ -1,6 +1,5 @@
 package ai.gui.terminalComand;
 
-import ai.game.MainAiGameThread;
 import ai.generation.Generation;
 import ai.gui.Terminal;
 import ai.gui.terminalComand.exceptions.TerminalException;
@@ -21,10 +20,8 @@ public class RunSimulationTerminalCommand extends AbstractTerminalCommand {
 		super.excecuteCommand(args);
 		Generation gen = term.getGeneration();
 		int numTimes = Integer.parseInt(args.split(" ")[1]);
-		Thread aiThread = new Thread(() -> gen.runSimulation(numTimes));
-//		Thread gameThread = new MainAiGameThread(gen.getGame());
+		Thread aiThread = new Thread(() -> {gen.runSimulation(numTimes); term.append("Done!<br>");});
 		aiThread.start();
-//		gameThread.start();
 	}
 
 	@Override
