@@ -12,6 +12,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
 import java.util.Timer;
 import java.util.regex.Pattern;
@@ -33,7 +35,9 @@ import ai.gui.terminalComand.ClearTerminalCommand;
 import ai.gui.terminalComand.CreateNewGenerationTerminalCommand;
 import ai.gui.terminalComand.GetTerminalCommand;
 import ai.gui.terminalComand.HelpTerminalCommand;
+import ai.gui.terminalComand.PauseTerminalCommand;
 import ai.gui.terminalComand.QuitTerminalCommand;
+import ai.gui.terminalComand.ResumeTerminalCommand;
 import ai.gui.terminalComand.RunSimulationTerminalCommand;
 import ai.gui.terminalComand.SetTerminalCommand;
 import ai.gui.terminalComand.ShowGraphicsTerminalCommand;
@@ -63,6 +67,8 @@ public class Terminal extends JPanel {
 	private HashMap<String, TerminalCommand> actions;
 	private HashMap<String, TerminalCommand> specialActions;
 	private Generation generation;
+	
+	private static Queue<String> appendRequests = new LinkedList<String>();
 	
 	public Terminal() {
 		font = null;
@@ -125,6 +131,10 @@ public class Terminal extends JPanel {
 		"body {font-family: \"%s\"; font-size: \"%2$d\"}" +
 		 "</style></html>", fontFamily, font.getSize()));
 		
+	}
+	
+	public static void makeAppendRequest(String toAppend) {
+		appendRequests.offer(toAppend);
 	}
 	
 	private void makeKeyBindings() {
@@ -208,6 +218,8 @@ public class Terminal extends JPanel {
 		actions.put("new", new CreateNewGenerationTerminalCommand(this));
 		actions.put("show", new ShowGraphicsTerminalCommand(this));
 		actions.put("run", new RunSimulationTerminalCommand(this));
+		actions.put("pause", new PauseTerminalCommand(this));
+		actions.put("resume", new ResumeTerminalCommand(this));
 	}
 	
 	public Dimension getTextDim() {
@@ -219,9 +231,17 @@ public class Terminal extends JPanel {
 	}
 	
 	public void append(String toAppend) {
+		StringBuilder toInsert = new StringBuilder();
+		if (!appendRequests.isEmpty()) {
+			int size = appendRequests.size();
+			for (int i = 0; i < size; i++) {
+				toInsert.append(appendRequests.poll());
+			}
+		}
+		toInsert.append(toAppend.replaceAll("\n", "<br>").replaceAll("\t", getTab()));
 		HTMLDocument doc = (HTMLDocument) text.getStyledDocument();
 		try {
-			doc.insertAfterEnd(doc.getCharacterElement(doc.getLength()), toAppend.replaceAll("\n", "<br>").replaceAll("\t", getTab()));
+			doc.insertAfterEnd(doc.getCharacterElement(doc.getLength()), toInsert.toString());
 		} catch (BadLocationException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

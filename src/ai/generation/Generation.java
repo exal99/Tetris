@@ -21,6 +21,7 @@ public class Generation implements Serializable{
 	private static final String MUTATE_INTERVALL = Double.toString(0.1 * Double.parseDouble(MAX_VAL));
 	private static final String MUTATE_PROB = "0.1";
 	private static final String PER_CENT_TO_BREETH = "0.5";
+	private static boolean running; 
 	
 	private Ai[] gen;
 	private AiGameBoard game;
@@ -51,6 +52,14 @@ public class Generation implements Serializable{
 		
 	}
 	
+	public static void setRunning(boolean newVal) {
+		running = newVal;
+	}
+	
+	public static boolean getRunning() {
+		return running;
+	}
+	
 	public void runSimulation() {
 		long[] scores = new long[gen.length];
 		for (int i = 0; i < gen.length; i++) {
@@ -64,25 +73,27 @@ public class Generation implements Serializable{
 			game.start();
 			ai.makeMove();
 			while (game.isRuning()) {
-				if (MainAiGameThread.getGraphics() != null) {
+				if (running && MainAiGameThread.getGraphics() != null) {
 					MainAiGameThread.getGraphics().setAppend(ai.toString());
 				}
-				if (previous != game.getControlling()) {
+				if (running && previous != game.getControlling()) {
 					previous = game.getControlling();
 					ai.makeMove();
 				}
+			}
 			ai.incAge();
 			scores[i] = ai.getGame().getScore();
 			game.reset();
-			}
 		}
 		naturalSelection(scores);
 	}
 	
 	public void runSimulation(int numTimes) {
+		setRunning(true);
 		for (;numTimes > 0; numTimes--) {
 			runSimulation();
 		}
+		setRunning(false);
 	}
 	
 	public AiGameBoard getGame() {

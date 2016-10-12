@@ -2,6 +2,7 @@ package ai.game;
 
 
 import ai.aiGameBoard.AiGameBoard;
+import ai.generation.Generation;
 import main.gui.GameGUI;
 
 public class MainAiGameThread extends Thread {
@@ -41,8 +42,8 @@ public class MainAiGameThread extends Thread {
 				}
 				lastFrame = System.nanoTime();
 			}
-			if (game.isRuning() && System.nanoTime() - lastTick >= 1000000000/TICKS) {
-				if (System.nanoTime() - lastUpdate >= 60/(game.getGravity()*1200) * 1000000000 && !game.isPaused() && game.isRuning()) {
+			if (Generation.getRunning() && game.isRuning() && System.nanoTime() - lastTick >= 1000000000/TICKS) {
+				if (System.nanoTime() - lastUpdate >= 60/(game.getGravity()*1200) * 1000000000) {
 					game.update();
 					lastUpdate = System.nanoTime();
 				}
