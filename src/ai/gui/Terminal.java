@@ -33,6 +33,7 @@ import javax.swing.text.html.HTMLDocument;
 import ai.generation.Generation;
 import ai.gui.terminalComand.ClearTerminalCommand;
 import ai.gui.terminalComand.CreateNewGenerationTerminalCommand;
+import ai.gui.terminalComand.GetGenerationTerminalCommand;
 import ai.gui.terminalComand.GetTerminalCommand;
 import ai.gui.terminalComand.HelpTerminalCommand;
 import ai.gui.terminalComand.PauseTerminalCommand;
@@ -69,6 +70,7 @@ public class Terminal extends JPanel {
 	private Generation generation;
 	
 	private static Queue<String> appendRequests = new LinkedList<String>();
+	private static Terminal currentTerm;
 	
 	public Terminal() {
 		font = null;
@@ -80,6 +82,7 @@ public class Terminal extends JPanel {
 		prevInput = 0;
 		generation = null;
 		timer = new Timer();
+		currentTerm = this;
 		
 		createActionMap();
 		createSpecialMap();
@@ -135,6 +138,9 @@ public class Terminal extends JPanel {
 	
 	public static void makeAppendRequest(String toAppend) {
 		appendRequests.offer(toAppend);
+		if (currentTerm != null) {
+			currentTerm.append("");
+		}
 	}
 	
 	private void makeKeyBindings() {
@@ -220,6 +226,7 @@ public class Terminal extends JPanel {
 		actions.put("run", new RunSimulationTerminalCommand(this));
 		actions.put("pause", new PauseTerminalCommand(this));
 		actions.put("resume", new ResumeTerminalCommand(this));
+		actions.put("generation", new GetGenerationTerminalCommand(this));
 	}
 	
 	public Dimension getTextDim() {
@@ -257,6 +264,10 @@ public class Terminal extends JPanel {
 	
 	public static String getTab() {
 		return "&nbsp;&nbsp;&nbsp;&nbsp;";
+	}
+	
+	public static String getSpace() {
+		return "&nbsp;";
 	}
 	
 	private void inputHandler(String input) {
