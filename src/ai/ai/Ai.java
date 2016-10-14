@@ -1,6 +1,7 @@
 package ai.ai;
 
 import java.util.ArrayList;
+import java.util.Timer;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -99,7 +100,7 @@ public class Ai {
 			int blockingOnCol = 0;
 			boolean holeOnCol = false;
 			for (int row = maxRow - getHeight(field, col); row < maxRow; row++) {
-				if (field[row][col]) {
+				if (row != maxRow - 1 && field[row][col]) {
 					blockingOnCol++;
 				} else {
 					holeOnCol = true;
@@ -118,8 +119,8 @@ public class Ai {
 		int holes = 0;
 		int maxRow = field.length;
 		for (int col = 0; col < field[0].length; col++) {
-			for (int row = maxRow - getHeight(field, col); row < maxRow - 1; row++) {
-				if (field[row][col] && !field[row + 1][col]) {
+			for (int row = maxRow - getHeight(field, col); row < maxRow; row++) {
+				if (!field[row][col]) {
 					holes++;
 				}
 			}
@@ -280,5 +281,32 @@ public class Ai {
 	
 	private interface Action {
 		public void run(AiGameBoard b);
+	}
+	
+	public static void main(String[] args) {
+		AiGameBoard g = new AiGameBoard(new Timer());
+		Ai ai = new Ai(g, 1, 1, 1, 1, 1);
+		boolean[][] a = g.getColition();
+		int maxRow = a.length - 1;
+		a[maxRow][0] = true;
+		printVals(ai);
+		a[maxRow - 2][0] = true;
+		printVals(ai);
+		a[maxRow - 2][0] = false;
+		a[maxRow - 3][0] = true;
+		printVals(ai);
+		a[3][0] = true;
+		printVals(ai);
+		a[3][2] = true;
+		printVals(ai);
+	}
+	
+	private static void printVals(Ai ai) {
+		System.out.println("Blocking: " + ai.getBlockingVal(ai.getGame()));
+		System.out.println("Hight: " + ai.getHeightVal(ai.getGame()));
+		System.out.println("Roufness: " + ai.getRoufnessVal(ai.getGame()));
+		System.out.println("Removed: " + ai.getLinesRemovedVal(ai.getGame()));
+		System.out.println("Holes: " + ai.getHolesVal(ai.getGame()));
+		System.out.println();
 	}
 }
