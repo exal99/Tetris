@@ -43,6 +43,7 @@ import ai.gui.terminalComand.RunSimulationTerminalCommand;
 import ai.gui.terminalComand.SetTerminalCommand;
 import ai.gui.terminalComand.ShowGraphicsTerminalCommand;
 import ai.gui.terminalComand.TerminalCommand;
+import ai.gui.terminalComand.TestAiTerminalCommand;
 import ai.gui.terminalComand.exceptions.TerminalCommandNotFoundException;
 import ai.gui.terminalComand.exceptions.TerminalException;
 
@@ -227,6 +228,7 @@ public class Terminal extends JPanel {
 		actions.put("pause", new PauseTerminalCommand(this));
 		actions.put("resume", new ResumeTerminalCommand(this));
 		actions.put("generation", new GetGenerationTerminalCommand(this));
+		actions.put("testai", new TestAiTerminalCommand(this));
 	}
 	
 	public Dimension getTextDim() {

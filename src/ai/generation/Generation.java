@@ -88,20 +88,7 @@ public class Generation implements Serializable{
 			if (MainAiGameThread.getGraphics() != null) {
 				MainAiGameThread.getGraphics().setAppend(ai.toString());
 			}
-			Tetrad previous = ai.getGame().getControlling();
-			MainAiGameThread thread = new MainAiGameThread(game);
-			thread.start();
-			game.start();
-			ai.makeMove();
-			while (game.isRuning()) {
-				if (running && MainAiGameThread.getGraphics() != null) {
-					MainAiGameThread.getGraphics().setAppend(ai.toString());
-				}
-				if (running && previous != game.getControlling()) {
-					previous = game.getControlling();
-					ai.makeMove();
-				}
-			}
+			play(ai);
 			ai.incAge();
 			scores[i] = ai.getGame().getScore();
 			game.reset();
@@ -109,6 +96,24 @@ public class Generation implements Serializable{
 		Terminal.makeAppendRequest("[..........] 100 %<br>");
 		naturalSelection(scores);
 		genNum++;
+	}
+	
+	public static void play(Ai ai) {
+		AiGameBoard game = ai.getGame();
+		Tetrad previous = ai.getGame().getControlling();
+		MainAiGameThread thread = new MainAiGameThread(game);
+		thread.start();
+		game.start();
+		ai.makeMove();
+		while (game.isRuning()) {
+			if (running && MainAiGameThread.getGraphics() != null) {
+				MainAiGameThread.getGraphics().setAppend(ai.toString());
+			}
+			if (running && previous != game.getControlling()) {
+				previous = game.getControlling();
+				ai.makeMove();
+			}
+		}
 	}
 	
 	public long getGenNum() {
