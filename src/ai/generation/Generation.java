@@ -26,6 +26,7 @@ public class Generation implements Serializable{
 	
 	private Ai[] gen;
 	private AiGameBoard game;
+	private long genNum;
 	
 	public static final HashMap<String, String> VALUE_LABELS = new HashMap<String, String>();
 	static {
@@ -38,6 +39,7 @@ public class Generation implements Serializable{
 	}
 	
 	public Generation(Timer t) {
+		genNum = 1;
 		int genSize = Integer.parseInt(System.getProperty(VALUE_LABELS.get("default_gen_size"), DEFAULT_GEN_SIZE));
 		gen = new Ai[genSize];
 		Timer timer = t;
@@ -69,7 +71,6 @@ public class Generation implements Serializable{
 			updateStatus = (multiplyer*gen.length)/10;
 			multiplyer++;
 		} while (updateStatus == 0);
-		System.out.println(updateStatus);
 		for (int i = 0; i < gen.length; i++) {
 			if (i % updateStatus == 0) {
 				StringBuilder sb = new StringBuilder("[");
@@ -105,8 +106,13 @@ public class Generation implements Serializable{
 			scores[i] = ai.getGame().getScore();
 			game.reset();
 		}
-		Terminal.makeAppendRequest("[..........] 100 %");
+		Terminal.makeAppendRequest("[..........] 100 %<br>");
 		naturalSelection(scores);
+		genNum++;
+	}
+	
+	public long getGenNum() {
+		return genNum;
 	}
 	
 	public void runSimulation(int numTimes) {
