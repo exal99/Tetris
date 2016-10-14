@@ -9,6 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import ai.ai.Ai;
 import ai.aiGameBoard.AiGameBoard;
 import ai.game.MainAiGameThread;
+import ai.gui.Terminal;
 import main.tetrads.Tetrad;
 
 public class Generation implements Serializable{
@@ -62,7 +63,26 @@ public class Generation implements Serializable{
 	
 	public void runSimulation() {
 		long[] scores = new long[gen.length];
+		int updateStatus = 0;
+		int multiplyer = 1;
+		do {
+			updateStatus = (multiplyer*gen.length)/10;
+			multiplyer++;
+		} while (updateStatus == 0);
+		System.out.println(updateStatus);
 		for (int i = 0; i < gen.length; i++) {
+			if (i % updateStatus == 0) {
+				StringBuilder sb = new StringBuilder("[");
+				int numDots = (i* 100)/gen.length ;
+				for (int a = 0; a < numDots / 10; a++) {
+					sb.append('.');
+				}
+				for (int a = 0; a < 10 - (numDots/10); a++) {
+					sb.append(Terminal.getSpace());
+				}
+				sb.append("] " + (i*100)/gen.length + " %<br>");
+				Terminal.makeAppendRequest(sb.toString());
+			}
 			Ai ai = gen[i];
 			if (MainAiGameThread.getGraphics() != null) {
 				MainAiGameThread.getGraphics().setAppend(ai.toString());
@@ -85,6 +105,7 @@ public class Generation implements Serializable{
 			scores[i] = ai.getGame().getScore();
 			game.reset();
 		}
+		Terminal.makeAppendRequest("[..........] 100 %");
 		naturalSelection(scores);
 	}
 	
