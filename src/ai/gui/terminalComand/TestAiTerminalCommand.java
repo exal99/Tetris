@@ -2,7 +2,6 @@ package ai.gui.terminalComand;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.Arrays;
 
 import javax.swing.JFrame;
 
