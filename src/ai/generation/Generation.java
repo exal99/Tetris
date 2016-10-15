@@ -27,6 +27,11 @@ public class Generation implements Serializable{
 	private Ai[] gen;
 	private AiGameBoard game;
 	private long genNum;
+	private long bestScore;
+	private Ai bestAi;
+	private long allTimeBestScore;
+	private Ai allTimeBestAi;
+	private double avrageScore;
 	
 	public static final HashMap<String, String> VALUE_LABELS = new HashMap<String, String>();
 	static {
@@ -52,7 +57,32 @@ public class Generation implements Serializable{
 					rand.nextDouble(minVal, maxVal), rand.nextDouble(minVal, maxVal),
 					rand.nextDouble(minVal, maxVal), rand.nextDouble(minVal, maxVal));
 		}
+		bestScore = -1;
+		bestAi = null;
+		allTimeBestScore = -1;
+		allTimeBestAi = null;
+		avrageScore = 0;
 		
+	}
+	
+	public Ai getBestAi() {
+		return bestAi;
+	}
+	
+	public Ai getAllTimeBestAi() {
+		return allTimeBestAi;
+	}
+	
+	public long getBestScore() {
+		return bestScore;
+	}
+	
+	public long getAllTimeBestScore() {
+		return allTimeBestScore;
+	}
+	
+	public double getAvrageScore() {
+		return avrageScore;
 	}
 	
 	public static void setRunning(boolean newVal) {
@@ -65,6 +95,8 @@ public class Generation implements Serializable{
 	
 	public void runSimulation() {
 		long[] scores = new long[gen.length];
+		bestScore = -1;
+		bestAi = null;
 		int updateStatus = 0;
 		int multiplyer = 1;
 		do {
@@ -91,8 +123,20 @@ public class Generation implements Serializable{
 			play(ai);
 			ai.incAge();
 			scores[i] = ai.getGame().getScore();
+			if (scores[i] > bestScore) {
+				bestScore = scores[i];
+				bestAi = ai;
+			} if (scores[i] > allTimeBestScore) {
+				allTimeBestAi = ai;
+				allTimeBestScore = scores[i];
+			}
 			game.reset();
 		}
+		double sum = 0;
+		for (long score : scores) {
+			sum += score;
+		}
+		avrageScore = sum/scores.length;
 		Terminal.makeAppendRequest("[##########] 100 %<br>");
 		naturalSelection(scores);
 		genNum++;
