@@ -32,7 +32,6 @@ public class TestAiTerminalCommand extends AbstractTerminalCommand {
 		super.excecuteCommand(args);
 		if (MainAiGameThread.getGraphics() == null) {
 			String[] splitArgs = args.replaceAll("\\[|\\]", "").replaceAll(",", "").split(" ");
-			System.out.println(Arrays.asList(splitArgs).toString());
 			double[] genome = new double[5];
 			for (int i = 1; i < splitArgs.length; i++) {
 				genome[i-1] = Double.parseDouble(splitArgs[i]);
@@ -68,7 +67,6 @@ public class TestAiTerminalCommand extends AbstractTerminalCommand {
 		}
 		sb.replace(sb.length() - 3, sb.length(), "");
 		sb.append("(\\s\\])?");
-		System.out.println(sb);
 		return sb.toString();
 	}
 	
