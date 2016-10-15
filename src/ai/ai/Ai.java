@@ -102,7 +102,7 @@ public class Ai {
 			for (int row = maxRow - getHeight(field, col); row < maxRow; row++) {
 				if (row != maxRow - 1 && field[row][col]) {
 					blockingOnCol++;
-				} else {
+				} else if (!field[row][col]) {
 					holeOnCol = true;
 				}
 				if (row == maxRow - 1 && !holeOnCol) { //last time if no holes on current coll
@@ -133,9 +133,10 @@ public class Ai {
 		double height = 0;
 		for (int col = 0; col < field[0].length; col++) {	
 			int colHeight = getHeight(field, col);
-			if (colHeight > height) {
-				height = colHeight;
-			}
+//			if (colHeight > height) {
+//				height = colHeight;
+//			}
+			height+= colHeight;
 		}
 		return height * HEIGHT_CONST;
 	}
@@ -181,25 +182,30 @@ public class Ai {
 										  game.getControlling().getType() == Tetrads.STRAIGHT) ?  2 : 4);
 				orien++) {
 				AiGameBoard orienClone = subOneClone.clone();
+				assert orienClone.getControlling() != subOneClone.getControlling();
 				for (int i = 0; i < orien; i++) {
 					orienClone.turnLeft();
+				}
+				if (orien == 2 && col == field[0].length - 1) {
+					orienClone.moveRight();
 				}
 				orienClone.fastPlace();
 				double colVal = evalBestMove(orienClone);
 				if (colVal > bestMove) {
 					bestMove = colVal;
 					bestAction.clear();
-					bestAction.addAll(currentOrien);
 					bestAction.addAll(currentMovement);
+					bestAction.addAll(currentOrien);
 				}
 				currentOrien.add(g -> g.turnLeft());
-				subOneClone.turnLeft();
 				if (orien == 2 && col == field[0].length - 1) {
-					subOneClone.moveRight();
+					currentOrien.add(g -> g.moveRight());
 				}
+				
 			}
 			currentMovement.add(g -> g.moveRight());
 			superClone.moveRight();
+			
 		}
 		for (Action a : bestAction) {
 			a.run(game);
@@ -213,9 +219,9 @@ public class Ai {
 			localGame.moveLeft();
 		}
 		for (int col = 0; col < localGame.getColition()[0].length; col++) {
-			localGame.moveRight();
-			double colVal = bestMoveInCol(localGame, col);
+			double colVal = bestMoveInCol(localGame.clone(), col);
 			bestMove = (colVal > bestMove) ? colVal : bestMove;
+			localGame.moveRight();
 		}
 		return bestMove;
 	}
@@ -226,14 +232,14 @@ public class Ai {
 												  board.getControlling().getType() == Tetrads.STRAIGHT) ? 2 : 4);
 			orientation++) {
 			AiGameBoard currentOrien = board.clone();
-			currentOrien.turnLeft();
-			if (orientation == 2 && col == board.getField()[0].length - 1) {
-				currentOrien.moveRight();
-			}
 			currentOrien.fastPlace();
-			
 			double orienVal = evalBoard(currentOrien);
 			bestOrientation = (orienVal > bestOrientation) ? orienVal : bestOrientation;
+			
+			board.turnLeft();
+			if (orientation == 2 && col == board.getField()[0].length - 1) {
+				board.moveRight();
+			}
 			
 		}
 		return bestOrientation;
@@ -285,28 +291,38 @@ public class Ai {
 	
 	public static void main(String[] args) {
 		AiGameBoard g = new AiGameBoard(new Timer());
-		Ai ai = new Ai(g, 1, 1, 1, 1, 1);
+		g.start();
+		Ai ai = new Ai(g, -1, -1, -1, -1, 1);
 		boolean[][] a = g.getColition();
 		int maxRow = a.length - 1;
-		a[maxRow][0] = true;
-		printVals(ai);
-		a[maxRow - 2][0] = true;
-		printVals(ai);
-		a[maxRow - 2][0] = false;
-		a[maxRow - 3][0] = true;
-		printVals(ai);
-		a[3][0] = true;
-		printVals(ai);
-		a[3][2] = true;
-		printVals(ai);
+//		a[maxRow - 1][0] = true;
+//		a[maxRow - 1][1] = true;
+//		a[maxRow - 1][2] = true;
+//		a[maxRow][2] = true;
+//		a[maxRow][0] = true;
+//		a[maxRow - 1][0] = true;
+//		a[maxRow][1] = true;
+//		a[maxRow][2] = true;
+		printVals(ai, ai.getGame());
+		System.out.println(ai.evalBoard(ai.getGame()));
+		ai.makeMove();
+		System.out.println("final:\n" + g);
+		System.out.println(ai.evalBoard(ai.getGame()));
+		printVals(ai, ai.getGame());
+		ai.makeMove();
+
+		System.out.println(g);
+		printVals(ai, ai.getGame());
+		System.out.println("done");
+		System.exit(0);
 	}
 	
-	private static void printVals(Ai ai) {
-		System.out.println("Blocking: " + ai.getBlockingVal(ai.getGame()));
-		System.out.println("Hight: " + ai.getHeightVal(ai.getGame()));
-		System.out.println("Roufness: " + ai.getRoufnessVal(ai.getGame()));
-		System.out.println("Removed: " + ai.getLinesRemovedVal(ai.getGame()));
-		System.out.println("Holes: " + ai.getHolesVal(ai.getGame()));
+	private static void printVals(Ai ai, AiGameBoard g) {
+		System.out.println("Blocking: " + ai.getBlockingVal(g));
+		System.out.println("Hight: " + ai.getHeightVal(g));
+		System.out.println("Roufness: " + ai.getRoufnessVal(g));
+		System.out.println("Removed: " + ai.getLinesRemovedVal(g));
+		System.out.println("Holes: " + ai.getHolesVal(g));
 		System.out.println();
 	}
 }
