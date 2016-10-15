@@ -76,10 +76,10 @@ public class Generation implements Serializable{
 				StringBuilder sb = new StringBuilder("[");
 				int numDots = (i* 100)/gen.length ;
 				for (int a = 0; a < numDots / 10; a++) {
-					sb.append('.');
+					sb.append('#');
 				}
 				for (int a = 0; a < 10 - (numDots/10); a++) {
-					sb.append(Terminal.getSpace());
+					sb.append(".");
 				}
 				sb.append("] " + (i*100)/gen.length + " %<br>");
 				Terminal.makeAppendRequest(sb.toString());
@@ -93,7 +93,7 @@ public class Generation implements Serializable{
 			scores[i] = ai.getGame().getScore();
 			game.reset();
 		}
-		Terminal.makeAppendRequest("[..........] 100 %<br>");
+		Terminal.makeAppendRequest("[##########] 100 %<br>");
 		naturalSelection(scores);
 		genNum++;
 	}
