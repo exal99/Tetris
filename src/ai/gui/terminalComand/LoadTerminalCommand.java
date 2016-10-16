@@ -38,7 +38,7 @@ public class LoadTerminalCommand extends AbstractTerminalCommand {
 			load(args.split(" ")[1]);
 		} else {
 			JFileChooser chooser = new JFileChooser();
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("Generation files", "gen");
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("Generation files", "json");
 			chooser.setFileFilter(filter);
 			if (chooser.showOpenDialog(term) == JFileChooser.APPROVE_OPTION) {
 				load(chooser.getSelectedFile());
