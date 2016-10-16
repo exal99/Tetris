@@ -15,12 +15,15 @@ repositories {
 
 apply plugin: "java"
 apply plugin: "edu.sc.seis.launch4j"
+apply plugin: "eclipse"
 
 version = "1.0"
 
 dependencies {
 	compile group: 'org.ini4j', name: 'ini4j', version: '0.5.1'
+	compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
 	runtime group: 'org.ini4j', name: 'ini4j', version: '0.5.1'
+	runtime group: 'com.google.code.gson', name: 'gson', version: '2.7'
 }
 
 sourceSets {

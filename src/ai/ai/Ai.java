@@ -1,9 +1,16 @@
 package ai.ai;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Timer;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 import ai.aiGameBoard.AiGameBoard;
 import main.tetrads.Tetrads;
@@ -82,6 +89,10 @@ public class Ai {
 	
 	public AiGameBoard getGame() {
 		return game;
+	}
+	
+	public void setGame(AiGameBoard newGame) {
+		game = newGame;
 	}
 
 	private double evalBoard(AiGameBoard board) {
@@ -289,40 +300,41 @@ public class Ai {
 		public void run(AiGameBoard b);
 	}
 	
-	public static void main(String[] args) {
-		AiGameBoard g = new AiGameBoard(new Timer());
-		g.start();
-		Ai ai = new Ai(g, -1, -1, -1, -1, 1);
-		boolean[][] a = g.getColition();
-		int maxRow = a.length - 1;
-//		a[maxRow - 1][0] = true;
-//		a[maxRow - 1][1] = true;
-//		a[maxRow - 1][2] = true;
-//		a[maxRow][2] = true;
-//		a[maxRow][0] = true;
-//		a[maxRow - 1][0] = true;
-//		a[maxRow][1] = true;
-//		a[maxRow][2] = true;
-		printVals(ai, ai.getGame());
-		System.out.println(ai.evalBoard(ai.getGame()));
-		ai.makeMove();
-		System.out.println("final:\n" + g);
-		System.out.println(ai.evalBoard(ai.getGame()));
-		printVals(ai, ai.getGame());
-		ai.makeMove();
+	public static class AiSerializer implements JsonSerializer<Ai> {
 
-		System.out.println(g);
-		printVals(ai, ai.getGame());
-		System.out.println("done");
-		System.exit(0);
+		@Override
+		public JsonElement serialize(Ai src, Type typeOfSrc, JsonSerializationContext context) {
+			JsonObject aiObject = new JsonObject();
+			aiObject.addProperty("height", src.HEIGHT_CONST);
+			aiObject.addProperty("roufness", src.ROUFNESS_CONST);
+			aiObject.addProperty("holes", src.HOLES_CONST);
+			aiObject.addProperty("blocking", src.BLOCKING_CONST);
+			aiObject.addProperty("removal", src.LINES_REMOVED_CONST);
+			aiObject.addProperty("age", src.age);
+			aiObject.addProperty("id", src.id);
+			aiObject.addProperty("ID", Ai.ID);
+			return aiObject;
+		}
+		
 	}
 	
-	private static void printVals(Ai ai, AiGameBoard g) {
-		System.out.println("Blocking: " + ai.getBlockingVal(g));
-		System.out.println("Hight: " + ai.getHeightVal(g));
-		System.out.println("Roufness: " + ai.getRoufnessVal(g));
-		System.out.println("Removed: " + ai.getLinesRemovedVal(g));
-		System.out.println("Holes: " + ai.getHolesVal(g));
-		System.out.println();
+	public static class AiDeserializer implements JsonDeserializer<Ai> {
+
+		@Override
+		public Ai deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+				throws JsonParseException {
+			JsonObject aiObject = json.getAsJsonObject();
+			Ai ai = new Ai(null, 0, 0, 0, 0, 0);
+			Ai.ID = aiObject.get("ID").getAsInt();
+			ai.age = aiObject.get("age").getAsInt();
+			ai.id = aiObject.get("id").getAsInt();
+			ai.HEIGHT_CONST = aiObject.get("height").getAsDouble();
+			ai.ROUFNESS_CONST = aiObject.get("roufness").getAsDouble();
+			ai.HOLES_CONST = aiObject.get("holes").getAsDouble();
+			ai.BLOCKING_CONST = aiObject.get("blocking").getAsDouble();
+			ai.LINES_REMOVED_CONST = aiObject.get("removal").getAsDouble();
+			return ai;
+		}
+		
 	}
 }

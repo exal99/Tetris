@@ -1,10 +1,20 @@
 package ai.generation;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.concurrent.ThreadLocalRandom;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 import ai.ai.Ai;
 import ai.aiGameBoard.AiGameBoard;
@@ -63,6 +73,10 @@ public class Generation implements Serializable{
 		allTimeBestAi = null;
 		avrageScore = 0;
 		
+	}
+	
+	public Ai[] getGen() {
+		return gen;
 	}
 	
 	public Ai getBestAi() {
@@ -313,5 +327,57 @@ public class Generation implements Serializable{
 			}
 		}
 		return false;
+	}
+	
+	public static class GenerationSerializer implements JsonSerializer<Generation> {
+
+		@Override
+		public JsonElement serialize(Generation src, Type typeOfSrc, JsonSerializationContext context) {
+//			Gson gson = new GsonBuilder().registerTypeAdapter(Ai.class, new Ai.AiSerializer()).create();
+			JsonObject retObj = new JsonObject();
+			retObj.addProperty("genNum", src.genNum);
+			retObj.addProperty("bestScore", src.bestScore);
+			retObj.addProperty("allTimeBestScore", src.allTimeBestScore);
+			retObj.addProperty("avrageScore", src.avrageScore);
+			retObj.add("bestAi", context.serialize(src.bestAi, Ai.class));
+			retObj.add("allTimeBestAi", context.serialize(src.allTimeBestAi, Ai.class));
+			JsonArray array = new JsonArray();
+			for (Ai ai : src.gen) {
+				array.add(context.serialize(ai, Ai.class));
+			}
+			retObj.add("population", array);
+			return retObj;
+		}
+		
+	}
+	
+	public static class GenerationDeserializer implements JsonDeserializer<Generation> {
+
+		@Override
+		public Generation deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			JsonObject genObject = json.getAsJsonObject();
+			Generation gen = new Generation(new Timer());
+			gen.genNum = genObject.get("genNum").getAsLong();
+			gen.bestScore = genObject.get("bestScore").getAsLong();
+			gen.allTimeBestScore = genObject.get("allTimeBestScore").getAsLong();
+			gen.avrageScore = genObject.get("avrageScore").getAsDouble();
+			
+			gen.bestAi = context.deserialize(genObject.get("bestAi"), Ai.class);
+			gen.allTimeBestAi = context.deserialize(genObject.get("allTimeBestAi"), Ai.class);
+			if (gen.bestAi != null) {
+				gen.bestAi.setGame(gen.getGame());
+				gen.allTimeBestAi.setGame(gen.getGame());
+			}
+			JsonArray population = genObject.get("population").getAsJsonArray();
+			Ai[] aiGen = new Ai[population.size()];
+			for (int i = 0; i < population.size(); i++) {
+				aiGen[i] = context.deserialize(population.get(i), Ai.class);
+				aiGen[i].setGame(gen.getGame());
+			}
+			gen.gen = aiGen;
+			
+			return gen;
+		}
+		
 	}
 }
