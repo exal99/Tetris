@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import ai.gui.Terminal;
 
@@ -39,6 +41,21 @@ public class Main implements Thread.UncaughtExceptionHandler{
 	}
 	
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Terminal t = new Terminal();
 		Thread.setDefaultUncaughtExceptionHandler(new Main(t));
 		System.setProperty("sun.awt.exception.handler", Main.class.getName());
