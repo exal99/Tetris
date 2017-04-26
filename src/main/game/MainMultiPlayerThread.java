@@ -91,11 +91,7 @@ public class MainMultiPlayerThread extends Thread {
 				root.remove(graphics);
 				root.add(new StartMenu(player1, player2, root, highScore, args));
 				root.revalidate();
-				try {
-					join();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				running = false;
 			}
 		}
 	}
