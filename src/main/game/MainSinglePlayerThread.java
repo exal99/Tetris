@@ -88,11 +88,7 @@ public class MainSinglePlayerThread extends Thread {
 				root.remove(graphics);
 				root.add(new StartMenu(game, second, root, score, args));
 				root.revalidate();
-				try {
-					join();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				running = false;
 			}
 		}
 	}
